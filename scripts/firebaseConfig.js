@@ -17,9 +17,24 @@ import { DEBUGMODE } from './config.js';
 // Temporary variables that will be assigned to in setUpVariables()
 let clientSafeToken;
 
-export let firebaseApp;
-export let analytics;
-export let database;
+export const firebaseConfig = {
+  apiKey: await Promise.resolve(getSecureMessage()),
+  appId: '1:933438650220:web:7cfd8f56a2aef998e46549',
+  authDomain: 'backgammon-b1e25.firebaseapp.com',
+  measurementId: 'G-ST0Z166K8V',
+  messagingSenderId: '933438650220',
+  projectId: 'backgammon-b1e25',
+  storageBucket: 'backgammon-b1e25.firebasestorage.app',
+};
+
+// Used to initialize firebase connection
+export const firebaseApp = window.firebase.initializeApp(
+  await Promise.resolve(firebaseConfig)
+);
+
+// Allow processing of data to and from the firebase database
+export const analytics = await Promise.resolve(window.firebase.analytics());
+export const database = await Promise.resolve(window.firebase.database());
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // FUNCTIONS
@@ -54,7 +69,7 @@ async function getSecureMessage() {
       document.getElementById('secure-message').textContent = data.message;
       console.log('Client Token:', data.clientSafeToken);
       safeToken = clientSafeToken;
-      setUpVariables(safeToken);
+      return safeToken;
       // If you returned other data, like clientToken, you'd access it here:
     } else {
       document.getElementById(
@@ -68,30 +83,30 @@ async function getSecureMessage() {
   }
 }
 
-function setUpVariables(safeToken) {
-  // Default object used to set up a firebase record
-  const firebaseConfig = {
-    apiKey: safeToken,
-    appId: '1:933438650220:web:7cfd8f56a2aef998e46549',
-    authDomain: 'backgammon-b1e25.firebaseapp.com',
-    measurementId: 'G-ST0Z166K8V',
-    messagingSenderId: '933438650220',
-    projectId: 'backgammon-b1e25',
-    storageBucket: 'backgammon-b1e25.firebasestorage.app',
-  };
+// function setUpVariables(safeToken) {
+//   // Default object used to set up a firebase record
+//   const firebaseConfig = {
+//     apiKey: safeToken,
+//     appId: '1:933438650220:web:7cfd8f56a2aef998e46549',
+//     authDomain: 'backgammon-b1e25.firebaseapp.com',
+//     measurementId: 'G-ST0Z166K8V',
+//     messagingSenderId: '933438650220',
+//     projectId: 'backgammon-b1e25',
+//     storageBucket: 'backgammon-b1e25.firebasestorage.app',
+//   };
 
-  // Used to initialize firebase connection
-  firebaseApp = window.firebase.initializeApp(firebaseConfig);
+//   // Used to initialize firebase connection
+//   firebaseApp = window.firebase.initializeApp(firebaseConfig);
 
-  // Allow processing of data to and from the firebase database
-  analytics = window.firebase.analytics();
-  database = window.firebase.database();
-}
+//   // Allow processing of data to and from the firebase database
+//   analytics = window.firebase.analytics();
+//   database = window.firebase.database();
+// }
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // AUTORUNNING LOGIC
 
-getSecureMessage();
+// getSecureMessage();
 
 if (DEBUGMODE) {
   console.log(`firebaseConfig.js running`);
