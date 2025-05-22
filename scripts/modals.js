@@ -18,7 +18,7 @@ import {
   sendRPC,
   shutDownRPC,
 } from './chat.js';
-import { DEBUGMODE } from './config.js';
+import { DEBUGMODE } from './welcome.js';
 import { blockProcess, enableProcess } from './dispatch.js';
 import { clearLocalStorage, loadLocalStorage } from './localStorage.js';
 import { forfeitMessage, startGameMessages } from './messages.js';

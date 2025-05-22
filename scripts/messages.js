@@ -10,7 +10,7 @@
 // IMPORTS
 
 import { sendRPC } from './chat.js';
-import { DEBUGMODE } from './config.js';
+import { DEBUGMODE } from './welcome.js';
 import { loadLocalStorage } from './localStorage.js';
 import { gamePlayers } from './modals.js';
 import { playChatNotificationSound } from './sounds.js';
