@@ -144,6 +144,7 @@ export function testForLocalStorageData() {
 
 if (DEBUGMODE) {
   console.log(`localStorage.js running`);
+  console.log('cunt');
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
