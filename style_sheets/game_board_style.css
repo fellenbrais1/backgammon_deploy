@@ -1,0 +1,456 @@
+/* BOARD ELEMENT */
+#board {
+  position: relative;
+  height: 504px;
+  width: 640px;
+  margin-left: 5px;
+  margin-right: 5px;
+  border: solid 2px white;
+  border-radius: 25px;
+  z-index: 1;
+  background-image: url('../images/big_backgammon_enhanced_35pct.png');
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+/* HIGHLIGHT ELEMENTS */
+.highlight {
+  position: absolute;
+  height: 7px;
+  width: 42px;
+  background-color: white;
+}
+
+/* Top highlight div positions */
+.highlight_top {
+  top: 12px;
+}
+
+#highlight13 {
+  left: 71px;
+}
+
+#highlight14 {
+  left: 113px;
+}
+
+#highlight15 {
+  left: 155px;
+}
+
+#highlight16 {
+  left: 197px;
+}
+
+#highlight17 {
+  left: 239px;
+}
+
+#highlight17 {
+  left: 239px;
+}
+
+#highlight18 {
+  left: 281px;
+}
+
+#highlight19 {
+  left: 354px;
+}
+
+#highlight20 {
+  left: 396px;
+}
+
+#highlight21 {
+  left: 438px;
+}
+
+#highlight22 {
+  left: 480px;
+}
+
+#highlight23 {
+  left: 522px;
+}
+
+#highlight24 {
+  left: 564px;
+}
+
+/* Bottom highlight div positions */
+.highlight_bottom {
+  top: 486px;
+}
+
+#highlight1 {
+  left: 564px;
+}
+
+#highlight2 {
+  left: 522px;
+}
+
+#highlight3 {
+  left: 480px;
+}
+
+#highlight4 {
+  left: 438px;
+}
+
+#highlight5 {
+  left: 396px;
+}
+
+#highlight6 {
+  left: 354px;
+}
+
+#highlight7 {
+  left: 281px;
+}
+
+#highlight8 {
+  left: 239px;
+}
+
+#highlight9 {
+  left: 197px;
+}
+
+#highlight10 {
+  left: 155px;
+}
+
+#highlight11 {
+  left: 113px;
+}
+
+#highlight12 {
+  left: 71px;
+}
+
+.piece::before {
+  content: attr(id);
+  position: absolute;
+  top: 2px;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  font-family: sans-serif;
+  font-size: 10px;
+  color: #444;
+  pointer-events: none;
+}
+
+/* If you need different colors for red pieces */
+.piece_red::before {
+  color: #fff;
+}
+
+/* PIECE ELEMENTS */
+.piece {
+  position: absolute;
+  left: 6px;
+  height: 36px;
+  width: 36px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px #888;
+  cursor: grab;
+  cursor: pointer;
+  user-select: none;
+}
+
+.piece:active {
+  cursor: grabbing;
+}
+
+.piece_white {
+  background-color: rgb(255, 253, 208);
+}
+
+.piece_red {
+  background-color: rgb(232, 10, 10);
+}
+
+/* Starting piece positions */
+#r1 {
+  top: 6px;
+}
+
+#r2 {
+  top: 18px;
+}
+
+#r3 {
+  top: 30px;
+}
+
+#r4 {
+  top: 42px;
+}
+
+#r5 {
+  top: 54px;
+}
+
+#r6 {
+  top: 66px;
+}
+
+#r7 {
+  top: 78px;
+}
+
+#r8 {
+  top: 90px;
+}
+
+#r9 {
+  top: 102px;
+}
+
+#r10 {
+  top: 114px;
+}
+
+#r11 {
+  top: 126px;
+}
+
+#r12 {
+  top: 138px;
+}
+
+#r13 {
+  top: 150px;
+}
+
+#r14 {
+  top: 162px;
+}
+
+#r15 {
+  top: 174px;
+}
+
+#w1 {
+  top: 256px;
+}
+
+#w2 {
+  top: 268px;
+}
+
+#w3 {
+  top: 280px;
+}
+
+#w4 {
+  top: 292px;
+}
+
+#w5 {
+  top: 304px;
+}
+
+#w6 {
+  top: 316px;
+}
+
+#w7 {
+  top: 328px;
+}
+
+#w8 {
+  top: 340px;
+}
+
+#w9 {
+  top: 352px;
+}
+
+#w10 {
+  top: 364px;
+}
+
+#w11 {
+  top: 376px;
+}
+
+#w12 {
+  top: 388px;
+}
+
+#w13 {
+  top: 400px;
+}
+
+#w14 {
+  top: 412px;
+}
+
+#w15 {
+  top: 424px;
+}
+
+/* POINT OCCUPIED NUMBERS */
+.piece-number-overlay {
+  position: absolute;
+  height: 36px;
+  width: 36px;
+  background: transparent;
+  text-align: center;
+  font-weight: bold;
+  line-height: 36px;
+  font-size: 20px;
+  color: grey;
+  pointer-events: none;
+}
+
+#pieceNumber1 {
+  top: 297px;
+  left: 567px;
+}
+
+#pieceNumber2 {
+  top: 297px;
+  left: 525px;
+}
+
+#pieceNumber3 {
+  top: 297px;
+  left: 483px;
+}
+
+#pieceNumber4 {
+  top: 297px;
+  left: 441px;
+}
+
+#pieceNumber5 {
+  top: 297px;
+  left: 399px;
+}
+
+#pieceNumber6 {
+  top: 297px;
+  left: 357px;
+}
+
+#pieceNumber7 {
+  top: 297px;
+  left: 284px;
+}
+
+#pieceNumber8 {
+  top: 297px;
+  left: 242px;
+}
+
+#pieceNumber9 {
+  top: 297px;
+  left: 200px;
+}
+
+#pieceNumber10 {
+  top: 297px;
+  left: 158px;
+}
+
+#pieceNumber11 {
+  top: 297px;
+  left: 116px;
+}
+
+#pieceNumber12 {
+  top: 297px;
+  left: 74px;
+}
+
+#pieceNumber13 {
+  top: 172px;
+  left: 74px;
+}
+
+#pieceNumber14 {
+  top: 172px;
+  left: 116px;
+}
+
+#pieceNumber15 {
+  top: 172px;
+  left: 158px;
+}
+
+#pieceNumber16 {
+  top: 172px;
+  left: 200px;
+}
+
+#pieceNumber17 {
+  top: 172px;
+  left: 242px;
+}
+
+#pieceNumber18 {
+  top: 172px;
+  left: 284px;
+}
+
+#pieceNumber19 {
+  top: 172px;
+  left: 357px;
+}
+
+#pieceNumber20 {
+  top: 172px;
+  left: 399px;
+}
+
+#pieceNumber21 {
+  top: 172px;
+  left: 441px;
+}
+
+#pieceNumber22 {
+  top: 172px;
+  left: 483px;
+}
+
+#pieceNumber23 {
+  top: 172px;
+  left: 525px;
+}
+
+#pieceNumber24 {
+  top: 172px;
+  left: 567px;
+}
+
+#pieceNumber25 {
+  top: 213px;
+  left: 320px;
+}
+
+#pieceNumber26 {
+  top: 251px;
+  left: 320px;
+}
+
+#pieceNumber27 {
+  top: 10px;
+  left: 12px;
+}
+
+#pieceNumber28 {
+  top: 454px;
+  left: 12px;
+}
+
+/* TODO - Elements in progress
+/* MUTE BUTTON */
+#mute_button {
+  display: none;
+}

@@ -1,0 +1,16 @@
+{
+  "name": "backgammon",
+  "version": "1.0.0",
+  "description": "To load:\r In vscode, right click on index.html and 'Open with Live Server'",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "9.26.0",
+    "eslint": "^9.26.0",
+    "globals": "^16.0.0"
+  }
+}

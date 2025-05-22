@@ -1,0 +1,666 @@
+<!-- CODE START -->
+<!DOCTYPE html>
+<html lang="en" id="webpage">
+  <head>
+    <!-- META -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- TITLE -->
+    <title>Chatgammon</title>
+    <!-- STYLESHEETS -->
+    <link rel="stylesheet" href="./style_sheets/style.css" />
+    <link rel="stylesheet" href="./style_sheets/game_board_style.css" />
+    <!-- FAVICON -->
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./images/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./images/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="./images/favicon/favicon-16x16.png"
+    />
+    <link rel="manifest" href="./images/favicon/site.webmanifest" />
+  </head>
+  <body>
+    <!-- MAIN PAGE ELEMENTS -->
+    <div class="pagebox">
+      <!-- MAIN DISPLAY -->
+      <div class="main_display">
+        <div class="main_display_left">
+          <!-- WELCOME SECTION -->
+          <section class="welcome_section no_pointer_events">
+            <div class="step1">
+              <p class="welcome_title no_select">WELCOME</p>
+              <p class="welcome_text no_select">Tell us about yourself</p>
+              <form class="welcome_name_form">
+                <input
+                  type="text"
+                  id="welcome_name_input"
+                  placeholder="Enter your name"
+                  aria-label="User Name Input"
+                  autocomplete="off"
+                  spellcheck="false"
+                />
+              </form>
+            </div>
+            <div class="step2">
+              <p class="welcome_text no_select">Choose your skill level</p>
+              <button id="skill_level_accordion">
+                <p id="skill_level_text">Select Skill Level</p>
+                <svg
+                  id="skill_level_svg"
+                  width="24px"
+                  height="24px"
+                  viewBox="0 0 48 48"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <title>Select Skill Level</title>
+                  <g id="Layer_2" data-name="Layer 2">
+                    <g id="invisible_box" data-name="invisible box">
+                      <rect width="48" height="48" fill="none" />
+                    </g>
+                    <g id="icons_Q2" data-name="icons Q2">
+                      <path
+                        d="M24,46A22,22,0,1,0,2,24,21.9,21.9,0,0,0,24,46ZM14.3,19.8A2.5,2.5,0,0,1,16,19H32a2.5,2.5,0,0,1,1.7.8,2.1,2.1,0,0,1-.4,2.7l-7.9,7.9a1.9,1.9,0,0,1-2.8,0l-7.9-7.9A2.1,2.1,0,0,1,14.3,19.8Z"
+                      />
+                    </g>
+                  </g>
+                </svg>
+              </button>
+              <div class="skill_level_panel">
+                <div
+                  class="skill_beginner skill_choice no_select"
+                  title="Beginner"
+                >
+                  <p>Beginner</p>
+                  <p>🏆</p>
+                </div>
+                <div
+                  class="skill_advanced skill_choice no_select"
+                  title="Advanced"
+                >
+                  <p>Advanced</p>
+                  <p>🏆🏆</p>
+                </div>
+                <div class="skill_master skill_choice no_select" title="Master">
+                  <p>Master</p>
+                  <p>🏆🏆🏆</p>
+                </div>
+              </div>
+            </div>
+            <div class="step3">
+              <p class="welcome_text no_select">Choose up to 3 languages</p>
+              <button id="language_accordion">
+                <p id="language_text">Select Language</p>
+                <svg
+                  id="language_svg"
+                  width="24px"
+                  height="24px"
+                  viewBox="0 0 48 48"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <title>Select Language</title>
+                  <g id="Layer_2" data-name="Layer 2">
+                    <g id="invisible_box" data-name="invisible box">
+                      <rect width="48" height="48" fill="none" />
+                    </g>
+                    <g id="icons_Q2" data-name="icons Q2">
+                      <path
+                        d="M24,46A22,22,0,1,0,2,24,21.9,21.9,0,0,0,24,46ZM14.3,19.8A2.5,2.5,0,0,1,16,19H32a2.5,2.5,0,0,1,1.7.8,2.1,2.1,0,0,1-.4,2.7l-7.9,7.9a1.9,1.9,0,0,1-2.8,0l-7.9-7.9A2.1,2.1,0,0,1,14.3,19.8Z"
+                      />
+                    </g>
+                  </g>
+                </svg>
+              </button>
+              <div class="language_panel">
+                <p
+                  class="language_choice no_select"
+                  data-language="en"
+                  title="English"
+                >
+                  English
+                </p>
+                <p
+                  class="language_choice no_select"
+                  data-language="es"
+                  title="Spanish"
+                >
+                  Espanol
+                </p>
+                <p
+                  class="language_choice no_select"
+                  data-language="zh"
+                  title="Chinese"
+                >
+                  中文
+                </p>
+                <p
+                  class="language_choice no_select"
+                  data-language="ja"
+                  title="Japanese"
+                >
+                  日本語
+                </p>
+                <p
+                  class="language_choice no_select"
+                  data-language="it"
+                  title="Italian"
+                >
+                  Italiano
+                </p>
+              </div>
+            </div>
+            <p class="welcome_text you_info_text no_select">YOU</p>
+            <div id="you_info">
+              <div class="you_display">
+                <p class="is_player_active"></p>
+                <p class="player_text you_name"></p>
+                <p class="player_text skill_marker you_skill"></p>
+                <p class="player_text you_flags"></p>
+              </div>
+            </div>
+            <div class="step4">
+              <p
+                class="welcome_continue_button button no_select"
+                title="Continue"
+              >
+                Continue
+                <svg
+                  class="continue_svg"
+                  width="50px"
+                  height="50px"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M11 20H19C20.1046 20 21 19.1046 21 18V6C21 4.89543 20.1046 4 19 4H11M3 12H14M14 12L11 15M14 12L11 9"
+                    stroke="#fff"
+                    stroke-width="1.4"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </p>
+            </div>
+          </section>
+          <!-- WELCOME RETURN SECTION -->
+          <section class="return_section no_pointer_events">
+            <p class="welcome_title no_select">WELCOME BACK</p>
+            <p class="welcome_text you_info_text_return no_select">YOU</p>
+            <div id="you_info_return">
+              <div class="you_display">
+                <p class="is_player_active"></p>
+                <p class="player_text return_you_name"></p>
+                <p class="player_text skill_marker return_you_skill"></p>
+                <p class="player_text return_you_flags"></p>
+              </div>
+            </div>
+            <p class="not_you_button button">Not you?<br />Click here</p>
+            <p class="return_continue_button button no_select" title="Continue">
+              Continue
+              <svg
+                class="return_continue_svg"
+                width="50px"
+                height="50px"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M11 20H19C20.1046 20 21 19.1046 21 18V6C21 4.89543 20.1046 4 19 4H11M3 12H14M14 12L11 15M14 12L11 9"
+                  stroke="#fff"
+                  stroke-width="1.4"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </p>
+          </section>
+          <!-- PLAYERS SECTION -->
+          <section class="players_section no_pointer_events">
+            <p class="welcome_text">CHALLENGERS</p>
+            <p class="welcome_text you_info_text no_select">YOU</p>
+            <div id="you_info_next">
+              <div class="you_display">
+                <p class="is_player_active"></p>
+                <p class="player_text next_you_name"></p>
+                <p class="player_text skill_marker next_you_skill"></p>
+                <p class="player_text next_you_flags"></p>
+              </div>
+            </div>
+            <div class="player_filters">
+              <div class="filter_div">
+                <div class="toggle_language">
+                  <p>FILTER BY LANGUAGE</p>
+                  <button id="players_language_accordion">
+                    <p id="players_language_text">Select</p>
+                    <svg
+                      id="players_language_svg"
+                      width="24px"
+                      height="24px"
+                      viewBox="0 0 48 48"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <title>Select Language</title>
+                      <g id="Layer_2" data-name="Layer 2">
+                        <g id="invisible_box" data-name="invisible box">
+                          <rect width="48" height="48" fill="none" />
+                        </g>
+                        <g id="icons_Q2" data-name="icons Q2">
+                          <path
+                            d="M24,46A22,22,0,1,0,2,24,21.9,21.9,0,0,0,24,46ZM14.3,19.8A2.5,2.5,0,0,1,16,19H32a2.5,2.5,0,0,1,1.7.8,2.1,2.1,0,0,1-.4,2.7l-7.9,7.9a1.9,1.9,0,0,1-2.8,0l-7.9-7.9A2.1,2.1,0,0,1,14.3,19.8Z"
+                          />
+                        </g>
+                      </g>
+                    </svg>
+                  </button>
+                  <div class="players_language_panel">
+                    <p
+                      class="players_language_choice no_select"
+                      data-language="en"
+                      title="English"
+                    >
+                      English
+                    </p>
+                    <p
+                      class="players_language_choice no_select"
+                      data-language="es"
+                      title="Spanish"
+                    >
+                      Espanol
+                    </p>
+                    <p
+                      class="players_language_choice no_select"
+                      data-language="zh"
+                      title="Chinese"
+                    >
+                      中文
+                    </p>
+                    <p
+                      class="players_language_choice no_select"
+                      data-language="ja"
+                      title="Japanese"
+                    >
+                      日本語
+                    </p>
+                    <p
+                      class="players_language_choice no_select"
+                      data-language="it"
+                      title="Italian"
+                    >
+                      Italiano
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="active_friends">
+              <div class="players_display players_active"></div>
+            </div>
+            <div class="challenge_button button no_select" title="Challenge">
+              <p>Challenge opponent</p>
+              <svg
+                width="36px"
+                height="36px"
+                viewBox="0 0 512 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill="#FFFFFF"
+                  d="M19.75 14.438c59.538 112.29 142.51 202.35 232.28 292.718l3.626 3.75.063-.062c21.827 21.93 44.04 43.923 66.405 66.25-18.856 14.813-38.974 28.2-59.938 40.312l28.532 28.53 68.717-68.717c42.337 27.636 76.286 63.646 104.094 105.81l28.064-28.06c-42.47-27.493-79.74-60.206-106.03-103.876l68.936-68.938-28.53-28.53c-11.115 21.853-24.413 42.015-39.47 60.593-43.852-43.8-86.462-85.842-130.125-125.47-.224-.203-.432-.422-.656-.625C183.624 122.75 108.515 63.91 19.75 14.437zm471.875 0c-83.038 46.28-154.122 100.78-221.97 161.156l22.814 21.562 56.81-56.812 13.22 13.187-56.438 56.44 24.594 23.186c61.802-66.92 117.6-136.92 160.97-218.72zm-329.53 125.906l200.56 200.53c-4.36 4.443-8.84 8.793-13.405 13.032L148.875 153.53l13.22-13.186zm-76.69 113.28l-28.5 28.532 68.907 68.906c-26.29 43.673-63.53 76.414-106 103.907l28.063 28.06c27.807-42.164 61.758-78.174 104.094-105.81l68.718 68.717 28.53-28.53c-20.962-12.113-41.08-25.5-59.937-40.313 17.865-17.83 35.61-35.433 53.157-52.97l-24.843-25.655-55.47 55.467c-4.565-4.238-9.014-8.62-13.374-13.062l55.844-55.844-24.53-25.374c-18.28 17.856-36.602 36.06-55.158 54.594-15.068-18.587-28.38-38.758-39.5-60.625z"
+                />
+              </svg>
+            </div>
+            <div class="players_x_button button x_button">X</div>
+          </section>
+          <!-- CHAT SECTION -->
+          <section class="chat_section no_pointer_events">
+            <div class="chat_display"></div>
+            <form class="chat_form">
+              <input
+                type="text"
+                id="chat_input"
+                placeholder="Enter your message..."
+                aria-label="Chatbox Message Input"
+                autocomplete="off"
+              />
+            </form>
+            <div class="chat_buttons_display">
+              <div class="chat_buttons_top">
+                <p class="chat_button rules_button">RULES</p>
+                <p class="chat_button games_button">GAMES</p>
+                <!-- TODO These elements have been disabled for now, but keep them around to see what the classes etc should be when they are re-integrated with the board object -->
+                <!-- <p class="chat_button end_turn_button chat_button_big">
+                  END TURN
+                </p> -->
+                <!-- <p class="chat_button forfeit_game_button chat_button_big">
+                  FORFEIT
+                </p> -->
+              </div>
+            </div>
+          </section>
+          <!-- TODO - Content to be updated later -->
+          <!-- RULES SECTION -->
+          <section class="rules_section no_pointer_events">
+            <div class="rules_info">
+              <p><strong>RULES OF BACKGAMMON</strong></p>
+              <p><strong>ORIGIN</strong></p>
+              <p>
+                Backgammon evolved from ancient games such as Rome’s
+                <a
+                  href="https://www.britannica.com/sports/backgammon"
+                  target="_blank"
+                  title="History of backgammon"
+                  rel="noopener noreferrer"
+                  >Ludus Duodecim Scriptorum</a
+                >, making it over 5,000 years old. Thanks to such popularity,
+                it’s become the national game for eight countries, including
+                Egypt, Turkey, and Greece. What makes backgammon so compelling
+                (and worthy of worldwide tournaments) is its balance of chance
+                by incorporating dice rolls, and strategy. It’s also very easy
+                to learn and can scale in difficulty depending on who you’re
+                playing; so, finding the right backgammon opponent can be its
+                own fun challenge.
+              </p>
+              <p><strong>HOW TO PLAY</strong></p>
+              <p>
+                Backgammon is a two-player game where each player controls 15
+                pieces, aka “men” or checkers, one black and one white. The
+                first player to remove their pieces from the board wins.
+              </p>
+              <p>
+                A board consists of 24 arrow-shaped spaces, the colors split
+                into alternating rows. Six spaces, or “points,” take up each
+                quadrant. The home board for the white checkers is on a player’s
+                right, while the home board for the black checkers is on a
+                player’s left. The white checkers only move counterclockwise,
+                and the black checkers move clockwise.
+              </p>
+              <p>
+                Each player tries to move their 15 pieces around the board until
+                they can remove them from play by getting them to the edge of
+                the home board. Removing a piece is known as “bearing off.” The
+                starting position for all the pieces are as follows:
+              </p>
+              <div class="rules_image_box">
+                <img
+                  class="rules_backgammon"
+                  src="images/rules_backgammon.webp"
+                  alt="Backgammon Example Board"
+                />
+              </div>
+              <p>
+                Players move their checkers to their home quadrant to remove
+                them from play. The player’s home quadrant contains the six rows
+                in the quadrant originally occupied by their opponent’s two
+                checkers (opposite left for player one and opposite right for
+                player two).
+              </p>
+              <p><strong>MOVES AND RULES</strong></p>
+              <p>
+                Players each roll one die to see who goes first. The first
+                player moves spaces equal to the total of that first roll (their
+                die and their opponent’s). After that, players roll both their
+                own dice. Gamers move up to two pieces equal to the total of the
+                dice roll. If moving two pieces, each piece moves the same as a
+                number on a die. For example, if you roll a 2 and a 6, one piece
+                must move 2 and the other 6 (or 6 and then 2).
+              </p>
+              <ul>
+                <li>
+                  If you roll doubles, you can move that number four times.
+                </li>
+                <li>
+                  You <strong>can</strong> move to a space with only one of the
+                  opponent’s checkers. Your opponent’s piece is then bumped to
+                  the middle of the board, aka “jail” (which divides the four
+                  quadrants). In order to remove the piece from jail, they have
+                  to try to get the piece into their home quadrant on their next
+                  turn.
+                </li>
+                <li>
+                  To escape jail, the roll must include a die with the number of
+                  moves to a free space, following rules about blocked spaces,
+                  to return a checker to play. Otherwise, that player passes
+                  their turn.
+                </li>
+                <li>
+                  You <strong>cannot</strong> move a piece to a point where your
+                  opponent has at least two checkers.
+                </li>
+                <li>
+                  You <strong>cannot</strong> move the same piece twice if it
+                  would land on a blocked space at the end of a single die’s
+                  count. For example, if you roll a 3 and a 4 and both the third
+                  and fourth space are blocked, you cannot move your checker to
+                  the seventh space, even if it’s free.
+                </li>
+              </ul>
+              <p><strong>WINNING THE GAME</strong></p>
+              <p>
+                Once all 15 pieces are in your home quadrant, you can begin to
+                roll dice to move them off the board and onto the side of the
+                home board. You must roll at least the number of spaces plus one
+                to bear off. Remove all your pieces to win!
+              </p>
+            </div>
+            <div class="rules_x_button button x_button">X</div>
+          </section>
+          <!-- OTHER GAMES SECTION -->
+          <section class="other_games_section no_pointer_events">
+            <div class="other_games_info">
+              <p>OUR GAMES</p>
+              <div class="other_games_display"></div>
+            </div>
+            <div class="other_games_x_button button x_button">X</div>
+          </section>
+        </div>
+        <div class="main_display_middle">
+          <!-- MODAL SECTION -->
+          <section class="modal_section"></section>
+          <!-- BOARD ANNOTATIONS SECTION -->
+          <section class="board_annotations_section no_pointer_events">
+            <p class="board_message no_select">Welcome!</p>
+          </section>
+          <!-- GAME BOARD -->
+          <div id="content_container" class="no_pointer_events">
+            <div id="board">
+              <div id="highlight13" class="highlight highlight_top"></div>
+              <div id="highlight14" class="highlight highlight_top"></div>
+              <div id="highlight15" class="highlight highlight_top"></div>
+              <div id="highlight16" class="highlight highlight_top"></div>
+              <div id="highlight17" class="highlight highlight_top"></div>
+              <div id="highlight18" class="highlight highlight_top"></div>
+              <div id="highlight19" class="highlight highlight_top"></div>
+              <div id="highlight20" class="highlight highlight_top"></div>
+              <div id="highlight21" class="highlight highlight_top"></div>
+              <div id="highlight22" class="highlight highlight_top"></div>
+              <div id="highlight23" class="highlight highlight_top"></div>
+              <div id="highlight24" class="highlight highlight_top"></div>
+              <div id="highlight12" class="highlight highlight_bottom"></div>
+              <div id="highlight11" class="highlight highlight_bottom"></div>
+              <div id="highlight10" class="highlight highlight_bottom"></div>
+              <div id="highlight9" class="highlight highlight_bottom"></div>
+              <div id="highlight8" class="highlight highlight_bottom"></div>
+              <div id="highlight7" class="highlight highlight_bottom"></div>
+              <div id="highlight6" class="highlight highlight_bottom"></div>
+              <div id="highlight5" class="highlight highlight_bottom"></div>
+              <div id="highlight4" class="highlight highlight_bottom"></div>
+              <div id="highlight3" class="highlight highlight_bottom"></div>
+              <div id="highlight2" class="highlight highlight_bottom"></div>
+              <div id="highlight1" class="highlight highlight_bottom"></div>
+
+              <!-- Backgammon pieces -->
+              <div class="piece piece_white" id="w15" data-type="w"></div>
+              <div class="piece piece_white" id="w14" data-type="w"></div>
+              <div class="piece piece_red" id="r15" data-type="r"></div>
+              <div class="piece piece_red" id="r14" data-type="r"></div>
+              <div class="piece piece_red" id="r13" data-type="r"></div>
+              <div class="piece piece_red" id="r12" data-type="r"></div>
+              <div class="piece piece_red" id="r11" data-type="r"></div>
+              <div class="piece piece_red" id="r10" data-type="r"></div>
+              <div class="piece piece_red" id="r9" data-type="r"></div>
+              <div class="piece piece_red" id="r8" data-type="r"></div>
+              <div class="piece piece_white" id="w13" data-type="w"></div>
+              <div class="piece piece_white" id="w12" data-type="w"></div>
+              <div class="piece piece_white" id="w11" data-type="w"></div>
+              <div class="piece piece_white" id="w10" data-type="w"></div>
+              <div class="piece piece_white" id="w9" data-type="w"></div>
+              <div class="piece piece_red" id="r7" data-type="r"></div>
+              <div class="piece piece_red" id="r6" data-type="r"></div>
+              <div class="piece piece_red" id="r5" data-type="r"></div>
+              <div class="piece piece_red" id="r4" data-type="r"></div>
+              <div class="piece piece_red" id="r3" data-type="r"></div>
+              <div class="piece piece_white" id="w8" data-type="w"></div>
+              <div class="piece piece_white" id="w7" data-type="w"></div>
+              <div class="piece piece_white" id="w6" data-type="w"></div>
+              <div class="piece piece_white" id="w5" data-type="w"></div>
+              <div class="piece piece_white" id="w4" data-type="w"></div>
+              <div class="piece piece_white" id="w3" data-type="w"></div>
+              <div class="piece piece_white" id="w2" data-type="w"></div>
+              <div class="piece piece_white" id="w1" data-type="w"></div>
+              <div class="piece piece_red" id="r2" data-type="r"></div>
+              <div class="piece piece_red" id="r1" data-type="r"></div>
+
+              <!-- Point occupied numbers -->
+              <div class="piece-number-overlay" id="pieceNumber1"></div>
+              <div class="piece-number-overlay" id="pieceNumber2"></div>
+              <div class="piece-number-overlay" id="pieceNumber3"></div>
+              <div class="piece-number-overlay" id="pieceNumber4"></div>
+              <div class="piece-number-overlay" id="pieceNumber5"></div>
+              <div class="piece-number-overlay" id="pieceNumber6"></div>
+              <div class="piece-number-overlay" id="pieceNumber7"></div>
+              <div class="piece-number-overlay" id="pieceNumber8"></div>
+              <div class="piece-number-overlay" id="pieceNumber9"></div>
+              <div class="piece-number-overlay" id="pieceNumber10"></div>
+              <div class="piece-number-overlay" id="pieceNumber11"></div>
+              <div class="piece-number-overlay" id="pieceNumber12"></div>
+              <div class="piece-number-overlay" id="pieceNumber13"></div>
+              <div class="piece-number-overlay" id="pieceNumber14"></div>
+              <div class="piece-number-overlay" id="pieceNumber15"></div>
+              <div class="piece-number-overlay" id="pieceNumber16"></div>
+              <div class="piece-number-overlay" id="pieceNumber17"></div>
+              <div class="piece-number-overlay" id="pieceNumber18"></div>
+              <div class="piece-number-overlay" id="pieceNumber19"></div>
+              <div class="piece-number-overlay" id="pieceNumber20"></div>
+              <div class="piece-number-overlay" id="pieceNumber21"></div>
+              <div class="piece-number-overlay" id="pieceNumber22"></div>
+              <div class="piece-number-overlay" id="pieceNumber23"></div>
+              <div class="piece-number-overlay" id="pieceNumber24"></div>
+              <div class="piece-number-overlay" id="pieceNumber25"></div>
+              <div class="piece-number-overlay" id="pieceNumber26"></div>
+              <div class="piece-number-overlay" id="pieceNumber27"></div>
+              <div class="piece-number-overlay" id="pieceNumber28"></div>
+            </div>
+          </div>
+          <aside class="display_box no_pointer_events"></aside>
+        </div>
+        <div class="main_display_right">
+          <!-- AD SECTION -->
+          <p class="ad_notification">Advertisement</p>
+          <section class="ad_section no_pointer_events">
+            <div class="adbox">
+              <a
+                class="ad_link"
+                href="https://www.cash4goldonline.co.uk/"
+                target="_blank"
+              >
+                <img
+                  class="ad_picture"
+                  src="images/cash4gold.jpg"
+                  alt="Cash 4 Gold Advertisement"
+                  title="Cash 4 Gold Online"
+              /></a>
+            </div>
+          </section>
+        </div>
+      </div>
+      <!-- TODO - To be removed later -->
+      <!-- TEST BUTTONS -->
+      <p class="test_button1 button no_select" title="Clear localStorage data">
+        ClearDa
+      </p>
+      <p
+        class="test_button2 button no_select"
+        title="Display turn notification message"
+      >
+        TurnMes
+      </p>
+      <p class="test_button3 button no_select" title="Test display message box">
+        DisBox
+      </p>
+      <p class="test_button4 button no_select" title="Test end turn flow">
+        EndTurn
+      </p>
+      <p
+        class="test_button5 button no_select"
+        title="Toggle example backgrounds"
+      >
+        Backg
+      </p>
+      <p class="version_display no_select">Version: 0.1.7</p>
+      <!-- MUTE/ UNMUTE BUTTON -->
+      <p id="mute_button" title="Unmute">
+        <svg
+          width="36px"
+          height="36px"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M18 9V9C19.2111 10.8167 19.2111 13.1833 18 15V15"
+            stroke="#fff"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+          <path
+            d="M8.4172 8.65233L11.5397 6.05023C12.5167 5.23607 14 5.93081 14 7.20256V16.7974C14 18.0692 12.5167 18.7639 11.5397 17.9498L8.4172 15.3477C8.14763 15.123 7.80783 15 7.45693 15H5.5C4.67157 15 4 14.3284 4 13.5V10.5C4 9.67157 4.67157 9 5.5 9H7.45693C7.80783 9 8.14763 8.87698 8.4172 8.65233Z"
+            stroke="#fff"
+            stroke-width="2"
+          />
+        </svg>
+      </p>
+    </div>
+    <!-- PAGE SOUNDS -->
+    <audio id="button_click_sound" src="./sounds/mouse_click.wav"></audio>
+    <audio id="opening_jingle" src="./sounds/jingle.wav"></audio>
+    <!-- GAME SOUNDS -->
+    <audio id="chat_sound" src="./sounds/chat_notification.wav"></audio>
+    <audio id="dice_roll_sound" src="./sounds/rolling_dice.mp3"></audio>
+    <audio id="error_sound" src="./sounds/error.mp3"></audio>
+    <audio id="pieces_deal" src="./sounds/pieces_deal.wav"></audio>
+    <audio id="piece_pickup" src="./sounds/piece_pickup.mp3"></audio>
+    <audio id="piece_putdown" src="./sounds/piece_putdown.wav"></audio>
+    <!-- SCRIPTS -->
+    <script src="./scripts/app.js" type="module" defer></script>
+    <script src="./scripts/backgrounds.js" type="module" defer></script>
+    <script src="./scripts/chat.js" type="module" defer></script>
+    <script src="./scripts/config.js" type="module" defer></script>
+    <script src="./scripts/dispatch.js" type="module" defer></script>
+    <script src="./scripts/displayBox.js" type="module" defer></script>
+    <script src="./scripts/firebaseConfig.js" type="module" defer></script>
+    <script src="./scripts/localStorage.js" type="module" defer></script>
+    <script src="./scripts/messages.js" type="module" defer></script>
+    <script src="./scripts/modals.js" type="module" defer></script>
+    <script src="./scripts/script.js" type="module" defer></script>
+    <script src="./scripts/sounds.js" type="module" defer></script>
+    <script src="./scripts/welcome.js" type="module" defer></script>
+    <!-- ONLINE SCRIPTS -->
+    <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+  </body>
+</html>
+<!-- CODE END -->
