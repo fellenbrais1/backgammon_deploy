@@ -83,30 +83,8 @@ async function getSecureMessage() {
   }
 }
 
-// function setUpVariables(safeToken) {
-//   // Default object used to set up a firebase record
-//   const firebaseConfig = {
-//     apiKey: safeToken,
-//     appId: '1:933438650220:web:7cfd8f56a2aef998e46549',
-//     authDomain: 'backgammon-b1e25.firebaseapp.com',
-//     measurementId: 'G-ST0Z166K8V',
-//     messagingSenderId: '933438650220',
-//     projectId: 'backgammon-b1e25',
-//     storageBucket: 'backgammon-b1e25.firebasestorage.app',
-//   };
-
-//   // Used to initialize firebase connection
-//   firebaseApp = window.firebase.initializeApp(firebaseConfig);
-
-//   // Allow processing of data to and from the firebase database
-//   analytics = window.firebase.analytics();
-//   database = window.firebase.database();
-// }
-
 /////////////////////////////////////////////////////////////////////////////////////////
 // AUTORUNNING LOGIC
-
-// getSecureMessage();
 
 if (DEBUGMODE) {
   console.log(`firebaseConfig.js running`);
