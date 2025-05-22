@@ -603,12 +603,12 @@ export async function sendRPC(method, params) {
 // AUTORUNNING LOGIC
 
 // Debug mode checks
-if (DEBUGMODE) {
-  console.log(`chat.js running`);
-  console.log('Using Firebase in chat.js:', firebaseApp);
-  console.log('chat.js analytics:', analytics);
-  console.log('chat.js db:', db);
-}
+// if (DEBUGMODE) {
+//   console.log(`chat.js running`);
+//   console.log('Using Firebase in chat.js:', firebaseApp);
+//   console.log('chat.js analytics:', analytics);
+//   console.log('chat.js db:', db);
+// }
 
 // CODE END
 /////////////////////////////////////////////////////////////////////////////////////////

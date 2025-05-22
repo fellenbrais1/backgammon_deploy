@@ -1273,9 +1273,9 @@ function stopCounter() {
 // AUTORUNNING LOGIC
 
 // Debug mode checks
-if (DEBUGMODE) {
-  console.log(`modals.js running`);
-}
+// if (DEBUGMODE) {
+//   console.log(`modals.js running`);
+// }
 
 // Adds the chat button elements to the webpage
 addChatButtons();

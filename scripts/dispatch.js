@@ -309,9 +309,9 @@ async function fetchPlayerByKey(playerKey) {
 // AUTORUNNING LOGIC
 
 // Debug mode checks
-if (DEBUGMODE) {
-  console.log(`dispatch.js running`);
-}
+// if (DEBUGMODE) {
+//   console.log(`dispatch.js running`);
+// }
 
 // CODE END
 /////////////////////////////////////////////////////////////////////////////////////////
