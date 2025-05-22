@@ -17,8 +17,8 @@ import { DEBUGMODE } from './config.js';
 // Temporary variables that will be assigned to in setUpVariables()
 let clientSafeToken;
 let firebaseConfig;
-let analytics;
-let database;
+export let analytics;
+export let database;
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // FUNCTIONS

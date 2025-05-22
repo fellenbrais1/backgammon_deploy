@@ -28,8 +28,9 @@ exports.handler = async (event, context) => {
     // 2. Perform a small calculation or check that requires the APIKEY
     //    const someDerivedValue = calculateValueBasedOnKey(secretApiKey);
     // 3. Simply confirm the key was present (for testing/debugging, but usually you'd do more)
-    const confirmationMessage =
-      'API key was successfully accessed by the serverless function.';
+    console.log(
+      'API key was successfully accessed by the serverless function.'
+    );
 
     const clientSafeToken = secretApiKey;
     // Return the processed data or a safe confirmation, NOT the raw API key.
@@ -39,8 +40,7 @@ exports.handler = async (event, context) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        message: confirmationMessage,
-        clientToken: clientSafeToken,
+        message: clientSafeToken,
         // If you generated a client-safe token or derived value, include it here:
         // derivedValue: someDerivedValue,
       }),
