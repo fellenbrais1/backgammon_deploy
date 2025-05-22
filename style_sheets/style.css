@@ -1169,7 +1169,6 @@ html {
   cursor: pointer;
 }
 
-/* TODO - Elements in progress
 /* MUTE BUTTON */
 #mute_button {
   position: absolute;
@@ -1185,6 +1184,11 @@ html {
 
 #mute_button:hover {
   box-shadow: 0px 0px 20px white;
+}
+
+/* SECURE-MESSAGE */
+#secure-message {
+  display: none;
 }
 
 /* HELPER CLASSES */
