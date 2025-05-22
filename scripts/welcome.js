@@ -16,6 +16,7 @@ import {
   peer,
   registerForChat,
 } from './chat.js';
+import { DEBUGMODE } from './config.js';
 import { loadLocalStorage, setLocalStorage } from './localStorage.js';
 import { changeModalContent } from './modals.js';
 import { playClickSound } from './sounds.js';
@@ -104,9 +105,6 @@ const youSkill = document.querySelector('.you_skill');
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // VARIABLES
-
-// Debug console.log messages are shown when true
-export const DEBUGMODE = true;
 
 // Default data for player object
 let sessionDisplayName = 'Guest';

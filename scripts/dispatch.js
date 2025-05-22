@@ -11,7 +11,7 @@
 
 import { playbackDiceRoll, playbackMove, playbackEndTurn } from './app.js';
 import { closeConn } from './chat.js';
-import { DEBUGMODE } from './welcome.js';
+import { DEBUGMODE } from './config.js';
 import { database } from './firebaseConfig.js';
 import {
   forfeitMessage,

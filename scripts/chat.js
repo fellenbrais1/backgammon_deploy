@@ -9,7 +9,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 // IMPORTS
 
-import { DEBUGMODE } from './welcome.js';
+import { DEBUGMODE } from './config.js';
 import { dispatchMessage } from './dispatch.js';
 import { analytics, database, firebaseApp } from './firebaseConfig.js';
 import { changeModalContent } from './modals.js';

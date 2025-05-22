@@ -10,7 +10,7 @@
 // IMPORTS
 
 import { startGame } from './app.js';
-import { DEBUGMODE } from './welcome.js';
+import { DEBUGMODE } from './config.js';
 import { clearLocalStorage, testForLocalStorageData } from './localStorage.js';
 import { playOpeningJingleSound } from './sounds.js';
 import { checkForLocalStorageObject, welcomeNameForm } from './welcome.js';
