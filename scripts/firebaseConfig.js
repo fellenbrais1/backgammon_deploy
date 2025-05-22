@@ -14,25 +14,11 @@ import { DEBUGMODE } from './config.js';
 /////////////////////////////////////////////////////////////////////////////////////////
 // VARIABLES
 
+// Temporary variables that will be assigned to in setUpVariables()
 let clientSafeToken;
-
-// Default object used to set up a firebase record
-const firebaseConfig = {
-  apiKey: clientSafeToken,
-  appId: '1:933438650220:web:7cfd8f56a2aef998e46549',
-  authDomain: 'backgammon-b1e25.firebaseapp.com',
-  measurementId: 'G-ST0Z166K8V',
-  messagingSenderId: '933438650220',
-  projectId: 'backgammon-b1e25',
-  storageBucket: 'backgammon-b1e25.firebasestorage.app',
-};
-
-// Used to initialize firebase connection
-export const firebaseApp = window.firebase.initializeApp(firebaseConfig);
-
-// Allow processing of data to and from the firebase database
-export const analytics = window.firebase.analytics();
-export const database = window.firebase.database();
+let firebaseConfig;
+let analytics;
+let database;
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // FUNCTIONS
@@ -67,6 +53,7 @@ async function getSecureMessage() {
       document.getElementById('secure-message').textContent = data.message;
       console.log('Client Token:', data.clientSafeToken);
       safeToken = clientSafeToken;
+      setUpVariables(safeToken);
       // If you returned other data, like clientToken, you'd access it here:
     } else {
       document.getElementById(
@@ -78,6 +65,26 @@ async function getSecureMessage() {
     document.getElementById('secure-message').textContent =
       'Failed to get secure info.';
   }
+}
+
+function setUpVariables(safeToken) {
+  // Default object used to set up a firebase record
+  const firebaseConfig = {
+    apiKey: safeToken,
+    appId: '1:933438650220:web:7cfd8f56a2aef998e46549',
+    authDomain: 'backgammon-b1e25.firebaseapp.com',
+    measurementId: 'G-ST0Z166K8V',
+    messagingSenderId: '933438650220',
+    projectId: 'backgammon-b1e25',
+    storageBucket: 'backgammon-b1e25.firebasestorage.app',
+  };
+
+  // Used to initialize firebase connection
+  firebaseApp = window.firebase.initializeApp(firebaseConfig);
+
+  // Allow processing of data to and from the firebase database
+  analytics = window.firebase.analytics();
+  database = window.firebase.database();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
