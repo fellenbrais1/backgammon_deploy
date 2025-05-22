@@ -76,11 +76,13 @@ async function getSecureMessage() {
       document.getElementById(
         'secure-message'
       ).textContent = `Error: ${data.error}`;
+      console.log(data.error);
     }
   } catch (error) {
     console.error('Error fetching secure info:', error);
     document.getElementById('secure-message').textContent =
       'Failed to get secure info.';
+    console.log('Failed to get secure info');
   }
 }
 
