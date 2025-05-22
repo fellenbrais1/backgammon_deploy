@@ -222,9 +222,9 @@ function showMainDisplay() {
 // AUTORUNNING LOGIC
 
 // Debug mode checks
-// if (DEBUGMODE) {
-//   console.log(`script.js running`);
-// }
+if (DEBUGMODE) {
+  console.log(`script.js running`);
+}
 
 // CODE END
 //////////////////////////////////////////////////////////////////////////////////////////

@@ -1282,9 +1282,9 @@ export function welcomeBackPopulateFields() {
 // AUTORUNNING LOGIC
 
 // Debug mode checks
-// if (DEBUGMODE) {
-//   console.log(`welcome.js running`);
-// }
+if (DEBUGMODE) {
+  console.log(`welcome.js running`);
+}
 
 // CODE END
 //////////////////////////////////////////////////////////////////////////////////////////

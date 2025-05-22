@@ -77,9 +77,9 @@ function toggleBackgrounds() {
 // AUTORUNNING LOGIC
 
 // Debug mode checks
-// if (DEBUGMODE) {
-//   console.log(`backgrounds.js running`);
-// }
+if (DEBUGMODE) {
+  console.log(`backgrounds.js running`);
+}
 
 // CODE END
 /////////////////////////////////////////////////////////////////////////////////////////

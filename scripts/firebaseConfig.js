@@ -85,10 +85,10 @@ async function getSecureMessage() {
 
 getSecureMessage();
 
-// if (DEBUGMODE) {
-//   console.log(`firebaseConfig.js running`);
-//   confirmFirebaseInitialization();
-// }
+if (DEBUGMODE) {
+  console.log(`firebaseConfig.js running`);
+  confirmFirebaseInitialization();
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // CODE END

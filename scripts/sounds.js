@@ -195,9 +195,9 @@ function toggleMuteButton() {
 
 initializeSounds();
 
-// if (DEBUGMODE) {
-//   console.log(`sounds.js running`);
-// }
+if (DEBUGMODE) {
+  console.log(`sounds.js running`);
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // CODE END
