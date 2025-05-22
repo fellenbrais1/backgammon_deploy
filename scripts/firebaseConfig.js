@@ -63,7 +63,7 @@ function confirmFirebaseInitialization() {
 // In your HTML script or separate JS file
 async function getSecureMessage() {
   try {
-    const response = await fetch('/.netlify/functions/get-secure-info'); // Call your new function name
+    const response = await fetch('/.netlify/functions/getSecureInfo'); // Call your new function name
     const data = await response.json();
     if (response.ok) {
       document.getElementById('secure-message').textContent = data.message;
