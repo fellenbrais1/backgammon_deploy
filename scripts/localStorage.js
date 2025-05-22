@@ -142,10 +142,10 @@ export function testForLocalStorageData() {
 /////////////////////////////////////////////////////////////////////////////////////////
 // AUTORUNNING LOGIC
 
-if (DEBUGMODE) {
-  console.log(`localStorage.js running`);
-  console.log('cunt');
-}
+// if (DEBUGMODE) {
+//   console.log(`localStorage.js running`);
+//   console.log('cunt');
+// }
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // CODE END
