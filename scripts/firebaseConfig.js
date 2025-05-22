@@ -67,6 +67,7 @@ async function getSecureMessage() {
     const data = await response.json();
     if (response.ok) {
       document.getElementById('secure-message').textContent = data.message;
+      console.log('data:', data);
       console.log('Client Token:', data.clientSafeToken);
       safeToken = clientSafeToken;
       return safeToken;
