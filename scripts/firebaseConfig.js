@@ -69,7 +69,7 @@ async function getSecureMessage() {
       document.getElementById('secure-message').textContent = data.message;
       console.log('data:', data);
       console.log('Client Token:', data.clientToken);
-      safeToken = data.clientToken;
+      const safeToken = data.clientToken;
       return safeToken;
       // If you returned other data, like clientToken, you'd access it here:
     } else {
