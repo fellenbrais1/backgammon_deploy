@@ -4,7 +4,7 @@
 // NOTES
 // Logic to retrieve the contents of an environmental variable stored on netlify
 
-'use strict';
+"use strict";
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // EVENT LISTENERS
@@ -12,6 +12,22 @@
 module.exports.handler = async (event, context) => {
   try {
     const APIKEY = process.env.API_KEY;
+
+    // --- Aggressive cleaning of APIKEY ---
+    if (typeof APIKEY === "string") {
+      // 1. Trim any whitespace that might surround the value
+      APIKEY = APIKEY.trim();
+
+      // 2. Remove leading/trailing quotes if they exist
+      // This handles both single and double quotes
+      if (
+        (APIKEY.startsWith('"') && APIKEY.endsWith('"')) ||
+        (APIKEY.startsWith("'") && APIKEY.endsWith("'"))
+      ) {
+        APIKEY = APIKEY.slice(1, -1); // Remove the first and last character (the quotes)
+      }
+    }
+    // --- End aggressive cleaning ---
 
     console.log(`DEBUG: Raw APIKEY value: ${APIKEY}`);
 
@@ -22,9 +38,9 @@ module.exports.handler = async (event, context) => {
       return {
         statusCode: 500,
         body: JSON.stringify({
-          message: 'Server configuration error: Firebase API Key not found',
+          message: "Server configuration error: Firebase API Key not found",
         }),
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
       };
     }
 
@@ -34,31 +50,31 @@ module.exports.handler = async (event, context) => {
 
     const firebaseConfig = {
       apiKey: APIKEY.slice(0, -1),
-      appId: '1:933438650220:web:7cfd8f56a2aef998e46549',
-      authDomain: 'backgammon-b1e25.firebaseapp.com',
-      measurementId: 'G-ST0Z166K8V',
-      messagingSenderId: '933438650220',
-      projectId: 'backgammon-b1e25',
-      storageBucket: 'backgammon-b1e25.firebasestorage.app',
+      appId: "1:933438650220:web:7cfd8f56a2aef998e46549",
+      authDomain: "backgammon-b1e25.firebaseapp.com",
+      measurementId: "G-ST0Z166K8V",
+      messagingSenderId: "933438650220",
+      projectId: "backgammon-b1e25",
+      storageBucket: "backgammon-b1e25.firebasestorage.app",
     };
 
     return {
       statusCode: 200, // OK
       body: JSON.stringify(firebaseConfig), // Send the config object as JSON
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     };
   } catch (error) {
     console.error(
-      'ERROR: An unexpected error occurred in the Netlify Function:',
+      "ERROR: An unexpected error occurred in the Netlify Function:",
       error
     );
     return {
       statusCode: 500,
       body: JSON.stringify({
-        message: 'An unexpected error occurred.',
+        message: "An unexpected error occurred.",
         error: error.message,
       }),
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     };
   }
 };

@@ -1,5 +1,5 @@
-import globals from 'globals';
-import pluginJs from '@eslint/js';
+import globals from "globals";
+import pluginJs from "@eslint/js";
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
@@ -11,8 +11,8 @@ export default [
 
     // Add your rules here:
     rules: {
-      quotes: ['error', 'single', { allowTemplateLiterals: true }], // Enforce single quotes
-      semi: ['error', 'always'], // Enforce semicolons
+      // quotes: ['error', 'single', { allowTemplateLiterals: true }], // Enforce single quotes
+      semi: ["error", "always"], // Enforce semicolons
       // ... other rules as needed
     },
   },
