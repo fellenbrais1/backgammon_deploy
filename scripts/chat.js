@@ -632,15 +632,14 @@ export async function sendRPC(method, params) {
 
 setTimeout(() => {
   initializeFirebaseInDispatch();
-}, 5000);
-
-// Debug mode checks
-if (DEBUGMODE) {
-  console.log(`chat.js running`);
-  console.log("Using Firebase in chat.js:", firebaseApp);
-  console.log("chat.js analytics:", analytics);
-  console.log("chat.js database:", database);
-}
+  // Debug mode checks
+  if (DEBUGMODE) {
+    console.log(`chat.js running`);
+    console.log("Using Firebase in chat.js:", firebaseApp);
+    console.log("chat.js analytics:", analytics);
+    console.log("chat.js database:", database);
+  }
+}, 1000);
 
 // CODE END
 /////////////////////////////////////////////////////////////////////////////////////////

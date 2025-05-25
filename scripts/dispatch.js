@@ -335,13 +335,12 @@ async function fetchPlayerByKey(playerKey) {
 
 setTimeout(() => {
   initializeFirebaseInDispatch();
-}, 5000);
-
-// Debug mode checks
-if (DEBUGMODE) {
-  console.log(`dispatch.js running`);
-  console.log("dispatch.js database:", database);
-}
+  // Debug mode checks
+  if (DEBUGMODE) {
+    console.log(`dispatch.js running`);
+    console.log("dispatch.js database:", database);
+  }
+}, 1000);
 
 // CODE END
 /////////////////////////////////////////////////////////////////////////////////////////

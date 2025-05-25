@@ -2026,13 +2026,13 @@ function displayDiceThrows() {
 
 setTimeout(() => {
   initializeFirebaseInDispatch();
-}, 5000);
 
-if (DEBUGMODE) {
-  console.log("Using Firebase in app.js:", firebaseApp);
-  console.log(analytics);
-  console.log(database);
-}
+  if (DEBUGMODE) {
+    console.log("Using Firebase in app.js:", firebaseApp);
+    console.log(analytics);
+    console.log(database);
+  }
+}, 1000);
 
 // CODE END
 /////////////////////////////////////////////////////////////////////////////////////////
