@@ -1,96 +1,91 @@
-import { firebaseApp, analytics, database } from '../scripts/firebaseConfig.js';
-import { sendRPC } from './chat.js';
-import { showDisplayBox } from './displayBox.js';
-import { changeModalContent, BUTTON_RESPONSE } from './modals.js';
-import { DEBUGMODE } from './config.js';
-// import { getFirebaseVariables } from '../netlify/functions/getSecureInfo.js';
-
-// let firebaseApp;
-// let analytics;
-// let database;
+import { getFirebaseVariables } from "../scripts/firebaseConfig.js";
+import { sendRPC } from "./chat.js";
+import { showDisplayBox } from "./displayBox.js";
+import { changeModalContent, BUTTON_RESPONSE } from "./modals.js";
+import { DEBUGMODE } from "./config.js";
 
 const PIECE_RADIUS = 18;
 const PIECE_DIAMETER = PIECE_RADIUS + PIECE_RADIUS;
 const VERTICAL_TOLERANCE = 4;
 
 const Stage = {
-  DEMO: 'demo',
-  CHOOSING: 'choosing',
-  PLAYING: 'playing',
-  BEARING: 'bearing',
-  FINISHED: 'finished',
+  DEMO: "demo",
+  CHOOSING: "choosing",
+  PLAYING: "playing",
+  BEARING: "bearing",
+  FINISHED: "finished",
 };
 
-const pieces = document.querySelectorAll('.piece');
+const pieces = document.querySelectorAll(".piece");
 
-const boardElement = document.getElementById('board');
+const boardElement = document.getElementById("board");
 const boardLeftOffset = boardElement.getBoundingClientRect().left;
 const boardTopOffset = boardElement.getBoundingClientRect().top;
 //console.log('boardLeftOffset = ', boardLeftOffset, ', boardTopOffset = ', boardTopOffset);
 
 // add dice
-document.addEventListener('DOMContentLoaded', drawDice);
+document.addEventListener("DOMContentLoaded", drawDice);
 
 function drawDice() {
   let dice_white1_top, dice_white2_top, dice_red1_top, dice_red2_top;
   let red_face, white_face;
 
   console.log(
-    'in drawDice(), game.myPlayer = ' +
+    "in drawDice(), game.myPlayer = " +
       game.myPlayer +
-      ', game.currentTurn = ' +
+      ", game.currentTurn = " +
       game.currentTurn
   );
 
   // delete existing dice elements
-  removeHtmlElement('dice_throws');
-  removeHtmlElement('dice_white1');
-  removeHtmlElement('dice_white2');
-  removeHtmlElement('dice_red1');
-  removeHtmlElement('dice_red2');
+  removeHtmlElement("dice_throws");
+  removeHtmlElement("dice_white1");
+  removeHtmlElement("dice_white2");
+  removeHtmlElement("dice_red1");
+  removeHtmlElement("dice_red2");
 
   // Create new dice elements
-  const board_region = document.createElement('div');
-  board_region.id = 'board-region';
-  board_region.style.width = '50px';
-  board_region.style.textAlign = 'center';
+  const board_region = document.createElement("div");
+  board_region.id = "board-region";
+  board_region.style.width = "50px";
+  board_region.style.textAlign = "center";
 
-  let dice_throws = document.createElement('div');
-  dice_throws.id = 'dice_throws';
-  dice_throws.style.fontSize = '14px';
-  dice_throws.innerHTML = '';
+  let dice_throws = document.createElement("div");
+  dice_throws.id = "dice_throws";
+  dice_throws.style.fontSize = "14px";
+  dice_throws.innerHTML = "";
 
   // end turn button
-  const end_turn = document.createElement('img');
-  end_turn.id = 'end_turn';
-  end_turn.src = 'images/endturn.png';
-  end_turn.alt = 'End Turn';
-  end_turn.title = 'Cannot proceed. End my turn';
-  end_turn.style.position = 'absolute';
-  end_turn.style.top = '210px';
-  end_turn.style.left = '10px';
-  end_turn.style.visibility = 'hidden';
+  const end_turn = document.createElement("img");
+  end_turn.id = "end_turn";
+  end_turn.src = "images/endturn.png";
+  end_turn.alt = "End Turn";
+  end_turn.title = "Cannot proceed. End my turn";
+  end_turn.style.position = "absolute";
+  end_turn.style.top = "210px";
+  end_turn.style.left = "10px";
+  end_turn.style.visibility = "hidden";
 
-  let dice_white1 = document.createElement('img');
-  dice_white1.id = 'dice_white1';
-  let dice_white2 = document.createElement('img');
-  dice_white2.id = 'dice_white2';
-  let dice_red1 = document.createElement('img');
-  dice_red1.id = 'dice_red1';
-  let dice_red2 = document.createElement('img');
-  dice_red2.id = 'dice_red2';
+  let dice_white1 = document.createElement("img");
+  dice_white1.id = "dice_white1";
+  let dice_white2 = document.createElement("img");
+  dice_white2.id = "dice_white2";
+  let dice_red1 = document.createElement("img");
+  dice_red1.id = "dice_red1";
+  let dice_red2 = document.createElement("img");
+  dice_red2.id = "dice_red2";
 
   // Set the source of the images
-  if (game.myPlayer == 'r') {
+  if (game.myPlayer == "r") {
     red_face =
-      game.currentTurn == 'r'
-        ? 'images/dice-red-click.png'
-        : 'images/dice-red-six.png';
-    white_face = 'images/dice-six.png';
+      game.currentTurn == "r"
+        ? "images/dice-red-click.png"
+        : "images/dice-red-six.png";
+    white_face = "images/dice-six.png";
   } else {
     white_face =
-      game.currentTurn == 'w' ? 'images/dice-click.png' : 'images/dice-six.png';
-    red_face = 'images/dice-red-six.png';
+      game.currentTurn == "w" ? "images/dice-click.png" : "images/dice-six.png";
+    red_face = "images/dice-red-six.png";
   }
   // apply the above
   dice_white1.src = white_face;
@@ -109,63 +104,63 @@ function drawDice() {
   dice_red2.height = 40;
 
   // Set the style to position the images - player's own dice are at the top
-  console.log('In DOMContentLoaded');
-  if (game.myPlayer == 'r') {
-    dice_white1_top = '310px';
-    dice_white2_top = '360px';
-    dice_red1_top = '110px';
-    dice_red2_top = '160px';
+  console.log("In DOMContentLoaded");
+  if (game.myPlayer == "r") {
+    dice_white1_top = "310px";
+    dice_white2_top = "360px";
+    dice_red1_top = "110px";
+    dice_red2_top = "160px";
   } else {
-    dice_white1_top = '110px';
-    dice_white2_top = '160px';
-    dice_red1_top = '310px';
-    dice_red2_top = '360px';
+    dice_white1_top = "110px";
+    dice_white2_top = "160px";
+    dice_red1_top = "310px";
+    dice_red2_top = "360px";
   }
 
-  board_region.style.position = 'absolute';
-  board_region.style.top = '86px';
-  board_region.style.left = '5px';
+  board_region.style.position = "absolute";
+  board_region.style.top = "86px";
+  board_region.style.left = "5px";
 
-  dice_white1.style.position = 'absolute';
+  dice_white1.style.position = "absolute";
   dice_white1.style.top = dice_white1_top;
-  dice_white1.style.left = '10px';
-  dice_white2.style.position = 'absolute';
+  dice_white1.style.left = "10px";
+  dice_white2.style.position = "absolute";
   dice_white2.style.top = dice_white2_top;
-  dice_white2.style.left = '10px';
+  dice_white2.style.left = "10px";
 
-  dice_red1.style.position = 'absolute';
+  dice_red1.style.position = "absolute";
   dice_red1.style.top = dice_red1_top;
-  dice_red1.style.left = '10px';
-  dice_red2.style.position = 'absolute';
+  dice_red1.style.left = "10px";
+  dice_red2.style.position = "absolute";
   dice_red2.style.top = dice_red2_top;
-  dice_red2.style.left = '10px';
+  dice_red2.style.left = "10px";
 
   // Append the images to the 'board' div
   board_region.appendChild(dice_throws);
-  document.getElementById('board').appendChild(board_region);
-  document.getElementById('board').appendChild(end_turn);
-  document.getElementById('board').appendChild(dice_white1);
-  document.getElementById('board').appendChild(dice_white2);
-  document.getElementById('board').appendChild(dice_red1);
-  document.getElementById('board').appendChild(dice_red2);
+  document.getElementById("board").appendChild(board_region);
+  document.getElementById("board").appendChild(end_turn);
+  document.getElementById("board").appendChild(dice_white1);
+  document.getElementById("board").appendChild(dice_white2);
+  document.getElementById("board").appendChild(dice_red1);
+  document.getElementById("board").appendChild(dice_red2);
 
-  dice_white1.addEventListener('click', rollWhiteDice);
-  dice_white2.addEventListener('click', rollWhiteDice);
-  dice_red1.addEventListener('click', rollRedDice);
-  dice_red2.addEventListener('click', rollRedDice);
+  dice_white1.addEventListener("click", rollWhiteDice);
+  dice_white2.addEventListener("click", rollWhiteDice);
+  dice_red1.addEventListener("click", rollRedDice);
+  dice_red2.addEventListener("click", rollRedDice);
 
   // event listener for 'end turn' button
-  end_turn.addEventListener('click', async () => {
+  end_turn.addEventListener("click", async () => {
     const diceThrows = board.diceThrows;
     const filteredDiceThrows = diceThrows.filter((value) => value !== 0);
     const result = await changeModalContent(
-      'movesRemaining',
+      "movesRemaining",
       filteredDiceThrows
     );
 
     if (result === BUTTON_RESPONSE.BUTTON_YES) {
       // send 'endturn' signal to the other player
-      sendRPC('endTurn', null);
+      sendRPC("endTurn", null);
 
       board.diceThrows.fill(0);
       displayDiceThrows();
@@ -175,8 +170,8 @@ function drawDice() {
 }
 
 function canBearOff(player) {
-  const homeStart = player === 'r' ? 19 : 1;
-  const homeEnd = player === 'r' ? 24 : 6;
+  const homeStart = player === "r" ? 19 : 1;
+  const homeEnd = player === "r" ? 24 : 6;
 
   // Check all positions outside the home board
   for (let i = 1; i <= 26; i++) {
@@ -190,7 +185,7 @@ function canBearOff(player) {
     if (
       Array.isArray(position) &&
       position.some(
-        (piece) => typeof piece === 'string' && piece.startsWith(player)
+        (piece) => typeof piece === "string" && piece.startsWith(player)
       )
     ) {
       return false; // Found a piece outside home board
@@ -202,8 +197,8 @@ function canBearOff(player) {
 }
 
 function isHomeEmpty(player) {
-  const homeStart = player === 'r' ? 19 : 1;
-  const homeEnd = player === 'r' ? 24 : 6;
+  const homeStart = player === "r" ? 19 : 1;
+  const homeEnd = player === "r" ? 24 : 6;
 
   for (let i = homeStart; i <= homeEnd; i++) {
     // Check if this position contains any pieces of the player's color
@@ -212,7 +207,7 @@ function isHomeEmpty(player) {
     if (
       Array.isArray(position) &&
       position.some(
-        (piece) => typeof piece === 'string' && piece.startsWith(player)
+        (piece) => typeof piece === "string" && piece.startsWith(player)
       )
     ) {
       return false; // Found a piece outside home board
@@ -232,7 +227,7 @@ function computeGameStage(player) {
   if (game.stage == Stage.DEMO) return Stage.DEMO;
 
   if (canBearOff(player)) {
-    if (isHomeEmpty(player) && board.onTheMove == '') {
+    if (isHomeEmpty(player) && board.onTheMove == "") {
       stage = Stage.FINISHED;
     } else {
       stage = Stage.BEARING;
@@ -270,7 +265,7 @@ export function getDiceThrows() {
 export async function playbackDiceRoll(param) {
   // console.log('In playbackDiceRoll, param = ' + JSON.stringify(param));
 
-  if (param.player == 'w') {
+  if (param.player == "w") {
     // console.log('About to playback the roll of white dice');
     await rollWhiteDice(param);
   } else {
@@ -295,7 +290,7 @@ export async function playbackMove(move) {
   // If piece moving off board, then send to right destination
   // If piece moving off board, then send to right destination
   if (move.to == 0) {
-    destinationPoint = move.pieceId[0] == 'r' ? 27 : 28;
+    destinationPoint = move.pieceId[0] == "r" ? 27 : 28;
   } else {
     destinationPoint = move.to;
   }
@@ -310,7 +305,7 @@ export async function playbackMove(move) {
 
   // Step 3: take any blots
   let uniqueSortedBlots = [...new Set(board.blotsTaken)];
-  if (move.player === 'r') {
+  if (move.player === "r") {
     uniqueSortedBlots.sort((a, b) => a - b);
   } else {
     uniqueSortedBlots.sort((a, b) => b - a); // take blots in reverse order for white
@@ -346,7 +341,7 @@ async function rollWhiteDice(param) {
   // Check if first parameter is an event (indicates dice clicked rather than playback)
   const isEvent = param && param.target !== undefined;
 
-  if (isEvent && game.myPlayer != 'w') return; // can be clicked by white player only, but playback still works
+  if (isEvent && game.myPlayer != "w") return; // can be clicked by white player only, but playback still works
 
   if (isEvent) {
     if (game.whiteDiceActive == false) return;
@@ -359,12 +354,12 @@ async function rollWhiteDice(param) {
 
   // Array of dice image paths
   var diceFaces = [
-    'images/dice-one.png',
-    'images/dice-two.png',
-    'images/dice-three.png',
-    'images/dice-four.png',
-    'images/dice-five.png',
-    'images/dice-six.png',
+    "images/dice-one.png",
+    "images/dice-two.png",
+    "images/dice-three.png",
+    "images/dice-four.png",
+    "images/dice-five.png",
+    "images/dice-six.png",
   ];
 
   if (dice1Result == 0 && dice2Result == 0) {
@@ -372,8 +367,8 @@ async function rollWhiteDice(param) {
     finalIndex2 = Math.floor(Math.random() * diceFaces.length);
 
     // communicate to the other player via RPC
-    sendRPC('diceRoll', {
-      player: 'w',
+    sendRPC("diceRoll", {
+      player: "w",
       dice1: finalIndex1 + 1,
       dice2: finalIndex2 + 1,
     });
@@ -382,13 +377,13 @@ async function rollWhiteDice(param) {
     finalIndex2 = dice2Result - 1;
   }
 
-  console.log('White dice clicked! Rolling the dice...');
+  console.log("White dice clicked! Rolling the dice...");
 
   // clear previous throw
   board.diceThrows.fill(0);
 
-  const dice_white1 = document.getElementById('dice_white1');
-  const dice_white2 = document.getElementById('dice_white2');
+  const dice_white1 = document.getElementById("dice_white1");
+  const dice_white2 = document.getElementById("dice_white2");
 
   // Simulate rolling by changing the dice face multiple times
   for (let i = 0; i < 5; i++) {
@@ -426,7 +421,7 @@ async function rollWhiteDice(param) {
 
   if (isEvent) displayDiceThrows();
 
-  console.log('White dice rolled: ', board.diceThrows);
+  console.log("White dice rolled: ", board.diceThrows);
 }
 
 // animate rolling red dice
@@ -436,7 +431,7 @@ async function rollRedDice(param) {
   // Check if first parameter is an event (indicates dice clicked rather than playback)
   const isEvent = param && param.target !== undefined;
 
-  if (isEvent && game.myPlayer != 'r') return; // can be clicked by red player only, but playback still works
+  if (isEvent && game.myPlayer != "r") return; // can be clicked by red player only, but playback still works
 
   if (isEvent) {
     if (game.redDiceActive == false) return;
@@ -449,12 +444,12 @@ async function rollRedDice(param) {
 
   // Array of dice image paths
   var diceFaces = [
-    'images/dice-red-one.png',
-    'images/dice-red-two.png',
-    'images/dice-red-three.png',
-    'images/dice-red-four.png',
-    'images/dice-red-five.png',
-    'images/dice-red-six.png',
+    "images/dice-red-one.png",
+    "images/dice-red-two.png",
+    "images/dice-red-three.png",
+    "images/dice-red-four.png",
+    "images/dice-red-five.png",
+    "images/dice-red-six.png",
   ];
 
   if (dice1Result == 0 && dice2Result == 0) {
@@ -462,8 +457,8 @@ async function rollRedDice(param) {
     finalIndex2 = Math.floor(Math.random() * diceFaces.length);
 
     // communicate to the other player via RPC
-    sendRPC('diceRoll', {
-      player: 'r',
+    sendRPC("diceRoll", {
+      player: "r",
       dice1: finalIndex1 + 1,
       dice2: finalIndex2 + 1,
     });
@@ -472,13 +467,13 @@ async function rollRedDice(param) {
     finalIndex2 = dice2Result - 1;
   }
 
-  console.log('Red dice clicked! Rolling the dice...');
+  console.log("Red dice clicked! Rolling the dice...");
 
   // clear previous throw
   board.diceThrows.fill(0);
 
-  const dice_red1 = document.getElementById('dice_red1');
-  const dice_red2 = document.getElementById('dice_red2');
+  const dice_red1 = document.getElementById("dice_red1");
+  const dice_red2 = document.getElementById("dice_red2");
 
   // Simulate rolling by changing the dice face multiple times
   for (let i = 0; i < 5; i++) {
@@ -516,11 +511,11 @@ async function rollRedDice(param) {
 
   if (isEvent) displayDiceThrows();
 
-  console.log('Red dice rolled: ', board.diceThrows);
+  console.log("Red dice rolled: ", board.diceThrows);
 }
 
 // Test button 2
-document.querySelector('.test_button2').addEventListener('click', function () {
+document.querySelector(".test_button2").addEventListener("click", function () {
   // demoRegisterForChat();
 
   // if (game.currentTurn == 'w') {
@@ -534,18 +529,18 @@ document.querySelector('.test_button2').addEventListener('click', function () {
   // console.log('CurrentTurn is now ' + game.currentTurn);
 
   console.log(
-    'Status: ' +
-      'game.myPlayer = ' +
+    "Status: " +
+      "game.myPlayer = " +
       game.myPlayer +
-      ', game.currentTurn = ' +
+      ", game.currentTurn = " +
       game.currentTurn +
-      ', stage = ' +
+      ", stage = " +
       game.stage
   );
 
   // print contents of board
   for (let i = 0; i <= 26; i++) {
-    console.log('point [' + i + '] = ' + board.contents[i].occupied);
+    console.log("point [" + i + "] = " + board.contents[i].occupied);
   }
 });
 
@@ -588,40 +583,40 @@ class CoordinateMapper {
 }
 
 const game = {
-  myPlayer: 'w',
-  currentTurn: 'w',
+  myPlayer: "w",
+  currentTurn: "w",
   currentMove: {},
   redDiceActive: true,
   whiteDiceActive: true,
   stage: Stage.DEMO,
 
   eventTurnFinished() {
-    console.log('In EVENT TURN FINISHED');
+    console.log("In EVENT TURN FINISHED");
 
     // make it the other player's turn
-    if (this.currentTurn == 'w') {
-      this.currentTurn = 'r';
+    if (this.currentTurn == "w") {
+      this.currentTurn = "r";
 
       // display dice-click image on red dice
-      let dice_red1 = document.getElementById('dice_red1');
-      let dice_red2 = document.getElementById('dice_red2');
+      let dice_red1 = document.getElementById("dice_red1");
+      let dice_red2 = document.getElementById("dice_red2");
 
-      if (this.myPlayer == 'r') {
-        dice_red1.src = 'images/dice-red-click.png';
-        dice_red2.src = 'images/dice-red-click.png';
+      if (this.myPlayer == "r") {
+        dice_red1.src = "images/dice-red-click.png";
+        dice_red2.src = "images/dice-red-click.png";
         this.whiteDiceActive = false;
         this.redDiceActive = true;
       }
     } else {
-      this.currentTurn = 'w';
+      this.currentTurn = "w";
 
       // display dice-click image on white dice
-      let dice_white1 = document.getElementById('dice_white1');
-      let dice_white2 = document.getElementById('dice_white2');
+      let dice_white1 = document.getElementById("dice_white1");
+      let dice_white2 = document.getElementById("dice_white2");
 
-      if (this.myPlayer == 'w') {
-        dice_white1.src = 'images/dice-click.png';
-        dice_white2.src = 'images/dice-click.png';
+      if (this.myPlayer == "w") {
+        dice_white1.src = "images/dice-click.png";
+        dice_white2.src = "images/dice-click.png";
         this.whiteDiceActive = true;
         this.redDiceActive = false;
       }
@@ -632,16 +627,16 @@ const game = {
 
   applyControls() {
     // dice
-    const dice_red1 = document.getElementById('dice_red1');
-    const dice_red2 = document.getElementById('dice_red2');
-    const dice_white1 = document.getElementById('dice_white1');
-    const dice_white2 = document.getElementById('dice_white2');
+    const dice_red1 = document.getElementById("dice_red1");
+    const dice_red2 = document.getElementById("dice_red2");
+    const dice_white1 = document.getElementById("dice_white1");
+    const dice_white2 = document.getElementById("dice_white2");
 
-    let red_opacity = '0.5';
-    let white_opacity = '0.5';
+    let red_opacity = "0.5";
+    let white_opacity = "0.5";
 
-    if (game.myPlayer == 'w' && game.currentTurn == 'w') white_opacity = '1.0';
-    if (game.myPlayer == 'r' && game.currentTurn == 'r') red_opacity = '1.0';
+    if (game.myPlayer == "w" && game.currentTurn == "w") white_opacity = "1.0";
+    if (game.myPlayer == "r" && game.currentTurn == "r") red_opacity = "1.0";
 
     dice_red1.style.opacity = red_opacity;
     dice_red2.style.opacity = red_opacity;
@@ -660,7 +655,7 @@ defineCoordMap();
 //  - 26 represents white-bar
 const board = {
   contents: Array.from({ length: 29 }, () => ({
-    color: '',
+    color: "",
     occupied: [],
   })),
 
@@ -670,20 +665,20 @@ const board = {
 
   blotsTaken: [], // collection of blots that can be taken
 
-  onTheMove: '', // piece id that is currently on the move
+  onTheMove: "", // piece id that is currently on the move
 
   // Method to update a specific point by index
   updatePoint(index, newContent) {
     if (index < 0 || index >= this.contents.length) {
-      console.error('Index out of bounds');
+      console.error("Index out of bounds");
       return;
     }
     this.contents[index] = { ...this.contents[index], ...newContent };
   },
 
   resetPiecesPosition(piece) {
-    piece.style.top = '';
-    piece.style.left = '6px';
+    piece.style.top = "";
+    piece.style.left = "6px";
   },
 
   // Method to reset the board
@@ -726,12 +721,12 @@ const board = {
     // this.contents[28].occupied = []; // white off
 
     // bearing off layout
-    this.contents[1].occupied = ['w14', 'w15'];
-    this.contents[2].occupied = ['w11', 'w12'];
-    this.contents[3].occupied = ['w9', 'w10'];
-    this.contents[4].occupied = ['w6', 'w7', 'w8'];
+    this.contents[1].occupied = ["w14", "w15"];
+    this.contents[2].occupied = ["w11", "w12"];
+    this.contents[3].occupied = ["w9", "w10"];
+    this.contents[4].occupied = ["w6", "w7", "w8"];
     this.contents[5].occupied = [];
-    this.contents[6].occupied = ['w1', 'w2'];
+    this.contents[6].occupied = ["w1", "w2"];
     this.contents[7].occupied = [];
     this.contents[8].occupied = [];
     this.contents[9].occupied = [];
@@ -744,12 +739,12 @@ const board = {
     this.contents[16].occupied = [];
     this.contents[17].occupied = [];
     this.contents[18].occupied = [];
-    this.contents[19].occupied = ['r3', 'r4'];
+    this.contents[19].occupied = ["r3", "r4"];
     this.contents[20].occupied = [];
-    this.contents[21].occupied = ['r5', 'r6', 'r7'];
-    this.contents[22].occupied = ['r9', 'r10'];
-    this.contents[23].occupied = ['r14', 'r15'];
-    this.contents[24].occupied = ['r1', 'r2'];
+    this.contents[21].occupied = ["r5", "r6", "r7"];
+    this.contents[22].occupied = ["r9", "r10"];
+    this.contents[23].occupied = ["r14", "r15"];
+    this.contents[24].occupied = ["r1", "r2"];
 
     this.contents[25].occupied = []; // red bar
     this.contents[26].occupied = []; // white bar
@@ -760,7 +755,7 @@ const board = {
   completeMovePiece(toPoint) {
     // console.log('in board.completeMovePiece, toPoint=' + toPoint);
     this.contents[toPoint].occupied.push(board.onTheMove);
-    board.onTheMove = ''; // finished moving
+    board.onTheMove = ""; // finished moving
   },
 
   movePiece(fromPoint, toPoint) {
@@ -774,16 +769,16 @@ const board = {
 
     // if being moved to point 0, convert to point 27 for red, 28 for white
     if (reqPointNumber == 0) {
-      pointNumber = game.myPlayer == 'r' ? 27 : 28;
+      pointNumber = game.myPlayer == "r" ? 27 : 28;
     }
 
     // reverse point numbers for points 1 - 24 when player is red
     pointNumber =
-      game.myPlayer == 'r' && reqPointNumber <= 24
+      game.myPlayer == "r" && reqPointNumber <= 24
         ? 25 - reqPointNumber
         : reqPointNumber;
 
-    const pieceNumberId = 'pieceNumber' + pointNumber;
+    const pieceNumberId = "pieceNumber" + pointNumber;
     const pointsNumber = document.getElementById(pieceNumberId);
 
     let occupied = this.contents[reqPointNumber].occupied.length;
@@ -804,17 +799,17 @@ const board = {
 
     if (occupied <= limit) {
       // console.log('in updatePointOccupation: reqPointNumber=' + reqPointNumber);
-      pointsNumber.textContent = '';
+      pointsNumber.textContent = "";
     } else {
-      pointsNumber.textContent = '' + occupied;
-      if (pointColor == 'w') pointsNumber.style.color = 'gray';
-      if (pointColor == 'r') pointsNumber.style.color = 'white';
+      pointsNumber.textContent = "" + occupied;
+      if (pointColor == "w") pointsNumber.style.color = "gray";
+      if (pointColor == "r") pointsNumber.style.color = "white";
     }
   },
 
   colorOfPoint(pointNumber) {
     if (this.contents[pointNumber].occupied.length == 0) {
-      return '';
+      return "";
     } else {
       return this.contents[pointNumber].occupied[0][0];
     }
@@ -829,14 +824,14 @@ const board = {
 export async function startGame(playerAssign, isChallenger) {
   if (playerAssign) {
     game.stage = Stage.PLAYING;
-    game.myPlayer = isChallenger ? 'r' : 'w'; // was: game.myPlayer = isChallenger ? 'r' : 'w';
-    game.currentTurn = 'r'; // was: game.currentTurn = 'r';
+    game.myPlayer = isChallenger ? "r" : "w"; // was: game.myPlayer = isChallenger ? 'r' : 'w';
+    game.currentTurn = "r"; // was: game.currentTurn = 'r';
     game.redDiceActive = true; // was true
     game.whiteDiceActive = false; // was false
   } else {
     game.stage = Stage.DEMO;
-    game.myPlayer = 'w';
-    game.currentTurn = 'w';
+    game.myPlayer = "w";
+    game.currentTurn = "w";
     game.redDiceActive = false;
     game.whiteDiceActive = true;
   }
@@ -863,7 +858,7 @@ let isPieceDragging = false; // Global flag to track if a piece is being dragged
 function setupMouseEvents() {
   // Install event listeners on each piece
   pieces.forEach((piece) => {
-    piece.addEventListener('mousedown', (e) => {
+    piece.addEventListener("mousedown", (e) => {
       if (isPieceDragging) {
         // If a piece is already being dragged, ignore this event
         return;
@@ -875,7 +870,7 @@ function setupMouseEvents() {
       const { pt: originalPt, pos } = mapper.findPointAndPos(x, y);
       // Apply board point reversal for red player here, consistent with identifyPoint
       const pt =
-        game.myPlayer == 'r' && originalPt >= 1 && originalPt <= 24
+        game.myPlayer == "r" && originalPt >= 1 && originalPt <= 24
           ? 25 - originalPt
           : originalPt;
       // console.log(
@@ -889,7 +884,7 @@ function setupMouseEvents() {
 
       // Check if the piece is movable
       if (!isPieceMovable(piece, pt, pos)) {
-        console.log('Movement disallowed.');
+        console.log("Movement disallowed.");
         return; // Exit the handler if the piece cannot be moved
       }
 
@@ -900,7 +895,7 @@ function setupMouseEvents() {
       const offsetY = e.clientY - pieceRect.top;
 
       // Bring the current piece to the front
-      piece.style.zIndex = '1000'; // Set a high z-index value
+      piece.style.zIndex = "1000"; // Set a high z-index value
 
       // Record the starting point of the move
       // console.log('Grabbed piece on point ' + pt);
@@ -927,8 +922,8 @@ function setupMouseEvents() {
         let newLeft = event.clientX - offsetX - currentBoardRect.left;
         let newTop = event.clientY - offsetY - currentBoardRect.top;
 
-        piece.style.left = newLeft + 'px';
-        piece.style.top = newTop + 'px';
+        piece.style.left = newLeft + "px";
+        piece.style.top = newTop + "px";
 
         let point = identifyPoint(
           event.clientX,
@@ -940,15 +935,15 @@ function setupMouseEvents() {
       };
 
       // Attach the mousemove event listener to the document
-      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener("mousemove", onMouseMove);
 
       // Define the mouseup event handler
       const onMouseUp = (event) => {
         // Remove the mousemove event listener to stop tracking mouse movements
-        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener("mousemove", onMouseMove);
 
         // Reset the piece's z-index and remove highlights
-        piece.style.zIndex = '';
+        piece.style.zIndex = "";
         applyHighlight(0, 0);
 
         // Record the ending point of the move
@@ -971,7 +966,7 @@ function setupMouseEvents() {
       };
 
       // Attach the mouseup event listener to the document
-      document.addEventListener('mouseup', onMouseUp, { once: true });
+      document.addEventListener("mouseup", onMouseUp, { once: true });
     });
   });
 }
@@ -986,7 +981,7 @@ function isValidDiceMove(move) {
 
   // special case 1 - moving off the bar
   if (move.from == 25 || move.from == 26) {
-    if (move.player == 'r') {
+    if (move.player == "r") {
       // was game.myPlayer
       effectiveMoveValue = move.to;
     } else {
@@ -995,12 +990,12 @@ function isValidDiceMove(move) {
   } else {
     // ordinary move
     effectiveMoveValue =
-      game.currentTurn == 'w' ? move.from - move.to : move.to - move.from;
+      game.currentTurn == "w" ? move.from - move.to : move.to - move.from;
   }
 
   // special case 2 - bearing off
   if (computeGameStage(move.player) == Stage.BEARING && move.to == 0) {
-    effectiveMoveValue = move.player == 'r' ? 25 - move.from : move.from;
+    effectiveMoveValue = move.player == "r" ? 25 - move.from : move.from;
 
     return canMakeBearOff(move, effectiveMoveValue, board.diceThrows);
   }
@@ -1013,7 +1008,7 @@ function isValidDiceMove(move) {
 function canMakeBearOff(move, effectiveMoveValue, throws) {
   // calculate topmost point
   let highestPoint = getTopPointHome(move.player); // returns number 1 to 6
-  console.log('topmost Point = ' + highestPoint);
+  console.log("topmost Point = " + highestPoint);
 
   // Filter out zeros
   const dice = throws.filter((value) => value !== 0);
@@ -1043,7 +1038,7 @@ function consumeDiceBearOff(move, effectiveMoveValue, throws) {
 
   // calculate topmost point
   let highestPoint = getTopPointHome(move.player); // returns number 1 to 6
-  console.log('topmost Point = ' + highestPoint);
+  console.log("topmost Point = " + highestPoint);
 
   // Filter out zeros
   const dice = throws.filter((value) => value !== 0);
@@ -1079,7 +1074,7 @@ function consumeDiceBearOff(move, effectiveMoveValue, throws) {
 function getTopPointHome(player) {
   let i, homeBoardStart, homeBoardEnd;
 
-  if (player == 'r') {
+  if (player == "r") {
     homeBoardStart = 19;
     homeBoardEnd = 24;
   } else {
@@ -1091,7 +1086,7 @@ function getTopPointHome(player) {
     if (board.colorOfPoint(i) == player) break;
   }
 
-  return player == 'r' ? 25 - i : i;
+  return player == "r" ? 25 - i : i;
 }
 
 function canMakeSum(move, effectiveMoveValue, diceThrows) {
@@ -1198,7 +1193,7 @@ function canMakeSum(move, effectiveMoveValue, diceThrows) {
       ) {
         // this shows ambiguity, the 2 sequences have different side-effects
         showDisplayBox(
-          'Move depends on the dice order. Please move piece one dice at a time'
+          "Move depends on the dice order. Please move piece one dice at a time"
         );
 
         return []; // no sequences are valid
@@ -1262,7 +1257,7 @@ function testMoveSequence(move, sequence) {
 
   // console.log('Testing sequence:', sequence);
 
-  const directionFactor = move.player == 'r' ? 1 : -1; // red advances through numbers, white subtracts
+  const directionFactor = move.player == "r" ? 1 : -1; // red advances through numbers, white subtracts
 
   for (let i = 0; i < sequence.length; i++) {
     testPoint = testPoint + directionFactor * sequence[i];
@@ -1284,7 +1279,7 @@ function canPieceLandHere(player, point) {
   let pointOccupied = board.contents[point].occupied.length;
 
   // No piece on point
-  if (pointColor == '') return 0;
+  if (pointColor == "") return 0;
 
   if (pointColor != player) {
     if (pointOccupied == 1) {
@@ -1364,7 +1359,7 @@ function consumeDiceMove(move) {
 
   // special case - moving off the bar
   if (move.from == 25 || move.from == 26) {
-    if (move.player == 'r') {
+    if (move.player == "r") {
       effectiveMoveValue = move.to;
     } else {
       effectiveMoveValue = 25 - move.to;
@@ -1372,12 +1367,12 @@ function consumeDiceMove(move) {
   } else {
     // ordinary move
     effectiveMoveValue =
-      game.currentTurn == 'w' ? move.from - move.to : move.to - move.from;
+      game.currentTurn == "w" ? move.from - move.to : move.to - move.from;
   }
 
   // special case - bearing off
   if (move.to == 0) {
-    effectiveMoveValue = move.player == 'r' ? 25 - move.from : move.from;
+    effectiveMoveValue = move.player == "r" ? 25 - move.from : move.from;
 
     consumeDiceBearOff(move, effectiveMoveValue, board.diceThrows);
   } else {
@@ -1385,15 +1380,15 @@ function consumeDiceMove(move) {
   }
 
   console.log(
-    'consumeDiceMove - consumed dice move ' +
+    "consumeDiceMove - consumed dice move " +
       effectiveMoveValue +
-      ' Remaining throws = ' +
+      " Remaining throws = " +
       board.diceThrows
   );
 
   // is the player's turn over?
   if (board.diceThrows.every((element) => element === 0)) {
-    console.log('consumeDiceMove - about to call eventTurnFinished');
+    console.log("consumeDiceMove - about to call eventTurnFinished");
     game.eventTurnFinished();
   }
 }
@@ -1403,7 +1398,7 @@ async function applyMove(move) {
   let posToOccupy, x, y;
   let barPoint, destinationPoint, opponentHomeBoardStart, opponentHomeBoardEnd;
 
-  if (game.myPlayer === 'r') {
+  if (game.myPlayer === "r") {
     barPoint = 25;
     opponentHomeBoardStart = 1;
     opponentHomeBoardEnd = 6;
@@ -1427,7 +1422,7 @@ async function applyMove(move) {
     move.from == 27 ||
     move.from == 28 ||
     move.to == move.from ||
-    (toColor != '' && toColor != game.currentTurn && toOccupied > 1) ||
+    (toColor != "" && toColor != game.currentTurn && toOccupied > 1) ||
     !isValidMove || // moving an available throw
     (board.contents[barPoint].occupied.length &&
       (move.from != barPoint ||
@@ -1437,7 +1432,7 @@ async function applyMove(move) {
   ) {
     // return back to beginning
     board.contents[move.from].occupied.push(board.onTheMove);
-    board.onTheMove = '';
+    board.onTheMove = "";
 
     posToOccupy = board.contents[move.from].occupied.length;
     [x, y] = getPieceCoords(game.myPlayer, move.from, posToOccupy);
@@ -1448,7 +1443,7 @@ async function applyMove(move) {
   } // end of returning piece
 
   // STEP 1: Inform the other player
-  sendRPC('move', {
+  sendRPC("move", {
     pieceId: move.pieceId,
     player: game.currentTurn,
     from: move.from,
@@ -1457,7 +1452,7 @@ async function applyMove(move) {
 
   // If piece moving off board, then send to right destination
   if (move.to == 0) {
-    destinationPoint = move.pieceId[0] == 'r' ? 27 : 28;
+    destinationPoint = move.pieceId[0] == "r" ? 27 : 28;
   } else {
     destinationPoint = move.to;
   }
@@ -1478,7 +1473,7 @@ async function applyMove(move) {
 
   // Step 3: take any blots
   let uniqueSortedBlots = [...new Set(board.blotsTaken)];
-  if (game.myPlayer === 'r') {
+  if (game.myPlayer === "r") {
     uniqueSortedBlots.sort((a, b) => a - b);
   } else {
     uniqueSortedBlots.sort((a, b) => b - a); // take blots in reverse order for white
@@ -1503,8 +1498,8 @@ async function applyMove(move) {
 function movePiece(pieceId, x, y) {
   const piece = document.getElementById(pieceId);
 
-  piece.style.left = x - PIECE_RADIUS + 'px';
-  piece.style.top = y - PIECE_RADIUS + 'px';
+  piece.style.left = x - PIECE_RADIUS + "px";
+  piece.style.top = y - PIECE_RADIUS + "px";
 }
 
 async function takeBlot(blotPoint) {
@@ -1512,7 +1507,7 @@ async function takeBlot(blotPoint) {
   const blotColor = board.colorOfPoint(blotPoint);
 
   // Which bar point?
-  let barPoint = blotColor == 'r' ? 25 : 26;
+  let barPoint = blotColor == "r" ? 25 : 26;
 
   // What piece?
   let blotPieceId = board.contents[blotPoint].occupied[0];
@@ -1528,7 +1523,7 @@ async function takeBlot(blotPoint) {
 
 function applyHighlight(point, state) {
   // translate point coordinates when playing as red
-  if (game.myPlayer == 'r') point = 25 - point;
+  if (game.myPlayer == "r") point = 25 - point;
 
   for (let pt = 1; pt <= 24; pt++) {
     const id = `highlight${pt}`; // Construct the element ID
@@ -1536,9 +1531,9 @@ function applyHighlight(point, state) {
 
     if (point == pt && state == 1) {
       // Check if the element exists
-      element.style.backgroundColor = 'orange'; // Set the background color
+      element.style.backgroundColor = "orange"; // Set the background color
     } else {
-      element.style.backgroundColor = 'white';
+      element.style.backgroundColor = "white";
     }
   }
 }
@@ -1573,8 +1568,8 @@ function drawBoardNoAnimation(player) {
       let [x, y] = getPieceCoords(player, pt, pos);
 
       // Set the new position based on progress
-      piece.style.left = x - PIECE_RADIUS + 'px';
-      piece.style.top = y - PIECE_RADIUS + 'px';
+      piece.style.left = x - PIECE_RADIUS + "px";
+      piece.style.top = y - PIECE_RADIUS + "px";
     }
 
     board.updatePointOccupation(pt);
@@ -1602,8 +1597,8 @@ function animateMovePiece(pieceId, targetX, targetY, speed) {
       const progress = Math.min(elapsed / duration, 1); // Cap at 1 (100%)
 
       // Set the new position based on progress
-      piece.style.left = initialX + deltaX * progress + 'px';
-      piece.style.top = initialY + deltaY * progress + 'px';
+      piece.style.left = initialX + deltaX * progress + "px";
+      piece.style.top = initialY + deltaY * progress + "px";
 
       if (progress < 1) {
         requestAnimationFrame(animate); // Continue animation
@@ -1705,7 +1700,7 @@ function identifyPoint(x, y, boardRect) {
     point = 0;
   }
 
-  if (game.myPlayer == 'r') {
+  if (game.myPlayer == "r") {
     // reverse board
     if (point >= 1 && point <= 24) {
       point = 25 - point;
@@ -1732,7 +1727,7 @@ function getPieceCoords(player, reqPoint, reqPosition) {
   let point = reqPoint;
 
   // convert the coords when playing as red
-  if (player == 'r' && reqPoint <= 24) {
+  if (player == "r" && reqPoint <= 24) {
     point = 25 - reqPoint;
   }
 
@@ -1912,31 +1907,31 @@ function defineCoordMap() {
 
 function isPieceMovable(piece, pt, pos) {
   // console.log('isPieceMovable called for pt = ', pt, ' pos = ', pos);
-  const barPoint = game.myPlayer === 'r' ? 25 : 26;
+  const barPoint = game.myPlayer === "r" ? 25 : 26;
 
   // if piece is on the bar and you're trying to move somewhere else
   if (board.contents[barPoint].occupied.length && pt != barPoint) {
     // bar point occupied
-    console.log('Must move bar piece');
-    showDisplayBox('Move your piece off the bar first');
+    console.log("Must move bar piece");
+    showDisplayBox("Move your piece off the bar first");
     return false;
   }
 
   // if piece is not being moved from a valid position
   if (piece == 0 && pos == 0) {
-    console.log('Not moving from a valid position');
+    console.log("Not moving from a valid position");
     return false;
   }
 
   // if there are no dice moves left
   if (board.diceThrows.every((element) => element === 0)) {
-    console.log('isPieceMovable: no dice moves remaining');
+    console.log("isPieceMovable: no dice moves remaining");
     return false;
   }
 
   // check is piece is my colour
   if (game.myPlayer != piece.dataset.type) {
-    console.log('isPieceMovable: wrong colour');
+    console.log("isPieceMovable: wrong colour");
     return false;
   }
 
@@ -1947,7 +1942,7 @@ function isPieceMovable(piece, pt, pos) {
     pt != 25 &&
     pt != 26
   ) {
-    console.log('isPieceMovable: not topmost piece');
+    console.log("isPieceMovable: not topmost piece");
     return false;
   }
 
@@ -1956,16 +1951,16 @@ function isPieceMovable(piece, pt, pos) {
 }
 
 function displayDiceThrows() {
-  const container = document.getElementById('dice_throws');
+  const container = document.getElementById("dice_throws");
   const parts = [];
-  const end_turn = document.getElementById('end_turn');
+  const end_turn = document.getElementById("end_turn");
 
   // is move finished? populate with empty string
   if (board.diceThrows.every((element) => element === 0)) {
-    container.innerHTML = '';
+    container.innerHTML = "";
 
     // hide the end_turn button
-    end_turn.style.visibility = 'hidden';
+    end_turn.style.visibility = "hidden";
 
     return;
   }
@@ -1986,11 +1981,11 @@ function displayDiceThrows() {
     }
   }
 
-  container.innerHTML = parts.join(' ');
-  end_turn.style.visibility = 'visible';
+  container.innerHTML = parts.join(" ");
+  end_turn.style.visibility = "visible";
 
   console.log(
-    '>>>>>>>>>>> At the end of displayDiceThrows, container.innerHTML = ' +
+    ">>>>>>>>>>> At the end of displayDiceThrows, container.innerHTML = " +
       container.innerHTML
   );
 }
@@ -1998,16 +1993,16 @@ function displayDiceThrows() {
 /////////////////////////////////////////////////////////////////////////////////////////
 // AUTORUNNING LOGIC
 
-// const firebaseVariables = await getFirebaseVariables();
+const firebaseVariables = await getFirebaseVariables();
 
-// if (firebaseVariables) {
-//   firebaseApp = firebaseVariables[0];
-//   analytics = firebaseVariables[1];
-//   database = firebaseVariables[2];
-// }
+if (firebaseVariables) {
+  firebaseApp = firebaseVariables.FIREBASEAPP;
+  analytics = firebaseVariables.ANALYTICS;
+  database = firebaseVariables.DATABASE;
+}
 
 if (DEBUGMODE) {
-  console.log('Using Firebase in app.js:', firebaseApp);
+  console.log("Using Firebase in app.js:", firebaseApp);
   console.log(analytics);
   console.log(database);
 }

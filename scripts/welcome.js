@@ -4,7 +4,7 @@
 // NOTES
 // Handles the DOM elements and logic for the welcome section of the webpage
 
-'use strict';
+"use strict";
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // IMPORTS
@@ -15,105 +15,105 @@ import {
   getOpponentUserKey,
   peer,
   registerForChat,
-} from './chat.js';
-import { DEBUGMODE } from './config.js';
-import { loadLocalStorage, setLocalStorage } from './localStorage.js';
-import { changeModalContent } from './modals.js';
-import { playClickSound } from './sounds.js';
+} from "./chat.js";
+import { DEBUGMODE } from "./config.js";
+import { loadLocalStorage, setLocalStorage } from "./localStorage.js";
+import { changeModalContent } from "./modals.js";
+import { playClickSound } from "./sounds.js";
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // DOM ELEMENT SELECTION
 
 // Board annotation section elements
 const boardAnnotationsSection = document.querySelector(
-  '.board_annotations_section'
+  ".board_annotations_section"
 );
 
 // Continue button elements
-const continueButton = document.querySelector('.welcome_continue_button');
+const continueButton = document.querySelector(".welcome_continue_button");
 
 // Language accordion elements
-const languageAccordion = document.getElementById('language_accordion');
+const languageAccordion = document.getElementById("language_accordion");
 const languagePanel = languageAccordion.nextElementSibling;
-const languageSvg = document.getElementById('language_svg');
-const languageText = document.getElementById('language_text');
+const languageSvg = document.getElementById("language_svg");
+const languageText = document.getElementById("language_text");
 
 // Language choice elements
-const languageChoices = document.querySelectorAll('.language_choice');
+const languageChoices = document.querySelectorAll(".language_choice");
 
 // Next section elements
-const nextYouFlags = document.querySelector('.next_you_flags');
-const nextYouName = document.querySelector('.next_you_name');
-const nextYouSkill = document.querySelector('.next_you_skill');
+const nextYouFlags = document.querySelector(".next_you_flags");
+const nextYouName = document.querySelector(".next_you_name");
+const nextYouSkill = document.querySelector(".next_you_skill");
 
 // Player name form elements
-export const welcomeNameForm = document.querySelector('.welcome_name_form');
+export const welcomeNameForm = document.querySelector(".welcome_name_form");
 
-const welcomeNameInput = document.getElementById('welcome_name_input');
+const welcomeNameInput = document.getElementById("welcome_name_input");
 
 // Players section elements
-const playersChallengeButton = document.querySelector('.challenge_button');
-const playersDisplay = document.querySelector('.players_active');
-const playersSection = document.querySelector('.players_section');
-const playersXButton = document.querySelector('.players_x_button');
+const playersChallengeButton = document.querySelector(".challenge_button");
+const playersDisplay = document.querySelector(".players_active");
+const playersSection = document.querySelector(".players_section");
+const playersXButton = document.querySelector(".players_x_button");
 
 // Players section language elements
 export const playersLanguageText = document.getElementById(
-  'players_language_text'
+  "players_language_text"
 );
 
 const playersLanguageAccordion = document.getElementById(
-  'players_language_accordion'
+  "players_language_accordion"
 );
 const playersLanguagePanel = playersLanguageAccordion.nextElementSibling;
-const playersLanguageSvg = document.getElementById('players_language_svg');
+const playersLanguageSvg = document.getElementById("players_language_svg");
 
 // Return section elements
-const notYouButton = document.querySelector('.not_you_button');
-const continueButtonReturn = document.querySelector('.return_continue_button');
-const returnYouFlags = document.querySelector('.return_you_flags');
-const returnYouName = document.querySelector('.return_you_name');
-const returnYouSkill = document.querySelector('.return_you_skill');
+const notYouButton = document.querySelector(".not_you_button");
+const continueButtonReturn = document.querySelector(".return_continue_button");
+const returnYouFlags = document.querySelector(".return_you_flags");
+const returnYouName = document.querySelector(".return_you_name");
+const returnYouSkill = document.querySelector(".return_you_skill");
 
 // Skill accordion elements
-const skillLevelAccordion = document.getElementById('skill_level_accordion');
+const skillLevelAccordion = document.getElementById("skill_level_accordion");
 const skillLevelPanel = skillLevelAccordion.nextElementSibling;
-const skillLevelSvg = document.getElementById('skill_level_svg');
-const skillLevelText = document.getElementById('skill_level_text');
+const skillLevelSvg = document.getElementById("skill_level_svg");
+const skillLevelText = document.getElementById("skill_level_text");
 
 // Skill choice elements
-const skillAdvanced = document.querySelector('.skill_advanced');
-const skillBeginner = document.querySelector('.skill_beginner');
-const skillMaster = document.querySelector('.skill_master');
+const skillAdvanced = document.querySelector(".skill_advanced");
+const skillBeginner = document.querySelector(".skill_beginner");
+const skillMaster = document.querySelector(".skill_master");
 
 // Step elements
-const step2Div = document.querySelector('.step2');
-const step3Div = document.querySelector('.step3');
-const step4Div = document.querySelector('.step4');
+const step2Div = document.querySelector(".step2");
+const step3Div = document.querySelector(".step3");
+const step4Div = document.querySelector(".step4");
 
 // TODO - To be removed later
 // Test button elements
-const testButton4 = document.querySelector('.test_button4');
+const testButton4 = document.querySelector(".test_button4");
 
 // Welcome section elements
-const welcomeSection = document.querySelector('.welcome_section');
+const welcomeSection = document.querySelector(".welcome_section");
 
 // You section elements
-const youFlags = document.querySelector('.you_flags');
-const youName = document.querySelector('.you_name');
-const youSkill = document.querySelector('.you_skill');
+const youFlags = document.querySelector(".you_flags");
+const youName = document.querySelector(".you_name");
+const youSkill = document.querySelector(".you_skill");
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // VARIABLES
 
 // Default data for player object
-let sessionDisplayName = 'Guest';
-let sessionSkillLevel = 'Beginner';
+let sessionDisplayName = "Guest";
+let sessionSkillLevel = "Beginner";
 let sessionLanguages = [];
 
 // Challenger variables
-export let activeOpponent = '';
-export let challengerName = '';
+export let activeOpponent = "";
+export let challengerName = "";
 
 // Intervals to allow automatic repopulation of online players to be paused or unpaused
 let continueInterval;
@@ -166,7 +166,7 @@ const MAXLANGUAGES = 3;
 let languagesChosen = [];
 let languagesChosenReturn = [];
 let languageItems;
-let languageFilter = 'en';
+let languageFilter = "en";
 
 // Variable to enable going back to change your details
 let changeDetailsFlag = false;
@@ -176,20 +176,20 @@ let changeDetailsFlag = false;
 
 // TODO - To be removed later
 // To test the 'movesRemaining' modal
-testButton4.addEventListener('click', () => {
+testButton4.addEventListener("click", () => {
   playClickSound();
   console.log(`Test button 4: displaying end turn message`);
-  changeModalContent('movesRemaining', [4, 2]);
+  changeModalContent("movesRemaining", [4, 2]);
   return;
 });
 
 // Allows a player to continue to player section (from the welcome section)
-continueButton.addEventListener('click', () => {
+continueButton.addEventListener("click", () => {
   playClickSound();
   createUserData();
 
-  continueButton.classList.remove('focus_element');
-  boardAnnotationsSection.classList.remove('reveal_translucent');
+  continueButton.classList.remove("focus_element");
+  boardAnnotationsSection.classList.remove("reveal_translucent");
 
   // Starts the auto refresh process of online players
   continueInterval = setInterval(refreshPopulatePlayers, 10000);
@@ -197,14 +197,14 @@ continueButton.addEventListener('click', () => {
 });
 
 // Allows a player to continue to the player section (from the return section)
-continueButtonReturn.addEventListener('click', async () => {
+continueButtonReturn.addEventListener("click", async () => {
   playClickSound();
 
   // Creates a copy of what is already in local storage to be modified
   const storedObjectProto = loadLocalStorage();
 
   if (DEBUGMODE) {
-    console.log('continueButton: storedObjectProto:', storedObjectProto);
+    console.log("continueButton: storedObjectProto:", storedObjectProto);
   }
 
   setLocalStorage({
@@ -220,7 +220,7 @@ continueButtonReturn.addEventListener('click', async () => {
 
   // Logs the storedObject in debug mode
   if (DEBUGMODE) {
-    console.log('contiuneButtonReturn: storedObject:', storedObject);
+    console.log("contiuneButtonReturn: storedObject:", storedObject);
   }
 
   const data = {
@@ -236,7 +236,7 @@ continueButtonReturn.addEventListener('click', async () => {
   populatePlayerSectionLanguages(data.languages);
 
   if (DEBUGMODE) {
-    console.log('continueButtonReturn: data:', JSON.stringify(data));
+    console.log("continueButtonReturn: data:", JSON.stringify(data));
   }
 
   try {
@@ -247,9 +247,9 @@ continueButtonReturn.addEventListener('click', async () => {
     fetchRecentPlayers();
 
     setTimeout(() => {
-      boardAnnotationsSection.classList.remove('reveal_translucent');
-      welcomeSection.classList.remove('reveal');
-      playersSection.classList.add('reveal');
+      boardAnnotationsSection.classList.remove("reveal_translucent");
+      welcomeSection.classList.remove("reveal");
+      playersSection.classList.add("reveal");
     }, 1000);
 
     // Starts the auto refresh process of online players
@@ -262,15 +262,15 @@ continueButtonReturn.addEventListener('click', async () => {
 });
 
 // Allows the user to expand and compress the language accordion, toggling its svg icon
-languageAccordion.addEventListener('click', () => {
+languageAccordion.addEventListener("click", () => {
   playClickSound();
 
-  if (languagePanel.style.display === 'block') {
-    languagePanel.style.display = 'none';
-    languageSvg.style.transform = 'rotate(0deg)';
+  if (languagePanel.style.display === "block") {
+    languagePanel.style.display = "none";
+    languageSvg.style.transform = "rotate(0deg)";
   } else {
-    languagePanel.style.display = 'block';
-    languageSvg.style.transform = 'rotate(180deg)';
+    languagePanel.style.display = "block";
+    languageSvg.style.transform = "rotate(180deg)";
   }
 
   return;
@@ -278,14 +278,14 @@ languageAccordion.addEventListener('click', () => {
 
 // Adds event listeners to language choices that set that language as chosen on the player object
 languageChoices.forEach((current) => {
-  current.addEventListener('click', () => {
+  current.addEventListener("click", () => {
     playClickSound();
 
     const languageValue = current.dataset.language;
 
     // Removes highlight class and language selection when clicking on a previously selected language choice
-    if (current.classList.contains('accordion_selected')) {
-      current.classList.remove('accordion_selected');
+    if (current.classList.contains("accordion_selected")) {
+      current.classList.remove("accordion_selected");
 
       languagesChosen = languagesChosen.filter(
         (element) => element !== languageValue
@@ -303,7 +303,7 @@ languageChoices.forEach((current) => {
       languagesChosen.length < MAXLANGUAGES &&
       !languagesChosen.includes(languageValue)
     ) {
-      current.classList.add('accordion_selected');
+      current.classList.add("accordion_selected");
       languagesChosen.push(languageValue);
 
       // Automatically closes the accordion if three languages have been chosen
@@ -312,28 +312,28 @@ languageChoices.forEach((current) => {
       addLanguageFlags();
 
       // Changes focus on elements to signify the next stage of the log in process
-      languageAccordion.classList.remove('focus_element');
-      continueButton.classList.add('focus_element');
+      languageAccordion.classList.remove("focus_element");
+      continueButton.classList.add("focus_element");
       return;
     }
   });
 });
 
 // Allows the player to go to beginning and create a fresh log in
-notYouButton.addEventListener('click', () => {
+notYouButton.addEventListener("click", () => {
   playClickSound();
-  changeModalContent('notYou');
+  changeModalContent("notYou");
   return;
 });
 
 // Allows a challenger to send a challenge to their selected opponent
-playersChallengeButton.addEventListener('click', () => {
+playersChallengeButton.addEventListener("click", () => {
   playClickSound();
 
-  if (challengerName === '') {
-    changeModalContent('noChallenger');
+  if (challengerName === "") {
+    changeModalContent("noChallenger");
   } else {
-    changeModalContent('challengeSent', challengerName);
+    changeModalContent("challengeSent", challengerName);
     const storedObject = loadLocalStorage();
 
     // Updates the lastOnline property of the player object to help keep them in the list of online players
@@ -344,126 +344,126 @@ playersChallengeButton.addEventListener('click', () => {
 });
 
 // Allows the user to expand and compress the language filter accordion, toggling its svg icon
-playersLanguageAccordion.addEventListener('click', () => {
+playersLanguageAccordion.addEventListener("click", () => {
   playClickSound();
 
-  if (playersLanguagePanel.style.display === 'block') {
-    playersLanguagePanel.style.display = 'none';
-    playersLanguageSvg.style.transform = 'rotate(0deg)';
+  if (playersLanguagePanel.style.display === "block") {
+    playersLanguagePanel.style.display = "none";
+    playersLanguageSvg.style.transform = "rotate(0deg)";
   } else {
-    playersLanguagePanel.style.display = 'block';
-    playersLanguageSvg.style.transform = 'rotate(180deg)';
+    playersLanguagePanel.style.display = "block";
+    playersLanguageSvg.style.transform = "rotate(180deg)";
   }
 
   return;
 });
 
 // Allows a player to go back from the players section to change their details
-playersXButton.addEventListener('click', () => {
+playersXButton.addEventListener("click", () => {
   playClickSound();
-  changeModalContent('return');
+  changeModalContent("return");
   return;
 });
 
 // Toggles the display of the skill choice accordion when clicked
-skillLevelAccordion.addEventListener('click', function () {
+skillLevelAccordion.addEventListener("click", function () {
   playClickSound();
 
-  if (skillLevelPanel.style.display === 'block') {
-    skillLevelPanel.style.display = 'none';
-    skillLevelSvg.style.transform = 'rotate(0deg)';
+  if (skillLevelPanel.style.display === "block") {
+    skillLevelPanel.style.display = "none";
+    skillLevelSvg.style.transform = "rotate(0deg)";
   } else {
-    skillLevelPanel.style.display = 'block';
-    skillLevelSvg.style.transform = 'rotate(180deg)';
+    skillLevelPanel.style.display = "block";
+    skillLevelSvg.style.transform = "rotate(180deg)";
   }
 
   return;
 });
 
 // Allows the user to choose the advanced skill level
-skillAdvanced.addEventListener('click', () => {
+skillAdvanced.addEventListener("click", () => {
   playClickSound();
 
   // Highlights only this choice in the accordion
-  skillAdvanced.classList.add('accordion_selected');
-  skillBeginner.classList.remove('accordion_selected');
-  skillMaster.classList.remove('accordion_selected');
+  skillAdvanced.classList.add("accordion_selected");
+  skillBeginner.classList.remove("accordion_selected");
+  skillMaster.classList.remove("accordion_selected");
 
-  skillLevelText.textContent = 'Advanced 🏆🏆';
-  youSkill.textContent = '🏆🏆';
-  sessionSkillLevel = '🏆🏆';
+  skillLevelText.textContent = "Advanced 🏆🏆";
+  youSkill.textContent = "🏆🏆";
+  sessionSkillLevel = "🏆🏆";
 
   showStep3Elements();
   return;
 });
 
 // Allows the user to choose the beginner skill level
-skillBeginner.addEventListener('click', () => {
+skillBeginner.addEventListener("click", () => {
   playClickSound();
 
   // Highlights only this choice in the accordion
-  skillBeginner.classList.add('accordion_selected');
-  skillAdvanced.classList.remove('accordion_selected');
-  skillMaster.classList.remove('accordion_selected');
+  skillBeginner.classList.add("accordion_selected");
+  skillAdvanced.classList.remove("accordion_selected");
+  skillMaster.classList.remove("accordion_selected");
 
-  skillLevelText.textContent = 'Beginner 🏆';
-  youSkill.textContent = '🏆';
-  sessionSkillLevel = '🏆';
+  skillLevelText.textContent = "Beginner 🏆";
+  youSkill.textContent = "🏆";
+  sessionSkillLevel = "🏆";
 
   showStep3Elements();
   return;
 });
 
 // Allows the user to choose the master skill level
-skillMaster.addEventListener('click', () => {
+skillMaster.addEventListener("click", () => {
   playClickSound();
 
   // Highlights only this choice in the accordion
-  skillMaster.classList.add('accordion_selected');
-  skillBeginner.classList.remove('accordion_selected');
-  skillAdvanced.classList.remove('accordion_selected');
+  skillMaster.classList.add("accordion_selected");
+  skillBeginner.classList.remove("accordion_selected");
+  skillAdvanced.classList.remove("accordion_selected");
 
-  skillLevelText.textContent = 'Master 🏆🏆🏆';
-  youSkill.textContent = '🏆🏆🏆';
-  sessionSkillLevel = '🏆🏆🏆';
+  skillLevelText.textContent = "Master 🏆🏆🏆";
+  youSkill.textContent = "🏆🏆🏆";
+  sessionSkillLevel = "🏆🏆🏆";
 
   showStep3Elements();
   return;
 });
 
 // Enables the player to confirm a name by pressing enter while in the name entry box, it will bring up modals if there are any problems with the name entered
-welcomeNameForm.addEventListener('keydown', (event) => {
-  if (event.key === 'Enter') {
+welcomeNameForm.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
     event.preventDefault();
     playClickSound();
 
     const welcomeName = welcomeNameInput.value;
 
-    if (welcomeNameInput.value !== '') {
+    if (welcomeNameInput.value !== "") {
       if (welcomeName.length >= 3) {
         if (welcomeName.length > 12) {
           // Name too long
-          changeModalContent('nameProblem');
+          changeModalContent("nameProblem");
           return;
         } else {
           // Name okay
           youName.textContent = welcomeName;
           sessionDisplayName = welcomeName;
 
-          step2Div.classList.add('reveal');
+          step2Div.classList.add("reveal");
 
-          welcomeNameForm.classList.remove('focus_element');
-          skillLevelAccordion.classList.add('focus_element');
+          welcomeNameForm.classList.remove("focus_element");
+          skillLevelAccordion.classList.add("focus_element");
           return;
         }
       } else {
         // Name too short
-        changeModalContent('nameProblem');
+        changeModalContent("nameProblem");
         return;
       }
     } else {
       // No name entered
-      changeModalContent('noName');
+      changeModalContent("noName");
       welcomeNameInput.value = sessionDisplayName;
       return;
     }
@@ -477,7 +477,7 @@ welcomeNameForm.addEventListener('keydown', (event) => {
 export function addLanguageFlags(status = 0, changeDetails = false) {
   let flag1,
     flag2,
-    flag3 = '<p></p>';
+    flag3 = "<p></p>";
   let flags = [flag1, flag2, flag3];
   let flagYou1, flagYou2, flagYou3;
   let flagsYou = [flagYou1, flagYou2, flagYou3];
@@ -489,7 +489,7 @@ export function addLanguageFlags(status = 0, changeDetails = false) {
     workingLanguages = storedObject.languages;
 
     if (DEBUGMODE) {
-      console.log('addLangaugeFlags(): workingLanguages:', workingLanguages);
+      console.log("addLangaugeFlags(): workingLanguages:", workingLanguages);
     }
   } else {
     // Sets the language flags based on languages chosen during log in
@@ -503,7 +503,7 @@ export function addLanguageFlags(status = 0, changeDetails = false) {
 
   // Adds flag HTML to the display elements for each language selected
   for (let i = 0; i < workingLanguages.length; i++) {
-    if (workingLanguages[i].includes('en')) {
+    if (workingLanguages[i].includes("en")) {
       flags[i] = `<img
                 class="player_flag_img"
                 data-language="en"
@@ -515,7 +515,7 @@ export function addLanguageFlags(status = 0, changeDetails = false) {
               src="./images/flags/english_flag.png"
             />`;
     }
-    if (workingLanguages[i].includes('es')) {
+    if (workingLanguages[i].includes("es")) {
       flags[i] = `<img
                 class="player_flag_img"
                 data-language="es"
@@ -527,7 +527,7 @@ export function addLanguageFlags(status = 0, changeDetails = false) {
               src="./images/flags/spanish_flag.png"
             />`;
     }
-    if (workingLanguages[i].includes('it')) {
+    if (workingLanguages[i].includes("it")) {
       flags[i] = `<img
                 class="player_flag_img"
                 data-language="it"
@@ -539,7 +539,7 @@ export function addLanguageFlags(status = 0, changeDetails = false) {
               src="./images/flags/italy_flag.png"
             />`;
     }
-    if (workingLanguages[i].includes('ja')) {
+    if (workingLanguages[i].includes("ja")) {
       flags[i] = `<img
                 class="player_flag_img"
                 data-language="ja"
@@ -551,7 +551,7 @@ export function addLanguageFlags(status = 0, changeDetails = false) {
               src="./images/flags/japanese_flag.png"
             />`;
     }
-    if (workingLanguages[i].includes('zh')) {
+    if (workingLanguages[i].includes("zh")) {
       flags[i] = `<img
                 class="player_flag_img"
                 data-language="zh"
@@ -607,24 +607,24 @@ export function addLanguageFlags(status = 0, changeDetails = false) {
 
   // Updates the flag content if a player goes back to change their details
   if (changeDetails) {
-    youFlags.innerHTML = flagsYou.join('');
-    languageText.innerHTML = flags.join('');
+    youFlags.innerHTML = flagsYou.join("");
+    languageText.innerHTML = flags.join("");
   } else {
     if (status === 0) {
-      youFlags.innerHTML = flagsYou.join('');
+      youFlags.innerHTML = flagsYou.join("");
       // Sets default content in languageText element
       if (languagesChosen.length === 0) {
         languageText.textContent = `Select Language`;
         return;
       } else {
-        step4Div.classList.add('reveal');
-        languageText.innerHTML = flags.join('');
+        step4Div.classList.add("reveal");
+        languageText.innerHTML = flags.join("");
         return;
       }
     } else {
       // Populates flag elements during the return page flow
-      returnYouFlags.innerHTML = flagsYou.join('');
-      nextYouFlags.innerHTML = flagsYou.join('');
+      returnYouFlags.innerHTML = flagsYou.join("");
+      nextYouFlags.innerHTML = flagsYou.join("");
       return;
     }
   }
@@ -634,11 +634,11 @@ export function addLanguageFlags(status = 0, changeDetails = false) {
 function addPlayerEventListeners(playerList) {
   Object.entries(playerList).forEach(([key, value]) => {
     if (DEBUGMODE) {
-      console.log('addPlayerEventListeners(): value:', JSON.stringify(value));
+      console.log("addPlayerEventListeners(): value:", JSON.stringify(value));
     }
 
-    const newName = value.displayName.replace(' ', '_');
-    const element = '.player_is_' + newName;
+    const newName = value.displayName.replace(" ", "_");
+    const element = ".player_is_" + newName;
     const DOMElement = document.querySelectorAll(element);
     const timeNow = Date.now();
 
@@ -651,46 +651,46 @@ function addPlayerEventListeners(playerList) {
 
       if (DEBUGMODE) {
         console.log(
-          'addPlayerEventListeners(): Last Online (ms):',
+          "addPlayerEventListeners(): Last Online (ms):",
           value.lastOnline
         );
         console.log(
-          'addPlayerEventListeners(): Time Since Last Login (ms):',
+          "addPlayerEventListeners(): Time Since Last Login (ms):",
           timeSinceLastLoggedIn
         );
         console.log(
-          'addPlayerEventListeners(): Hours ago:',
+          "addPlayerEventListeners(): Hours ago:",
           hours,
-          '- minutes ago:',
+          "- minutes ago:",
           minutes
         );
       }
 
-      const status = current.classList.contains('not_free')
-        ? 'IN GAME'
-        : 'FREE';
+      const status = current.classList.contains("not_free")
+        ? "IN GAME"
+        : "FREE";
 
       current.setAttribute(
-        'data-tooltip',
+        "data-tooltip",
         `${status} Last Active: ${Math.floor(hours)} h, ${minutes} m ago`
       );
 
-      if (current.classList.contains('not_free')) {
+      if (current.classList.contains("not_free")) {
         if (DEBUGMODE) {
-          console.log('Nothing to do for:', value.displayName, '- in game');
+          console.log("Nothing to do for:", value.displayName, "- in game");
         }
       } else {
-        current.addEventListener('click', () => {
+        current.addEventListener("click", () => {
           playClickSound();
           const newDOMElements = document.querySelectorAll(
-            '.player_online_display'
+            ".player_online_display"
           );
           activeOpponent = value;
           challengerName = value.displayName;
           newDOMElements.forEach((current2) => {
-            current2.classList.remove('accordion_selected');
+            current2.classList.remove("accordion_selected");
           });
-          current.classList.toggle('accordion_selected');
+          current.classList.toggle("accordion_selected");
           pauseRefreshPopulatePlayers();
         });
       }
@@ -710,9 +710,9 @@ export function changeDetailsFlagStatus() {
   sessionSkillLevel = storedObject.skillLevel;
   sessionLanguages = storedObject.languages;
 
-  welcomeNameInput.classList.add('no_pointer_events');
-  welcomeNameForm.classList.remove('focus_element');
-  welcomeNameForm.classList.add('greyout');
+  welcomeNameInput.classList.add("no_pointer_events");
+  welcomeNameForm.classList.remove("focus_element");
+  welcomeNameForm.classList.add("greyout");
   return;
 }
 
@@ -721,10 +721,10 @@ export function checkForLocalStorageObject() {
   const storedObject = loadLocalStorage();
 
   if (
-    storedObject.displayName !== '' &&
+    storedObject.displayName !== "" &&
     storedObject.displayName.length > 3 &&
     storedObject.displayName.length < 13 &&
-    storedObject.skillLevel !== '' &&
+    storedObject.skillLevel !== "" &&
     storedObject.languages.length > 0
   ) {
     welcomeBackPopulateFields();
@@ -749,7 +749,7 @@ function checkPlayerOnline(lastOnline) {
   const difference = now - lastOnline;
 
   if (DEBUGMODE) {
-    console.log('checkPlayerOnline(): difference:', difference);
+    console.log("checkPlayerOnline(): difference:", difference);
   }
 
   // Set to 1 hour
@@ -761,8 +761,8 @@ function checkPlayerOnline(lastOnline) {
 // Closes the accordion specified and rotates its svg icon
 function closeAccordion(accordionPanel, accordionSvg) {
   setTimeout(() => {
-    accordionPanel.style.display = 'none';
-    accordionSvg.style.transform = 'rotate(0deg)';
+    accordionPanel.style.display = "none";
+    accordionSvg.style.transform = "rotate(0deg)";
   }, 500);
 
   return;
@@ -770,7 +770,7 @@ function closeAccordion(accordionPanel, accordionSvg) {
 
 // If the data provided by the user is valid, it writes data to the local storage object by calling changeModalContent()
 async function createUserData() {
-  let allowedName = '';
+  let allowedName = "";
 
   // When going back to change player details the allowedName is set to enable a player object to be updated instead of making a new one
   if (changeDetailsFlag) {
@@ -780,14 +780,14 @@ async function createUserData() {
 
   // If chosen player details are acceptable
   if (
-    sessionDisplayName !== '' &&
+    sessionDisplayName !== "" &&
     sessionDisplayName.length >= 3 &&
     sessionDisplayName.length < 13 &&
-    sessionSkillLevel !== '' &&
+    sessionSkillLevel !== "" &&
     sessionLanguages.length > 0
   ) {
     if (DEBUGMODE) {
-      console.log('createUserData(): peer.id:', peer.id);
+      console.log("createUserData(): peer.id:", peer.id);
     }
 
     const data = {
@@ -800,15 +800,15 @@ async function createUserData() {
     };
 
     if (DEBUGMODE) {
-      console.log('createUserData(): data:', JSON.stringify(data));
-      console.log('createUserData(): Languages:', data.languages);
-      console.log('createUserData(): peerID:', data.peerID);
+      console.log("createUserData(): data:", JSON.stringify(data));
+      console.log("createUserData(): Languages:", data.languages);
+      console.log("createUserData(): peerID:", data.peerID);
     }
 
     const result = await checkForName(data.displayName, allowedName);
 
     if (DEBUGMODE) {
-      console.log('createUserData(): result:', result);
+      console.log("createUserData(): result:", result);
     }
 
     if (result === 0) {
@@ -821,7 +821,7 @@ async function createUserData() {
         }
       } else {
         // If name already exists and not in changeDetails flow it displays an error modal
-        changeModalContent('nameExists', data.displayName);
+        changeModalContent("nameExists", data.displayName);
         return;
       }
     } else {
@@ -840,7 +840,7 @@ async function createUserData() {
         changeDetailsFlag = false;
 
         if (DEBUGMODE) {
-          console.log('createUserData(): userKey:', userKey);
+          console.log("createUserData(): userKey:", userKey);
         }
 
         setLocalStorage({
@@ -856,8 +856,8 @@ async function createUserData() {
 
         fetchRecentPlayers();
         setTimeout(() => {
-          welcomeSection.classList.remove('reveal');
-          playersSection.classList.add('reveal');
+          welcomeSection.classList.remove("reveal");
+          playersSection.classList.add("reveal");
         }, 1000);
         return;
       } catch (error) {
@@ -868,11 +868,11 @@ async function createUserData() {
     }
   } else {
     if (DEBUGMODE) {
-      console.log('createUserData(): sessionDisplayName:', sessionDisplayName);
-      console.log('createUserData(): sessionSkillLevel', sessionSkillLevel);
-      console.log('createUserData(): sessionLanguages', sessionLanguages);
+      console.log("createUserData(): sessionDisplayName:", sessionDisplayName);
+      console.log("createUserData(): sessionSkillLevel", sessionSkillLevel);
+      console.log("createUserData(): sessionLanguages", sessionLanguages);
     }
-    changeModalContent('incompleteData');
+    changeModalContent("incompleteData");
     return;
   }
 }
@@ -881,9 +881,9 @@ async function createUserData() {
 function displayPlayerOfflineLogMessage() {
   if (DEBUGMODE) {
     console.log(
-      'displayPlayerOfflineLogMessage(): Nothing to do for:',
+      "displayPlayerOfflineLogMessage(): Nothing to do for:",
       value.displayName,
-      '- Offline'
+      "- Offline"
     );
   }
   return;
@@ -891,8 +891,8 @@ function displayPlayerOfflineLogMessage() {
 
 // Allows filtering of online players by chosen language
 function filterPlayersByLanguage(languageFilter) {
-  challengerName = '';
-  playersDisplay.innerHTML = '';
+  challengerName = "";
+  playersDisplay.innerHTML = "";
   fetchRecentPlayers(languageFilter);
   return;
 }
@@ -927,11 +927,11 @@ export async function playerPairingChallengee(activeOpponentHere) {
 
   if (DEBUGMODE) {
     console.log(
-      'playerPairingChallengee(): Player White:',
+      "playerPairingChallengee(): Player White:",
       JSON.stringify(playerWhite)
     );
     console.log(
-      'playerPairingChallengee(): Player Red:',
+      "playerPairingChallengee(): Player Red:",
       JSON.stringify(playerRed)
     );
   }
@@ -954,11 +954,11 @@ export async function playerPairingUserChallenge() {
 
   if (DEBUGMODE) {
     console.log(
-      'playerPairingUserChallenge(): Player White:',
+      "playerPairingUserChallenge(): Player White:",
       JSON.stringify(playerWhite)
     );
     console.log(
-      'playerPairingUserChallenge(): Player Red:',
+      "playerPairingUserChallenge(): Player Red:",
       JSON.stringify(playerRed)
     );
   }
@@ -970,13 +970,13 @@ export async function playerPairingUserChallenge() {
 }
 
 // Populates the players section's player display element with player elements built from a list of online players
-export function populatePlayers(playerList, filter = 'none') {
+export function populatePlayers(playerList, filter = "none") {
   const storedObject = loadLocalStorage();
 
   let HTML;
 
   // Clears any content of the player's display element
-  playersDisplay.innerHTML = '';
+  playersDisplay.innerHTML = "";
 
   // Iterates throguh the player list and builds their player element based on certain factors
   playerList.forEach((value) => {
@@ -987,27 +987,27 @@ export function populatePlayers(playerList, filter = 'none') {
     value.languages.forEach((current) => {
       const languageData = current;
       switch (languageData) {
-        case 'en':
+        case "en":
           playerFlags.push(
             `<img class='player_flag' data-language="en" src='./images/flags/english_flag.png'>`
           );
           break;
-        case 'es':
+        case "es":
           playerFlags.push(
             `<img class='player_flag' data-language="es" src='./images/flags/spanish_flag.png'>`
           );
           break;
-        case 'it':
+        case "it":
           playerFlags.push(
             `<img class='player_flag' data-language="it" src='./images/flags/italy_flag.png'>`
           );
           break;
-        case 'ja':
+        case "ja":
           playerFlags.push(
             `<img class='player_flag' data-language="ja" src='./images/flags/japanese_flag.png'>`
           );
           break;
-        case 'zh':
+        case "zh":
           playerFlags.push(
             `<img class='player_flag' data-language="zh" src='./images/flags/chinese_flag.png'>`
           );
@@ -1023,24 +1023,24 @@ export function populatePlayers(playerList, filter = 'none') {
     });
 
     // Joins the playerFlags HTML into one string
-    const joinedPlayerFlags = playerFlags.join('');
+    const joinedPlayerFlags = playerFlags.join("");
 
     // Replaces spaces in player name with underscores to build valid class names
-    const newName = value.displayName.replace(' ', '_');
-    const specificClass = 'player_is_' + newName;
+    const newName = value.displayName.replace(" ", "_");
+    const specificClass = "player_is_" + newName;
 
-    if (filter !== 'none') {
+    if (filter !== "none") {
       if (!value.languages.includes(filter)) {
         if (DEBUGMODE) {
           console.log(
-            'populatePlayers(): Skipping player:',
+            "populatePlayers(): Skipping player:",
             value.displayName,
-            '- Does not speak a common language'
+            "- Does not speak a common language"
           );
         }
       } else if (value.displayName === storedObject.displayName) {
         if (DEBUGMODE) {
-          console.log('Skipping player:', value.displayName, '- Same name');
+          console.log("Skipping player:", value.displayName, "- Same name");
         }
       } else {
         checkPlayerOnline(value.lastOnline)
@@ -1048,7 +1048,7 @@ export function populatePlayers(playerList, filter = 'none') {
               checkPlayerInGame(value.inGame)
                 ? (HTML = `<div class='player_online_display not_free ${specificClass}'><p class='is_player_active player_ingame'></p><p class='player_text'>${value.displayName}</p><p class='player_text skill_marker'>${skillMarker}</p><p class='player_text'>${joinedPlayerFlags}</p></div>`)
                 : (HTML = `<div class='player_online_display ${specificClass}'><p class='is_player_active'></p><p class='player_text'>${value.displayName}</p><p class='player_text skill_marker'>${skillMarker}</p><p class='player_text'>${joinedPlayerFlags}</p></div>`);
-              playersDisplay.insertAdjacentHTML('afterbegin', HTML);
+              playersDisplay.insertAdjacentHTML("afterbegin", HTML);
             })()
           : displayPlayerOfflineLogMessage();
       }
@@ -1060,9 +1060,9 @@ export function populatePlayers(playerList, filter = 'none') {
         if (value.displayName === storedObject.displayName) {
           if (DEBUGMODE) {
             console.log(
-              'populatePlayers(): Skipping player:',
+              "populatePlayers(): Skipping player:",
               value.displayName,
-              '- Same name'
+              "- Same name"
             );
           }
         } else {
@@ -1071,16 +1071,16 @@ export function populatePlayers(playerList, filter = 'none') {
                 checkPlayerInGame(value.inGame)
                   ? (HTML = `<div class='player_online_display not_free no_select ${specificClass}'><p class='is_player_active player_ingame'></p><p class='player_text'>${value.displayName}</p><p class='player_text skill_marker'>${skillMarker}</p><p class='player_text'>${joinedPlayerFlags}</p></div>`)
                   : (HTML = `<div class='player_online_display ${specificClass}'><p class='is_player_active'></p><p class='player_text'>${value.displayName}</p><p class='player_text skill_marker'>${skillMarker}</p><p class='player_text'>${joinedPlayerFlags}</p></div>`);
-                playersDisplay.insertAdjacentHTML('afterbegin', HTML);
+                playersDisplay.insertAdjacentHTML("afterbegin", HTML);
               })()
             : displayPlayerOfflineLogMessage();
         }
       } else {
         if (DEBUGMODE) {
           console.log(
-            'populatePlayers(): Nothing to do for:',
+            "populatePlayers(): Nothing to do for:",
             value.displayName,
-            '- Does not speak a common language'
+            "- Does not speak a common language"
           );
         }
       }
@@ -1098,7 +1098,7 @@ export function populatePlayersSectionData() {
 
   if (DEBUGMODE) {
     console.log(
-      'populatePlayersSectionData(): storedObject:',
+      "populatePlayersSectionData(): storedObject:",
       JSON.stringify(storedObject)
     );
   }
@@ -1109,11 +1109,11 @@ export function populatePlayersSectionData() {
 
   if (DEBUGMODE) {
     console.log(
-      'populatePlayersSectionData(): storedObject.languages:',
+      "populatePlayersSectionData(): storedObject.languages:",
       storedObject.languages
     );
     console.log(
-      'populatePlayersSectionData(): languagesChosenReturn:',
+      "populatePlayersSectionData(): languagesChosenReturn:",
       languagesChosenReturn
     );
   }
@@ -1124,26 +1124,26 @@ export function populatePlayersSectionData() {
 
 // Populates the available language options in the players section based on languages chosen by the user
 export function populatePlayerSectionLanguages(languagesChosen) {
-  let languagesHTML = '';
+  let languagesHTML = "";
 
   // Adds language HTML based on user choices
-  if (languagesChosen.includes('en')) {
+  if (languagesChosen.includes("en")) {
     languagesHTML += englishHTML;
   }
 
-  if (languagesChosen.includes('es')) {
+  if (languagesChosen.includes("es")) {
     languagesHTML += spanishHTML;
   }
 
-  if (languagesChosen.includes('it')) {
+  if (languagesChosen.includes("it")) {
     languagesHTML += italianHTML;
   }
 
-  if (languagesChosen.includes('ja')) {
+  if (languagesChosen.includes("ja")) {
     languagesHTML += japaneseHTML;
   }
 
-  if (languagesChosen.includes('zh')) {
+  if (languagesChosen.includes("zh")) {
     languagesHTML += chineseHTML;
   }
 
@@ -1151,30 +1151,30 @@ export function populatePlayerSectionLanguages(languagesChosen) {
   playersLanguagePanel.innerHTML = languagesHTML;
 
   languageItems = playersLanguagePanel.querySelectorAll(
-    '.players_language_choice'
+    ".players_language_choice"
   );
 
   languageItems.forEach((current) => {
-    current.addEventListener('click', () => {
+    current.addEventListener("click", () => {
       playClickSound();
 
       const languageValue = current.dataset.language;
       const languageName = retrieveLanguageName(languageValue);
 
-      if (current.classList.contains('accordion_selected')) {
+      if (current.classList.contains("accordion_selected")) {
         languageItems.forEach((current2) => {
-          current2.classList.remove('accordion_selected');
+          current2.classList.remove("accordion_selected");
         });
-        languageFilter = 'none';
+        languageFilter = "none";
         playersLanguageText.textContent = `Select`;
         closeAccordion(playersLanguagePanel, playersLanguageSvg);
         filterPlayersByLanguage(languageFilter);
         return;
       } else {
         languageItems.forEach((current2) => {
-          current2.classList.remove('accordion_selected');
+          current2.classList.remove("accordion_selected");
         });
-        current.classList.add('accordion_selected');
+        current.classList.add("accordion_selected");
         languageFilter = languageValue;
 
         playersLanguageText.textContent = languageName;
@@ -1190,7 +1190,7 @@ export function populatePlayerSectionLanguages(languagesChosen) {
 function refreshPopulatePlayers() {
   if (DEBUGMODE) {
     console.log(
-      'refreshPopulatePlayers(): auto refreshing of online players is running'
+      "refreshPopulatePlayers(): auto refreshing of online players is running"
     );
   }
 
@@ -1213,22 +1213,22 @@ export function restartRefreshPopulatePlayers() {
 
 // Generates a language's name based on the language choice element's data
 function retrieveLanguageName(languageData) {
-  let languageName = '';
+  let languageName = "";
   switch (languageData) {
-    case 'en':
-      languageName = 'English';
+    case "en":
+      languageName = "English";
       break;
-    case 'es':
-      languageName = 'Espanol';
+    case "es":
+      languageName = "Espanol";
       break;
-    case 'it':
-      languageName = 'Italiano';
+    case "it":
+      languageName = "Italiano";
       break;
-    case 'ja':
-      languageName = '日本語';
+    case "ja":
+      languageName = "日本語";
       break;
-    case 'zh':
-      languageName = '中文';
+    case "zh":
+      languageName = "中文";
       break;
   }
   return languageName;
@@ -1236,11 +1236,11 @@ function retrieveLanguageName(languageData) {
 
 // Triggers the next stage of the log in process by revealing step3 elements and changing element focus
 function showStep3Elements() {
-  step3Div.classList.add('reveal');
+  step3Div.classList.add("reveal");
   closeAccordion(skillLevelPanel, skillLevelSvg);
 
-  skillLevelAccordion.classList.remove('focus_element');
-  languageAccordion.classList.add('focus_element');
+  skillLevelAccordion.classList.remove("focus_element");
+  languageAccordion.classList.add("focus_element");
   return;
 }
 
@@ -1263,11 +1263,11 @@ export function welcomeBackPopulateFields() {
 
   if (DEBUGMODE) {
     console.log(
-      'welcomeBackPopulateFields(): storedObject.languages:',
+      "welcomeBackPopulateFields(): storedObject.languages:",
       storedObject.languages
     );
     console.log(
-      'welcomeBackPopulateFields(): languagesChosenReturn:',
+      "welcomeBackPopulateFields(): languagesChosenReturn:",
       languagesChosenReturn
     );
   }

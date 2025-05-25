@@ -58,7 +58,7 @@ function confirmFirebaseInitialization() {
 }
 
 // Function to get the initialized Firebase variables for use in other client-side modules
-async function getFirebaseVariables() {
+export async function getFirebaseVariables() {
   if (setUpResult === true) {
     const firebaseVariables = {
       FIREBASEAPP: firebaseApp,
@@ -97,7 +97,7 @@ async function initApp() {
 // Run the initialization when the DOM is ready
 document.addEventListener("DOMContentLoaded", initApp);
 
-export { firebaseApp, analytics, database, getFirebaseVariables };
+export { firebaseApp, analytics, database };
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // CODE END

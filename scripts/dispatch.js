@@ -4,22 +4,22 @@
 // NOTES
 // Logic to handle messages received from an opponent
 
-'use strict';
+"use strict";
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // IMPORTS
 
-import { playbackDiceRoll, playbackMove, playbackEndTurn } from './app.js';
-import { closeConn } from './chat.js';
-import { DEBUGMODE } from './config.js';
-import { database } from './firebaseConfig.js';
+import { playbackDiceRoll, playbackMove, playbackEndTurn } from "./app.js";
+import { closeConn } from "./chat.js";
+import { DEBUGMODE } from "./config.js";
+import { getFirebaseVariables } from "./firebaseConfig.js";
 import {
   forfeitMessage,
   getOpponentName,
   opponentMessage,
-} from './messages.js';
-import { changeModalContent } from './modals.js';
-import { challengerName } from './welcome.js';
+} from "./messages.js";
+import { changeModalContent } from "./modals.js";
+import { challengerName } from "./welcome.js";
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // VARIABLES
@@ -27,7 +27,7 @@ import { challengerName } from './welcome.js';
 // let database;
 
 // Holds the opponent's player object
-let activeOpponent = '';
+let activeOpponent = "";
 
 // Flag to block unwanted challenges and messages
 let blockProcessFlag = false;
@@ -41,7 +41,7 @@ export function blockProcess() {
 
   if (DEBUGMODE) {
     console.log(
-      'blockProcess(): Incoming message processing blocked, blockProcessFlag:',
+      "blockProcess(): Incoming message processing blocked, blockProcessFlag:",
       blockProcessFlag
     );
   }
@@ -52,13 +52,13 @@ export function blockProcess() {
 // Handles a message sent from the opponent in an appropriate way
 export function dispatchMessage(parsedData) {
   console.log(
-    'dispatchMessage(): Sending message:',
+    "dispatchMessage(): Sending message:",
     JSON.stringify(parsedData)
   );
 
   if (DEBUGMODE) {
-    console.log('dispatchMessage(): Method:', parsedData.method);
-    console.log('dispatchMessage(): Params:', parsedData.params);
+    console.log("dispatchMessage(): Method:", parsedData.method);
+    console.log("dispatchMessage(): Params:", parsedData.params);
   }
 
   // Early exit if this flag is set to true, used to block challenges when already in game
@@ -68,96 +68,96 @@ export function dispatchMessage(parsedData) {
 
   // Processes the received message according to its method
   switch (parsedData.method) {
-    case 'chat':
+    case "chat":
       if (DEBUGMODE) {
         console.log(
-          'dispatchMessage(): Send:',
+          "dispatchMessage(): Send:",
           parsedData.params,
-          '- data to eventChatMessage()'
+          "- data to eventChatMessage()"
         );
       }
 
       eventChatMessage(parsedData.params);
       break;
-    case 'move':
+    case "move":
       if (DEBUGMODE) {
         console.log(
-          'dispatchMessage(): Send:',
+          "dispatchMessage(): Send:",
           JSON.stringify(parsedData.params),
-          '- data to playbackMove()'
+          "- data to playbackMove()"
         );
       }
 
       playbackMove(parsedData.params);
       break;
-    case 'diceRoll':
+    case "diceRoll":
       if (DEBUGMODE) {
         console.log(
-          'dispatchMessage(): Send:',
+          "dispatchMessage(): Send:",
           JSON.stringify(parsedData.params),
-          '- data to playbackDiceRoll()'
+          "- data to playbackDiceRoll()"
         );
       }
 
       playbackDiceRoll(parsedData.params);
       break;
-    case 'challengeSent':
+    case "challengeSent":
       if (DEBUGMODE) {
         console.log(
-          'dispatchMessage(): Send:',
+          "dispatchMessage(): Send:",
           parsedData.params,
-          '- data to eventChallengeSent()'
+          "- data to eventChallengeSent()"
         );
       }
 
       eventChallengeSent(parsedData.params);
       break;
-    case 'challengeAccepted':
+    case "challengeAccepted":
       if (DEBUGMODE) {
-        console.log('dispatchMessage(): Calling eventChallengeAccepted()');
+        console.log("dispatchMessage(): Calling eventChallengeAccepted()");
       }
 
       eventChallengeAccepted();
       break;
-    case 'challengeRejected':
+    case "challengeRejected":
       if (DEBUGMODE) {
-        console.log('dispatchMessage(): Calling eventChallengeRejected()');
+        console.log("dispatchMessage(): Calling eventChallengeRejected()");
       }
 
       eventChallengeRejected();
       break;
-    case 'challengeCancel':
+    case "challengeCancel":
       if (DEBUGMODE) {
         console.log(`dispatchMessage(): Calling eventChallengeCancel()`);
       }
 
       eventChallengeCancel(parsedData.params);
       break;
-    case 'forfeitGame':
+    case "forfeitGame":
       if (DEBUGMODE) {
         console.log(
-          'dispatchMessage(): Send:',
+          "dispatchMessage(): Send:",
           parsedData.params,
-          '- data to eventForfeitGame()'
+          "- data to eventForfeitGame()"
         );
       }
 
       eventForfeitGame(parsedData.params);
       break;
-    case 'gameOver':
+    case "gameOver":
       if (DEBUGMODE) {
         console.log(
-          'dispatchMessage(): Send:',
+          "dispatchMessage(): Send:",
           parsedData.params,
-          '- data to eventGameOver()'
+          "- data to eventGameOver()"
         );
       }
 
       eventGameOver(parsedData.params);
       break;
-    case 'endTurn':
+    case "endTurn":
       if (DEBUGMODE) {
-        console.log('dispatchMessage(): Calling playbackEndTurn()');
+        console.log("dispatchMessage(): Calling playbackEndTurn()");
       }
 
       const opponentName = getOpponentName();
@@ -172,7 +172,7 @@ export function enableProcess() {
 
   if (DEBUGMODE) {
     console.log(
-      'blockProcess(): Incoming message processing enabled, blockProcessFlag:',
+      "blockProcess(): Incoming message processing enabled, blockProcessFlag:",
       blockProcessFlag
     );
   }
@@ -183,12 +183,12 @@ export function enableProcess() {
 function eventChallengeAccepted() {
   if (DEBUGMODE) {
     console.log(
-      'eventChallengeAccepted(): Challenge accepted by:',
+      "eventChallengeAccepted(): Challenge accepted by:",
       challengerName
     );
   }
 
-  changeModalContent('challengeAccepted', challengerName);
+  changeModalContent("challengeAccepted", challengerName);
   return;
 }
 
@@ -196,7 +196,7 @@ function eventChallengeAccepted() {
 function eventChallengeCancel(challengerName) {
   if (DEBUGMODE) {
     console.log(
-      'eventChallengeCancel(): Challenge cancelled by:',
+      "eventChallengeCancel(): Challenge cancelled by:",
       challengerName
     );
   }
@@ -204,7 +204,7 @@ function eventChallengeCancel(challengerName) {
   // Blocks other messages from being handled along this connection as challenge has been cancelled
   blockProcess();
 
-  changeModalContent('challengeCancel', challengerName);
+  changeModalContent("challengeCancel", challengerName);
   closeConn();
   return;
 }
@@ -213,12 +213,12 @@ function eventChallengeCancel(challengerName) {
 function eventChallengeRejected() {
   if (DEBUGMODE) {
     console.log(
-      'eventChallengeRejected(): Challenge rejected by:',
+      "eventChallengeRejected(): Challenge rejected by:",
       challengerName
     );
   }
 
-  changeModalContent('challengeRejected', challengerName);
+  changeModalContent("challengeRejected", challengerName);
   closeConn();
   return;
 }
@@ -228,7 +228,7 @@ function eventChatMessage(data) {
   const chatMessage = data;
 
   if (DEBUGMODE) {
-    console.log('eventChatMessage(): Chat message received:', chatMessage);
+    console.log("eventChatMessage(): Chat message received:", chatMessage);
   }
 
   const opponentName = getOpponentName();
@@ -243,14 +243,14 @@ async function eventChallengeSent(message) {
 
   if (DEBUGMODE) {
     console.log(
-      'eventChallengeSent(): Challenge received from:',
+      "eventChallengeSent(): Challenge received from:",
       activeOpponent.displayName,
-      '- at:',
+      "- at:",
       timeStamp
     );
   }
 
-  changeModalContent('challengeReceived', [activeOpponent.displayName]);
+  changeModalContent("challengeReceived", [activeOpponent.displayName]);
   return;
 }
 
@@ -260,10 +260,10 @@ function eventForfeitGame(message) {
   forfeitMessage();
 
   if (DEBUGMODE) {
-    console.log('eventForfeitGame(): Game forfeitted by:', opponentName);
+    console.log("eventForfeitGame(): Game forfeitted by:", opponentName);
   }
 
-  changeModalContent('forfeitNotification', opponentName);
+  changeModalContent("forfeitNotification", opponentName);
   return;
 }
 
@@ -277,32 +277,32 @@ function eventGameOver(message) {
 
   if (DEBUGMODE) {
     console.log(
-      'eventGameOvwer(): Chat message received:',
+      "eventGameOvwer(): Chat message received:",
       JSON.stringify(gameOverMessage)
     );
   }
 
-  changeModalContent('eventGameOverLose', gameOverMessage);
+  changeModalContent("eventGameOverLose", gameOverMessage);
   return;
 }
 
 // Gets the player object for a specific player from the database
 async function fetchPlayerByKey(playerKey) {
   try {
-    const playerRef = database.ref('players').child(playerKey);
+    const playerRef = database.ref("players").child(playerKey);
     const snapshot = await playerRef.get();
 
     if (snapshot.exists()) {
       return snapshot.val();
     } else {
       console.log(
-        'fetchPlayerByKey(): Error: No player found with the key:',
+        "fetchPlayerByKey(): Error: No player found with the key:",
         playerKey
       );
       return null;
     }
   } catch (error) {
-    console.error('fetchPlayerByKey(): Error retrieving player:', error);
+    console.error("fetchPlayerByKey(): Error retrieving player:", error);
     return null;
   }
 }
@@ -310,16 +310,16 @@ async function fetchPlayerByKey(playerKey) {
 /////////////////////////////////////////////////////////////////////////////////////////
 // AUTORUNNING LOGIC
 
-// const firebaseVariables = await getFirebaseVariables();
+const firebaseVariables = await getFirebaseVariables();
 
-// if (firebaseVariables) {
-//   database = firebaseVariables[2];
-// }
+if (firebaseVariables) {
+  database = firebaseVariables.DATABASE;
+}
 
 // Debug mode checks
 if (DEBUGMODE) {
   console.log(`dispatch.js running`);
-  console.log('disatch.js database:', database);
+  console.log("dispatch.js database:", database);
 }
 
 // CODE END
