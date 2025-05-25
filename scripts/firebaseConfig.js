@@ -1,3 +1,4 @@
+// TODO - Copy this code to the working branch (whole file)
 /////////////////////////////////////////////////////////////////////////////////////////
 // CODE START
 
@@ -102,8 +103,6 @@ async function initApp() {
 
 // Run the initialization when the DOM is ready
 document.addEventListener("DOMContentLoaded", initApp);
-
-// export { firebaseApp, analytics, database };
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // CODE END

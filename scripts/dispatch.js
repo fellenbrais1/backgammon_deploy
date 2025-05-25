@@ -9,10 +9,12 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 // IMPORTS
 
+// TODO - Copy this code to the working branch (1 import)
+import { getFirebaseVariables } from "./firebaseConfig.js";
+
 import { playbackDiceRoll, playbackMove, playbackEndTurn } from "./app.js";
 import { closeConn } from "./chat.js";
 import { DEBUGMODE } from "./config.js";
-import { getFirebaseVariables } from "./firebaseConfig.js";
 import {
   forfeitMessage,
   getOpponentName,
@@ -24,6 +26,7 @@ import { challengerName } from "./welcome.js";
 /////////////////////////////////////////////////////////////////////////////////////////
 // VARIABLES
 
+// TODO - Copy this code to the working branch (1 variable)
 let database;
 
 // Holds the opponent's player object
@@ -35,6 +38,7 @@ let blockProcessFlag = false;
 /////////////////////////////////////////////////////////////////////////////////////////
 // FUNCTIONS
 
+// TODO - Copy this code to the working branch (1 function)
 // **NEW:** Function to initialize Firebase variables in this module
 async function initializeFirebaseInDispatch() {
   const firebaseVariables = await getFirebaseVariables();
@@ -324,6 +328,7 @@ async function fetchPlayerByKey(playerKey) {
   }
 }
 
+// TODO - Copy this code to the working branch (all autorunning code)
 /////////////////////////////////////////////////////////////////////////////////////////
 // AUTORUNNING LOGIC
 

@@ -1,9 +1,12 @@
+// TODO - Copy this code to the working branch (1 import)
 import { getFirebaseVariables } from "../scripts/firebaseConfig.js";
+
 import { sendRPC } from "./chat.js";
 import { showDisplayBox } from "./displayBox.js";
 import { changeModalContent, BUTTON_RESPONSE } from "./modals.js";
 import { DEBUGMODE } from "./config.js";
 
+// TODO - Copy this code to the working branch (3 variables)
 let firebaseApp;
 let analytics;
 let database;
@@ -30,6 +33,7 @@ const boardTopOffset = boardElement.getBoundingClientRect().top;
 // add dice
 document.addEventListener("DOMContentLoaded", drawDice);
 
+// TODO - Copy this code to the working branch (1 function)
 // **NEW:** Function to initialize Firebase variables in this module
 async function initializeFirebaseInDispatch() {
   const firebaseVariables = await getFirebaseVariables();
@@ -2017,6 +2021,7 @@ function displayDiceThrows() {
   );
 }
 
+// TODO - Copy this code to the working branch (all autorunning code)
 /////////////////////////////////////////////////////////////////////////////////////////
 // AUTORUNNING LOGIC
 

@@ -9,15 +9,18 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 // IMPORTS
 
+// TODO - Copy this code to the working branch (1 import)
+import { getFirebaseVariables } from "./firebaseConfig.js";
+
 import { DEBUGMODE } from "./config.js";
 import { dispatchMessage } from "./dispatch.js";
-import { getFirebaseVariables } from "./firebaseConfig.js";
 import { changeModalContent } from "./modals.js";
 import { populatePlayers } from "./welcome.js";
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // VARIABLES
 
+// TODO - Copy this code to the working branch (3 variables)
 let firebaseApp;
 let analytics;
 let database;
@@ -112,6 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
 /////////////////////////////////////////////////////////////////////////////////////////
 // FUNCTIONS
 
+// TODO - Copy this code to the working branch (1 function)
 // **NEW:** Function to initialize Firebase variables in this module
 async function initializeFirebaseInDispatch() {
   const firebaseVariables = await getFirebaseVariables();
@@ -624,6 +628,7 @@ export async function sendRPC(method, params) {
   }
 }
 
+// TODO - Copy this code to the working branch (all autorunning code)
 /////////////////////////////////////////////////////////////////////////////////////////
 // AUTORUNNING LOGIC
 
