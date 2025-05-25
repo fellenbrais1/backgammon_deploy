@@ -49,7 +49,7 @@ module.exports.handler = async (event, context) => {
     console.log(APIKEY);
 
     const firebaseConfig = {
-      apiKey: APIKEY.slice(0, -1),
+      apiKey: APIKEY,
       appId: "1:933438650220:web:7cfd8f56a2aef998e46549",
       authDomain: "backgammon-b1e25.firebaseapp.com",
       measurementId: "G-ST0Z166K8V",
@@ -78,53 +78,6 @@ module.exports.handler = async (event, context) => {
     };
   }
 };
-
-// function setUpFirebase() {
-//   firebaseApp = window.firebase.initializeApp(firebaseConfig);
-
-//   analytics = window.firebase.analytics;
-//   database = window.firebase.database;
-// }
-
-// // Checks if a firebase record has been successfully initialized or not - only runs in debug mode
-// function confirmFirebaseInitialization() {
-//   if (
-//     firebaseApp !== undefined &&
-//     analytics !== undefined &&
-//     database !== undefined
-//   ) {
-//     // Success
-//     console.log(
-//       'confirmFirebaseInitialization(): Firebase initialization successful.'
-//     );
-//     setUpResult = true;
-//   } else {
-//     // Failure
-//     console.log(
-//       `confirmFirebaseInitialization(): Firebase initialization failed, check for connection issues`
-//     );
-//     setUpResult = false;
-//   }
-
-//   return;
-// }
-
-// export async function getFirebaseVariables() {
-//   if (setUpResult === true) {
-//     const firebaseVariables = {
-//       FIREBASEAPP: firebaseApp,
-//       ANALYTICS: analytics,
-//       DATABASE: database,
-//     };
-
-//     return firebaseVariables;
-//   } else {
-//     return;
-//   }
-// }
-// Used to initialize firebase connection
-
-// Allow processing of data to and from the firebase database
 
 // CODE END
 /////////////////////////////////////////////////////////////////////////////////////////
