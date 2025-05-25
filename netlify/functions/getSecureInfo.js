@@ -17,7 +17,7 @@ let database;
 
 let setUpResult = false;
 
-exports.handler = async (event, context) => {
+module.exports.handler = async (event, context) => {
   try {
     APIKEY = process.env.API_KEY;
 
