@@ -24,7 +24,7 @@ import { challengerName } from "./welcome.js";
 /////////////////////////////////////////////////////////////////////////////////////////
 // VARIABLES
 
-// let database;
+let database;
 
 // Holds the opponent's player object
 let activeOpponent = "";
@@ -37,10 +37,10 @@ let blockProcessFlag = false;
 
 // **NEW:** Function to initialize Firebase variables in this module
 async function initializeFirebaseInDispatch() {
-  const firebaseVariables = await getFirebaseVariables(); // Await the variables
+  const firebaseVariables = await getFirebaseVariables();
 
   if (firebaseVariables) {
-    const database = firebaseVariables.DATABASE; // Assign database once it's ready
+    const database = firebaseVariables.DATABASE;
     if (DEBUGMODE) {
       console.log("dispatch.js: Firebase database initialized:", database);
     }
@@ -49,7 +49,6 @@ async function initializeFirebaseInDispatch() {
     console.error(
       "dispatch.js: Failed to get Firebase variables. Database will not be available."
     );
-    // You might want to handle this error more robustly, e.g., disable features.
   }
 }
 
@@ -328,34 +327,19 @@ async function fetchPlayerByKey(playerKey) {
 /////////////////////////////////////////////////////////////////////////////////////////
 // AUTORUNNING LOGIC
 
-// const firebaseVariables = await getFirebaseVariables();
-
-// if (firebaseVariables) {
-//   database = firebaseVariables.DATABASE;
-// }
-
-// setTimeout(() => {
-//   const database = await initializeFirebaseInDispatch();
-
-//   if (DEBUGMODE) {
-//     console.log(`dispatch.js running`);
-//     console.log("dispatch.js database:", database);
-//   }
-// }, 2000);
-
 setTimeout(() => {
   (async () => {
     if (DEBUGMODE) {
       console.log(`dispatch.js: Autorunning logic started.`);
     }
 
-    const database = await initializeFirebaseInDispatch();
+    database = await initializeFirebaseInDispatch();
 
     if (DEBUGMODE) {
       console.log(`dispatch.js running`);
       console.log("dispatch.js database (after async init):", database); // This should now show the actual database object
     }
-  })(); // Immediately invoke the async function
+  })();
 }, 2000);
 
 // CODE END

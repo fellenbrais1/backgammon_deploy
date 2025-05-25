@@ -114,20 +114,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // **NEW:** Function to initialize Firebase variables in this module
 async function initializeFirebaseInDispatch() {
-  const firebaseVariables = await getFirebaseVariables(); // Await the variables
+  const firebaseVariables = await getFirebaseVariables();
 
   if (firebaseVariables) {
-    database = firebaseVariables.DATABASE; // Assign database once it's ready
-    analytics = firebaseVariables.ANALYTICS;
-    firebaseApp = firebaseVariables.FIREBASEAPP;
+    const firebaseApp = firebaseVariables.FIREBASEAPP;
+    const analytics = firebaseVariables.ANALYTICS;
+    const database = firebaseVariables.DATABASE;
     if (DEBUGMODE) {
+      console.log(
+        "dispatch.js: Firebase firebaseApp initialized:",
+        firebaseApp
+      );
+      console.log("dispatch.js: Firebase analytics initialized:", analytics);
       console.log("dispatch.js: Firebase database initialized:", database);
     }
+    return { firebaseApp, analytics, database };
   } else {
     console.error(
       "dispatch.js: Failed to get Firebase variables. Database will not be available."
     );
-    // You might want to handle this error more robustly, e.g., disable features.
   }
 }
 
@@ -622,24 +627,22 @@ export async function sendRPC(method, params) {
 /////////////////////////////////////////////////////////////////////////////////////////
 // AUTORUNNING LOGIC
 
-// const firebaseVariables = await getFirebaseVariables();
-
-// if (firebaseVariables) {
-//   firebaseApp = firebaseVariables.FIREBASEAPP;
-//   analytics = firebaseVariables.ANALYTICS;
-//   database = firebaseVariables.DATABASE;
-// }
-
 setTimeout(() => {
-  initializeFirebaseInDispatch();
-  // Debug mode checks
-  if (DEBUGMODE) {
-    console.log(`chat.js running`);
-    console.log("Using Firebase in chat.js:", firebaseApp);
-    console.log("chat.js analytics:", analytics);
-    console.log("chat.js database:", database);
-  }
-}, 1000);
+  (async () => {
+    if (DEBUGMODE) {
+      console.log(`dispatch.js: Autorunning logic started.`);
+    }
+
+    firebaseApp, analytics, (database = await initializeFirebaseInDispatch());
+
+    if (DEBUGMODE) {
+      console.log(`dispatch.js running`);
+      console.log("dispatch.js firebaseApp (after async init):", firebaseApp);
+      console.log("dispatch.js analytics (after async init):", analytics);
+      console.log("dispatch.js database (after async init):", database);
+    }
+  })();
+}, 2000);
 
 // CODE END
 /////////////////////////////////////////////////////////////////////////////////////////
