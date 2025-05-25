@@ -112,6 +112,25 @@ document.addEventListener("DOMContentLoaded", () => {
 /////////////////////////////////////////////////////////////////////////////////////////
 // FUNCTIONS
 
+// **NEW:** Function to initialize Firebase variables in this module
+async function initializeFirebaseInDispatch() {
+  const firebaseVariables = await getFirebaseVariables(); // Await the variables
+
+  if (firebaseVariables) {
+    database = firebaseVariables.DATABASE; // Assign database once it's ready
+    analytics = firebaseVariables.ANALYTICS;
+    firebaseApp = firebaseVariables.FIREBASEAPP;
+    if (DEBUGMODE) {
+      console.log("dispatch.js: Firebase database initialized:", database);
+    }
+  } else {
+    console.error(
+      "dispatch.js: Failed to get Firebase variables. Database will not be available."
+    );
+    // You might want to handle this error more robustly, e.g., disable features.
+  }
+}
+
 // Returns a new conn object when creating a new connection with an opponent
 export async function assignConn(opponent) {
   conn = await connectToPlayer(opponent);
@@ -603,13 +622,15 @@ export async function sendRPC(method, params) {
 /////////////////////////////////////////////////////////////////////////////////////////
 // AUTORUNNING LOGIC
 
-const firebaseVariables = await getFirebaseVariables();
+// const firebaseVariables = await getFirebaseVariables();
 
-if (firebaseVariables) {
-  firebaseApp = firebaseVariables.FIREBASEAPP;
-  analytics = firebaseVariables.ANALYTICS;
-  database = firebaseVariables.DATABASE;
-}
+// if (firebaseVariables) {
+//   firebaseApp = firebaseVariables.FIREBASEAPP;
+//   analytics = firebaseVariables.ANALYTICS;
+//   database = firebaseVariables.DATABASE;
+// }
+
+initializeFirebaseInDispatch();
 
 // Debug mode checks
 if (DEBUGMODE) {

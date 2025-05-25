@@ -35,6 +35,23 @@ let blockProcessFlag = false;
 /////////////////////////////////////////////////////////////////////////////////////////
 // FUNCTIONS
 
+// **NEW:** Function to initialize Firebase variables in this module
+async function initializeFirebaseInDispatch() {
+  const firebaseVariables = await getFirebaseVariables(); // Await the variables
+
+  if (firebaseVariables) {
+    database = firebaseVariables.DATABASE; // Assign database once it's ready
+    if (DEBUGMODE) {
+      console.log("dispatch.js: Firebase database initialized:", database);
+    }
+  } else {
+    console.error(
+      "dispatch.js: Failed to get Firebase variables. Database will not be available."
+    );
+    // You might want to handle this error more robustly, e.g., disable features.
+  }
+}
+
 // Stops incoming messages from being processed by manipulating a flag
 export function blockProcess() {
   blockProcessFlag = true;
@@ -310,11 +327,13 @@ async function fetchPlayerByKey(playerKey) {
 /////////////////////////////////////////////////////////////////////////////////////////
 // AUTORUNNING LOGIC
 
-const firebaseVariables = await getFirebaseVariables();
+// const firebaseVariables = await getFirebaseVariables();
 
-if (firebaseVariables) {
-  database = firebaseVariables.DATABASE;
-}
+// if (firebaseVariables) {
+//   database = firebaseVariables.DATABASE;
+// }
+
+initializeFirebaseInDispatch();
 
 // Debug mode checks
 if (DEBUGMODE) {
