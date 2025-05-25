@@ -24,7 +24,7 @@ import { challengerName } from "./welcome.js";
 /////////////////////////////////////////////////////////////////////////////////////////
 // VARIABLES
 
-let database;
+// let database;
 
 // Holds the opponent's player object
 let activeOpponent = "";
@@ -348,7 +348,7 @@ async function fetchPlayerByKey(playerKey) {
     console.log(`dispatch.js: Autorunning logic started.`);
   }
 
-  database = await initializeFirebaseInDispatch();
+  const database = await initializeFirebaseInDispatch();
 
   if (DEBUGMODE) {
     console.log(`dispatch.js running`);
