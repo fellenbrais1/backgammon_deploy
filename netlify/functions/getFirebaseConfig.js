@@ -32,10 +32,8 @@ module.exports.handler = async (event, context) => {
 
     console.log(APIKEY);
 
-    APIKEY = APIKEY.slice(0, -1);
-
     const firebaseConfig = {
-      apiKey: APIKEY,
+      apiKey: APIKEY.slice(0, -1),
       appId: '1:933438650220:web:7cfd8f56a2aef998e46549',
       authDomain: 'backgammon-b1e25.firebaseapp.com',
       measurementId: 'G-ST0Z166K8V',
