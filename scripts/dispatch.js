@@ -24,6 +24,8 @@ import { challengerName } from "./welcome.js";
 /////////////////////////////////////////////////////////////////////////////////////////
 // VARIABLES
 
+let database;
+
 // Holds the opponent's player object
 let activeOpponent = "";
 
@@ -38,11 +40,11 @@ async function initializeFirebaseInDispatch() {
   const firebaseVariables = await getFirebaseVariables(); // Await the variables
 
   if (firebaseVariables) {
-    const database = firebaseVariables.DATABASE; // Assign database once it's ready
+    database = firebaseVariables.DATABASE; // Assign database once it's ready
     if (DEBUGMODE) {
       console.log("dispatch.js: Firebase database initialized:", database);
     }
-    return database;
+    return;
   } else {
     console.error(
       "dispatch.js: Failed to get Firebase variables. Database will not be available."
@@ -332,14 +334,38 @@ async function fetchPlayerByKey(playerKey) {
 //   database = firebaseVariables.DATABASE;
 // }
 
-setTimeout(() => {
-  const database = Promise.resolve(initializeFirebaseInDispatch());
+// setTimeout(() => {
+//   const database = await initializeFirebaseInDispatch();
 
+//   if (DEBUGMODE) {
+//     console.log(`dispatch.js running`);
+//     console.log("dispatch.js database:", database);
+//   }
+// }, 2000);
+
+(async () => {
+  if (DEBUGMODE) {
+    console.log(`dispatch.js: Autorunning logic started.`);
+  }
+
+  // Call the initialization function and await its completion
+  await initializeFirebaseInDispatch();
+
+  // Now, 'database' should be initialized if getFirebaseVariables() was successful.
+  // You can safely log it here to confirm its value.
   if (DEBUGMODE) {
     console.log(`dispatch.js running`);
-    console.log("dispatch.js database:", database);
+    console.log("dispatch.js database (after async init):", database); // This should now show the actual database object
   }
-}, 2000);
+
+  // Example of code that should only run after database is ready:
+  // If you have any initial data listeners or other setup that *requires* 'database',
+  // place them here, or ensure they are called from a function that's triggered
+  // after this IIFE completes.
+  // For instance, if you had:
+  // setupInitialDatabaseListeners(database);
+  // You would call it here.
+})(); // Immediately invoke the async function
 
 // CODE END
 /////////////////////////////////////////////////////////////////////////////////////////
