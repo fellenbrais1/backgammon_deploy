@@ -633,7 +633,11 @@ setTimeout(() => {
       console.log(`dispatch.js: Autorunning logic started.`);
     }
 
-    firebaseApp, analytics, (database = await initializeFirebaseInDispatch());
+    const initializedVars = await initializeFirebaseInDispatch();
+
+    if (initializedVars) {
+      ({ firebaseApp, analytics, database } = initializedVars);
+    }
 
     if (DEBUGMODE) {
       console.log(`chat.js running`);
