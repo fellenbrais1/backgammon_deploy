@@ -68,7 +68,7 @@ async function getFirebaseVariables() {
     return firebaseVariables;
   } else {
     console.warn('Firebase not successfully set up on the client-side yet');
-    return null; // Or throw an error
+    return null;
   }
 }
 
