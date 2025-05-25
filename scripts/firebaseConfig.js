@@ -49,11 +49,13 @@ function confirmFirebaseInitialization() {
       "confirmFirebaseInitialization(): Client-side Firebase initialization successful."
     );
     setUpResult = true;
+    return;
   } else {
     console.log(
       `confirmFirebaseInitialization(): Client-side Firebase initialization failed.`
     );
     setUpResult = false;
+    return;
   }
 }
 

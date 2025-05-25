@@ -343,18 +343,20 @@ async function fetchPlayerByKey(playerKey) {
 //   }
 // }, 2000);
 
-(async () => {
-  if (DEBUGMODE) {
-    console.log(`dispatch.js: Autorunning logic started.`);
-  }
+setTimeout(() => {
+  (async () => {
+    if (DEBUGMODE) {
+      console.log(`dispatch.js: Autorunning logic started.`);
+    }
 
-  const database = await initializeFirebaseInDispatch();
+    const database = await initializeFirebaseInDispatch();
 
-  if (DEBUGMODE) {
-    console.log(`dispatch.js running`);
-    console.log("dispatch.js database (after async init):", database); // This should now show the actual database object
-  }
-})(); // Immediately invoke the async function
+    if (DEBUGMODE) {
+      console.log(`dispatch.js running`);
+      console.log("dispatch.js database (after async init):", database); // This should now show the actual database object
+    }
+  })(); // Immediately invoke the async function
+}, 2000);
 
 // CODE END
 /////////////////////////////////////////////////////////////////////////////////////////
