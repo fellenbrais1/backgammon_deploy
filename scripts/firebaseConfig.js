@@ -87,7 +87,7 @@ async function initApp() {
 
     await setUpFirebase(firebaseConfig);
   } catch (error) {
-    console.log(firebaseApp.APIKEY);
+    console.log(firebaseConfig.APIKEY);
     console.error("Failed to initialize client-side Firebase:", error);
   }
 }
