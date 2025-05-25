@@ -97,7 +97,7 @@ async function initApp() {
 // Run the initialization when the DOM is ready
 document.addEventListener("DOMContentLoaded", initApp);
 
-export { firebaseApp, analytics, database };
+// export { firebaseApp, analytics, database };
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // CODE END

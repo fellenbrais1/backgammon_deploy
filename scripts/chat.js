@@ -632,7 +632,7 @@ export async function sendRPC(method, params) {
 
 setTimeout(() => {
   initializeFirebaseInDispatch();
-}, 1000);
+}, 2000);
 
 // Debug mode checks
 if (DEBUGMODE) {
