@@ -9,96 +9,99 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 // EVENT LISTENERS
 
-let APIKEY;
-
-let firebaseApp;
-let analytics;
-let database;
-
-let setUpResult = false;
-
 module.exports.handler = async (event, context) => {
   try {
-    APIKEY = process.env.API_KEY;
+    const APIKEY = process.env.API_KEY;
 
     if (!APIKEY) {
       console.log(
-        `Problem retrieving APIKEY from the netlify environmental variable, check deployment settings or contact the site administrator`
+        `ERROR: Firebase API_KEY is missing from the Netlify environmental variables`
       );
-      // window.alert(`Problem retrieving APIKEY from the netlify environmental variable, check deployment settings or contact the site administrator`);
-      return;
-    } else {
-      console.log(
-        `APIKEY sucessfully retrieved from the netlify environmental variable`
-      );
-      setUpFirebase();
-      confirmFirebaseInitialization();
-      return;
+      return {
+        statusCode: 500,
+        body: JSON.stringify({
+          message: 'Server configuration error: Firebase API Key not found',
+        }),
+        headers: { 'Content-Type': 'application/json' },
+      };
     }
+
+    console.log(`Firebase API_KEY sucessfully retrieved by Netlify function`);
+
+    const firebaseConfig = {
+      apiKey: APIKEY,
+      appId: '1:933438650220:web:7cfd8f56a2aef998e46549',
+      authDomain: 'backgammon-b1e25.firebaseapp.com',
+      measurementId: 'G-ST0Z166K8V',
+      messagingSenderId: '933438650220',
+      projectId: 'backgammon-b1e25',
+      storageBucket: 'backgammon-b1e25.firebasestorage.app',
+    };
+
+    return {
+      statusCode: 200, // OK
+      body: JSON.stringify(firebaseConfig), // Send the config object as JSON
+      headers: { 'Content-Type': 'application/json' },
+    };
   } catch (error) {
     console.error(
-      'Error retrieving the netlify environmental variable:',
+      'ERROR: An unexpected error occurred in the Netlify Function:',
       error
     );
-    // window.alert('Error retrieving the netlify environmental variable:', error);
-    return;
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        message: 'An unexpected error occurred.',
+        error: error.message,
+      }),
+      headers: { 'Content-Type': 'application/json' },
+    };
   }
 };
 
-function setUpFirebase() {
-  const firebaseConfig = {
-    apiKey: APIKEY,
-    appId: '1:933438650220:web:7cfd8f56a2aef998e46549',
-    authDomain: 'backgammon-b1e25.firebaseapp.com',
-    measurementId: 'G-ST0Z166K8V',
-    messagingSenderId: '933438650220',
-    projectId: 'backgammon-b1e25',
-    storageBucket: 'backgammon-b1e25.firebasestorage.app',
-  };
+// function setUpFirebase() {
+//   firebaseApp = window.firebase.initializeApp(firebaseConfig);
 
-  firebaseApp = window.firebase.initializeApp(firebaseConfig);
+//   analytics = window.firebase.analytics;
+//   database = window.firebase.database;
+// }
 
-  analytics = window.firebase.analytics;
-  database = window.firebase.database;
-}
+// // Checks if a firebase record has been successfully initialized or not - only runs in debug mode
+// function confirmFirebaseInitialization() {
+//   if (
+//     firebaseApp !== undefined &&
+//     analytics !== undefined &&
+//     database !== undefined
+//   ) {
+//     // Success
+//     console.log(
+//       'confirmFirebaseInitialization(): Firebase initialization successful.'
+//     );
+//     setUpResult = true;
+//   } else {
+//     // Failure
+//     console.log(
+//       `confirmFirebaseInitialization(): Firebase initialization failed, check for connection issues`
+//     );
+//     setUpResult = false;
+//   }
 
-// Checks if a firebase record has been successfully initialized or not - only runs in debug mode
-function confirmFirebaseInitialization() {
-  if (
-    firebaseApp !== undefined &&
-    analytics !== undefined &&
-    database !== undefined
-  ) {
-    // Success
-    console.log(
-      'confirmFirebaseInitialization(): Firebase initialization successful.'
-    );
-    setUpResult = true;
-  } else {
-    // Failure
-    console.log(
-      `confirmFirebaseInitialization(): Firebase initialization failed, check for connection issues`
-    );
-    setUpResult = false;
-  }
+//   return;
+// }
 
-  return;
-}
+// export async function getFirebaseVariables() {
+//   if (setUpResult === true) {
+//     const firebaseVariables = {
+//       FIREBASEAPP: firebaseApp,
+//       ANALYTICS: analytics,
+//       DATABASE: database,
+//     };
 
-export async function getFirebaseVariables() {
-  if (setUpResult === true) {
-    const firebaseVariables = {
-      FIREBASEAPP: firebaseApp,
-      ANALYTICS: analytics,
-      DATABASE: database,
-    };
-
-    return firebaseVariables;
-  } else {
-    return;
-  }
-}
-
+//     return firebaseVariables;
+//   } else {
+//     return;
+//   }
+// }
 // Used to initialize firebase connection
 
 // Allow processing of data to and from the firebase database

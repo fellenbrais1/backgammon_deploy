@@ -1,12 +1,13 @@
-// import { firebaseApp, analytics, database } from '../scripts/firebaseConfig.js';
+import { firebaseApp, analytics, database } from '../scripts/firebaseConfig.js';
 import { sendRPC } from './chat.js';
 import { showDisplayBox } from './displayBox.js';
 import { changeModalContent, BUTTON_RESPONSE } from './modals.js';
-import { getFirebaseVariables } from '../netlify/functions/getSecureInfo.js';
+import { DEBUGMODE } from './config.js';
+// import { getFirebaseVariables } from '../netlify/functions/getSecureInfo.js';
 
-let firebaseApp;
-let analytics;
-let database;
+// let firebaseApp;
+// let analytics;
+// let database;
 
 const PIECE_RADIUS = 18;
 const PIECE_DIAMETER = PIECE_RADIUS + PIECE_RADIUS;
@@ -1997,13 +1998,13 @@ function displayDiceThrows() {
 /////////////////////////////////////////////////////////////////////////////////////////
 // AUTORUNNING LOGIC
 
-const firebaseVariables = await getFirebaseVariables();
+// const firebaseVariables = await getFirebaseVariables();
 
-if (firebaseVariables) {
-  firebaseApp = firebaseVariables[0];
-  analytics = firebaseVariables[1];
-  database = firebaseVariables[2];
-}
+// if (firebaseVariables) {
+//   firebaseApp = firebaseVariables[0];
+//   analytics = firebaseVariables[1];
+//   database = firebaseVariables[2];
+// }
 
 if (DEBUGMODE) {
   console.log('Using Firebase in app.js:', firebaseApp);

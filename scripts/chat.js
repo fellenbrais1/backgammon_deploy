@@ -11,17 +11,17 @@
 
 import { DEBUGMODE } from './config.js';
 import { dispatchMessage } from './dispatch.js';
-// import { analytics, database, firebaseApp } from './firebaseConfig.js';
+import { analytics, database, firebaseApp } from './firebaseConfig.js';
 import { changeModalContent } from './modals.js';
 import { populatePlayers } from './welcome.js';
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // VARIABLES
 
-// Firebase database
-let firebaseApp;
-let database;
-let analytics;
+// // Firebase database
+// let firebaseApp;
+// let database;
+// let analytics;
 
 // Player connection objects
 export let peer;
@@ -604,13 +604,13 @@ export async function sendRPC(method, params) {
 /////////////////////////////////////////////////////////////////////////////////////////
 // AUTORUNNING LOGIC
 
-const firebaseVariables = await getFirebaseVariables();
+// const firebaseVariables = await getFirebaseVariables();
 
-if (firebaseVariables) {
-  firebaseApp = firebaseVariables[0];
-  analytics = firebaseVariables[1];
-  database = firebaseVariables[2];
-}
+// if (firebaseVariables) {
+//   firebaseApp = firebaseVariables[0];
+//   analytics = firebaseVariables[1];
+//   database = firebaseVariables[2];
+// }
 
 // Debug mode checks
 if (DEBUGMODE) {
