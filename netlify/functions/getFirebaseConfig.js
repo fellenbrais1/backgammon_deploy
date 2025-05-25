@@ -32,6 +32,7 @@ module.exports.handler = async (event, context) => {
     console.log(`DEBUG: Raw APIKEY value: ${APIKEY}`);
 
     if (!APIKEY) {
+      console.log(`DEBUG: Raw APIKEY value: ${APIKEY}`);
       console.log(
         `ERROR: Firebase API_KEY is missing from the Netlify environmental variables`
       );
@@ -64,6 +65,7 @@ module.exports.handler = async (event, context) => {
       headers: { "Content-Type": "application/json" },
     };
   } catch (error) {
+    console.log(`DEBUG: Raw APIKEY value: ${APIKEY}`);
     console.error(
       "ERROR: An unexpected error occurred in the Netlify Function:",
       error
