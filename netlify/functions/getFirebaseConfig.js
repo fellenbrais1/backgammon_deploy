@@ -13,21 +13,21 @@ module.exports.handler = async (event, context) => {
   try {
     const APIKEY = process.env.API_KEY;
 
-    // --- Aggressive cleaning of APIKEY ---
-    if (typeof APIKEY === "string") {
-      // 1. Trim any whitespace that might surround the value
-      APIKEY = APIKEY.trim();
+    // // --- Aggressive cleaning of APIKEY ---
+    // if (typeof APIKEY === "string") {
+    //   // 1. Trim any whitespace that might surround the value
+    //   APIKEY = APIKEY.trim();
 
-      // 2. Remove leading/trailing quotes if they exist
-      // This handles both single and double quotes
-      if (
-        (APIKEY.startsWith('"') && APIKEY.endsWith('"')) ||
-        (APIKEY.startsWith("'") && APIKEY.endsWith("'"))
-      ) {
-        APIKEY = APIKEY.slice(1, -1); // Remove the first and last character (the quotes)
-      }
-    }
-    // --- End aggressive cleaning ---
+    //   // 2. Remove leading/trailing quotes if they exist
+    //   // This handles both single and double quotes
+    //   if (
+    //     (APIKEY.startsWith('"') && APIKEY.endsWith('"')) ||
+    //     (APIKEY.startsWith("'") && APIKEY.endsWith("'"))
+    //   ) {
+    //     APIKEY = APIKEY.slice(1, -1); // Remove the first and last character (the quotes)
+    //   }
+    // }
+    // // --- End aggressive cleaning ---
 
     console.log(`DEBUG: Raw APIKEY value: ${APIKEY}`);
 
