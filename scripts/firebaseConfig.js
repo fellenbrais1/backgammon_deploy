@@ -59,17 +59,19 @@ function confirmFirebaseInitialization() {
 
 // Function to get the initialized Firebase variables for use in other client-side modules
 export async function getFirebaseVariables() {
-  if (setUpResult === true) {
-    const firebaseVariables = {
-      FIREBASEAPP: firebaseApp,
-      ANALYTICS: analytics,
-      DATABASE: database,
-    };
-    return firebaseVariables;
-  } else {
-    console.warn("Firebase not successfully set up on the client-side yet");
-    return null;
-  }
+  setTimeout(() => {
+    if (setUpResult === true) {
+      const firebaseVariables = {
+        FIREBASEAPP: firebaseApp,
+        ANALYTICS: analytics,
+        DATABASE: database,
+      };
+      return firebaseVariables;
+    } else {
+      console.warn("Firebase not successfully set up on the client-side yet");
+      return null;
+    }
+  }, 1000);
 }
 
 // --- Main execution logic for your client-side app ---
