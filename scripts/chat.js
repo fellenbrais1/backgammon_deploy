@@ -630,7 +630,9 @@ export async function sendRPC(method, params) {
 //   database = firebaseVariables.DATABASE;
 // }
 
-initializeFirebaseInDispatch();
+setTimeout(() => {
+  initializeFirebaseInDispatch();
+}, 1000);
 
 // Debug mode checks
 if (DEBUGMODE) {

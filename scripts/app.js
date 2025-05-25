@@ -2024,7 +2024,9 @@ function displayDiceThrows() {
 //   database = firebaseVariables.DATABASE;
 // }
 
-initializeFirebaseInDispatch();
+setTimeout(() => {
+  initializeFirebaseInDispatch();
+}, 1000);
 
 if (DEBUGMODE) {
   console.log("Using Firebase in app.js:", firebaseApp);

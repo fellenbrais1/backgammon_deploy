@@ -333,7 +333,9 @@ async function fetchPlayerByKey(playerKey) {
 //   database = firebaseVariables.DATABASE;
 // }
 
-initializeFirebaseInDispatch();
+setTimeout(() => {
+  initializeFirebaseInDispatch();
+}, 1000);
 
 // Debug mode checks
 if (DEBUGMODE) {
