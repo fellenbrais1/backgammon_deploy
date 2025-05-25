@@ -40,11 +40,11 @@ async function initializeFirebaseInDispatch() {
   const firebaseVariables = await getFirebaseVariables(); // Await the variables
 
   if (firebaseVariables) {
-    database = firebaseVariables.DATABASE; // Assign database once it's ready
+    const database = firebaseVariables.DATABASE; // Assign database once it's ready
     if (DEBUGMODE) {
       console.log("dispatch.js: Firebase database initialized:", database);
     }
-    return;
+    return database;
   } else {
     console.error(
       "dispatch.js: Failed to get Firebase variables. Database will not be available."
@@ -348,23 +348,12 @@ async function fetchPlayerByKey(playerKey) {
     console.log(`dispatch.js: Autorunning logic started.`);
   }
 
-  // Call the initialization function and await its completion
-  await initializeFirebaseInDispatch();
+  database = await initializeFirebaseInDispatch();
 
-  // Now, 'database' should be initialized if getFirebaseVariables() was successful.
-  // You can safely log it here to confirm its value.
   if (DEBUGMODE) {
     console.log(`dispatch.js running`);
     console.log("dispatch.js database (after async init):", database); // This should now show the actual database object
   }
-
-  // Example of code that should only run after database is ready:
-  // If you have any initial data listeners or other setup that *requires* 'database',
-  // place them here, or ensure they are called from a function that's triggered
-  // after this IIFE completes.
-  // For instance, if you had:
-  // setupInitialDatabaseListeners(database);
-  // You would call it here.
 })(); // Immediately invoke the async function
 
 // CODE END
