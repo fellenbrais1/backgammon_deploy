@@ -1,7 +1,12 @@
-import { firebaseApp, analytics, database } from '../scripts/firebaseConfig.js';
+// import { firebaseApp, analytics, database } from '../scripts/firebaseConfig.js';
 import { sendRPC } from './chat.js';
 import { showDisplayBox } from './displayBox.js';
 import { changeModalContent, BUTTON_RESPONSE } from './modals.js';
+import { getFirebaseVariables } from '../netlify/functions/getSecureInfo.js';
+
+let firebaseApp;
+let analytics;
+let database;
 
 const PIECE_RADIUS = 18;
 const PIECE_DIAMETER = PIECE_RADIUS + PIECE_RADIUS;
@@ -21,11 +26,6 @@ const boardElement = document.getElementById('board');
 const boardLeftOffset = boardElement.getBoundingClientRect().left;
 const boardTopOffset = boardElement.getBoundingClientRect().top;
 //console.log('boardLeftOffset = ', boardLeftOffset, ', boardTopOffset = ', boardTopOffset);
-
-console.log('Using Firebase in app.js:', firebaseApp);
-const db = database;
-console.log(analytics);
-console.log(db);
 
 // add dice
 document.addEventListener('DOMContentLoaded', drawDice);
@@ -153,12 +153,15 @@ function drawDice() {
   dice_red1.addEventListener('click', rollRedDice);
   dice_red2.addEventListener('click', rollRedDice);
 
-  // event listener for 'end turn' button 
+  // event listener for 'end turn' button
   end_turn.addEventListener('click', async () => {
     const diceThrows = board.diceThrows;
     const filteredDiceThrows = diceThrows.filter((value) => value !== 0);
-    const result = await changeModalContent('movesRemaining', filteredDiceThrows);
-    
+    const result = await changeModalContent(
+      'movesRemaining',
+      filteredDiceThrows
+    );
+
     if (result === BUTTON_RESPONSE.BUTTON_YES) {
       // send 'endturn' signal to the other player
       sendRPC('endTurn', null);
@@ -288,16 +291,19 @@ export async function playbackMove(move) {
   const toColor = board.colorOfPoint(move.to);
   const toOccupied = board.contents[move.to].occupied.length;
 
-    // If piece moving off board, then send to right destination
-    // If piece moving off board, then send to right destination
-    if (move.to == 0) {
-      destinationPoint = move.pieceId[0] == 'r' ? 27 : 28;
-    } else {
-      destinationPoint = move.to;
-    }
+  // If piece moving off board, then send to right destination
+  // If piece moving off board, then send to right destination
+  if (move.to == 0) {
+    destinationPoint = move.pieceId[0] == 'r' ? 27 : 28;
+  } else {
+    destinationPoint = move.to;
+  }
 
   // Step 2: work out coordinates to animate snap of the active player - depends on whether taking blot or not
-  const posToOccupy = (toColor != move.player && toOccupied == 1) ? 1 : board.contents[destinationPoint].occupied.length + 1;
+  const posToOccupy =
+    toColor != move.player && toOccupied == 1
+      ? 1
+      : board.contents[destinationPoint].occupied.length + 1;
   let [x, y] = getPieceCoords(game.myPlayer, destinationPoint, posToOccupy);
   await animateMovePiece(move.pieceId, x, y, 0.5);
 
@@ -306,7 +312,7 @@ export async function playbackMove(move) {
   if (move.player === 'r') {
     uniqueSortedBlots.sort((a, b) => a - b);
   } else {
-    uniqueSortedBlots.sort((a, b) => b - a);  // take blots in reverse order for white
+    uniqueSortedBlots.sort((a, b) => b - a); // take blots in reverse order for white
   }
   for (let i = 0; i < uniqueSortedBlots.length; i++) {
     await takeBlot(uniqueSortedBlots[i]);
@@ -532,7 +538,8 @@ document.querySelector('.test_button2').addEventListener('click', function () {
       game.myPlayer +
       ', game.currentTurn = ' +
       game.currentTurn +
-      ', stage = ' + game.stage
+      ', stage = ' +
+      game.stage
   );
 
   // print contents of board
@@ -634,7 +641,7 @@ const game = {
 
     if (game.myPlayer == 'w' && game.currentTurn == 'w') white_opacity = '1.0';
     if (game.myPlayer == 'r' && game.currentTurn == 'r') red_opacity = '1.0';
-    
+
     dice_red1.style.opacity = red_opacity;
     dice_red2.style.opacity = red_opacity;
     dice_white1.style.opacity = white_opacity;
@@ -660,7 +667,7 @@ const board = {
 
   originalThrows: [0, 0, 0, 0],
 
-  blotsTaken: [],             // collection of blots that can be taken
+  blotsTaken: [], // collection of blots that can be taken
 
   onTheMove: '', // piece id that is currently on the move
 
@@ -823,7 +830,7 @@ export async function startGame(playerAssign, isChallenger) {
     game.stage = Stage.PLAYING;
     game.myPlayer = isChallenger ? 'r' : 'w'; // was: game.myPlayer = isChallenger ? 'r' : 'w';
     game.currentTurn = 'r'; // was: game.currentTurn = 'r';
-    game.redDiceActive = true;  // was true
+    game.redDiceActive = true; // was true
     game.whiteDiceActive = false; // was false
   } else {
     game.stage = Stage.DEMO;
@@ -978,7 +985,8 @@ function isValidDiceMove(move) {
 
   // special case 1 - moving off the bar
   if (move.from == 25 || move.from == 26) {
-    if (move.player == 'r') { // was game.myPlayer
+    if (move.player == 'r') {
+      // was game.myPlayer
       effectiveMoveValue = move.to;
     } else {
       effectiveMoveValue = 25 - move.to;
@@ -993,80 +1001,77 @@ function isValidDiceMove(move) {
   if (computeGameStage(move.player) == Stage.BEARING && move.to == 0) {
     effectiveMoveValue = move.player == 'r' ? 25 - move.from : move.from;
 
-    return (canMakeBearOff(move, effectiveMoveValue, board.diceThrows));
+    return canMakeBearOff(move, effectiveMoveValue, board.diceThrows);
   }
 
-  return (canMakeSum(move, effectiveMoveValue, board.diceThrows).length); // i.e. one or more possible sequences returned
+  return canMakeSum(move, effectiveMoveValue, board.diceThrows).length; // i.e. one or more possible sequences returned
 }
 
 // work out if a piece can be borne off with the values in the throw
 // return true or false
 function canMakeBearOff(move, effectiveMoveValue, throws) {
-    // calculate topmost point
-    let highestPoint = getTopPointHome(move.player); // returns number 1 to 6
-    console.log('topmost Point = ' + highestPoint);
+  // calculate topmost point
+  let highestPoint = getTopPointHome(move.player); // returns number 1 to 6
+  console.log('topmost Point = ' + highestPoint);
 
-    // Filter out zeros
-    const dice = throws.filter((value) => value !== 0);
+  // Filter out zeros
+  const dice = throws.filter((value) => value !== 0);
 
-    // sort the dice - so we test the highest value first
-    if (dice.length > 1) {
-      dice.sort((a, b) => b - a);
+  // sort the dice - so we test the highest value first
+  if (dice.length > 1) {
+    dice.sort((a, b) => b - a);
+  }
+
+  // iterate dice throws (from highest value to lowest) until we get a suitable match
+  for (let d = 0; d < dice.length; d++) {
+    // match scenario 1 - dice matches exactly
+    if (dice[d] == effectiveMoveValue) return true;
+
+    // match scenario 2 - dice acts as number higher then effectiveMoveValue
+    if (highestPoint <= effectiveMoveValue) {
+      if (dice[d] > effectiveMoveValue) return true;
     }
+  }
 
-    // iterate dice throws (from highest value to lowest) until we get a suitable match
-    for (let d = 0; d < dice.length; d++) {
-
-      // match scenario 1 - dice matches exactly
-      if (dice[d] == effectiveMoveValue) return true;
-
-      // match scenario 2 - dice acts as number higher then effectiveMoveValue
-      if (highestPoint <= effectiveMoveValue) {
-        if (dice[d] > effectiveMoveValue) return true;
-      }
-    }
-    
-    return false;
+  return false;
 }
 
 // work out what dice throw was used when a piece is borne off - remove from board.diceThrows
 function consumeDiceBearOff(move, effectiveMoveValue, throws) {
-    let consumedValue = 0;
+  let consumedValue = 0;
 
-    // calculate topmost point
-    let highestPoint = getTopPointHome(move.player); // returns number 1 to 6
-    console.log('topmost Point = ' + highestPoint);
+  // calculate topmost point
+  let highestPoint = getTopPointHome(move.player); // returns number 1 to 6
+  console.log('topmost Point = ' + highestPoint);
 
-    // Filter out zeros
-    const dice = throws.filter((value) => value !== 0);
+  // Filter out zeros
+  const dice = throws.filter((value) => value !== 0);
 
-    // sort the dice - so we test the highest value first
-    if (dice.length > 1) {
-      dice.sort((a, b) => b - a);
+  // sort the dice - so we test the highest value first
+  if (dice.length > 1) {
+    dice.sort((a, b) => b - a);
+  }
+
+  // iterate dice throws (from highest value to lowest) until we get a suitable match
+  for (let d = 0; d < dice.length; d++) {
+    // match scenario 1 - dice matches exactly
+    if (dice[d] == effectiveMoveValue) consumedValue = dice[d];
+
+    // match scenario 2 - dice acts as number higher then effectiveMoveValue
+    if (highestPoint <= effectiveMoveValue) {
+      if (dice[d] > effectiveMoveValue) consumedValue = dice[d];
     }
+  }
 
-    // iterate dice throws (from highest value to lowest) until we get a suitable match
-    for (let d = 0; d < dice.length; d++) {
-
-      // match scenario 1 - dice matches exactly
-      if (dice[d] == effectiveMoveValue) consumedValue = dice[d];
-
-      // match scenario 2 - dice acts as number higher then effectiveMoveValue
-      if (highestPoint <= effectiveMoveValue) {
-        if (dice[d] > effectiveMoveValue) consumedValue = dice[d];
+  // if we get a matching value, remove from board.diceThrows by overwriting with 0
+  if (consumedValue) {
+    for (let i = 0; i < board.diceThrows.length; i++) {
+      if (board.diceThrows[i] == consumedValue) {
+        board.diceThrows[i] = 0;
+        break;
       }
     }
-
-    // if we get a matching value, remove from board.diceThrows by overwriting with 0
-    if (consumedValue) {
-      for (let i = 0; i < board.diceThrows.length; i++) {
-        if (board.diceThrows[i] == consumedValue) {
-          board.diceThrows[i] = 0;
-          break;
-        }
-      }
-    }
-    
+  }
 }
 
 // return topmost occupied point in home board - return 1 to 6
@@ -1085,7 +1090,7 @@ function getTopPointHome(player) {
     if (board.colorOfPoint(i) == player) break;
   }
 
-  return player == 'r'? 25 - i : i;
+  return player == 'r' ? 25 - i : i;
 }
 
 function canMakeSum(move, effectiveMoveValue, diceThrows) {
@@ -1118,8 +1123,9 @@ function canMakeSum(move, effectiveMoveValue, diceThrows) {
       // Test this sequence
       blots = testMoveSequence(move, sequence);
       if (blots !== null) {
-        validSequences.push(sequence);                        // save sequence
-        if (Array.isArray(blots) && blots.length > 0) {       // save any blots produced
+        validSequences.push(sequence); // save sequence
+        if (Array.isArray(blots) && blots.length > 0) {
+          // save any blots produced
           board.blotsTaken = board.blotsTaken.concat(blots);
         }
       }
@@ -1135,8 +1141,9 @@ function canMakeSum(move, effectiveMoveValue, diceThrows) {
       const sequence = [dice[0]];
       blots = testMoveSequence(move, sequence);
       if (blots !== null) {
-        validSequences.push(sequence);                        // save sequence
-        if (Array.isArray(blots) && blots.length > 0) {       // save any blots produced
+        validSequences.push(sequence); // save sequence
+        if (Array.isArray(blots) && blots.length > 0) {
+          // save any blots produced
           board.blotsTaken = board.blotsTaken.concat(blots);
         }
       }
@@ -1150,8 +1157,9 @@ function canMakeSum(move, effectiveMoveValue, diceThrows) {
       const sequence = [dice[0]];
       blots = testMoveSequence(move, sequence);
       if (blots !== null) {
-        validSequences.push(sequence);                        // save sequence
-        if (Array.isArray(blots) && blots.length > 0) {       // save any blots produced
+        validSequences.push(sequence); // save sequence
+        if (Array.isArray(blots) && blots.length > 0) {
+          // save any blots produced
           board.blotsTaken = board.blotsTaken.concat(blots);
         }
       }
@@ -1162,8 +1170,9 @@ function canMakeSum(move, effectiveMoveValue, diceThrows) {
       const sequence = [dice[1]];
       blots = testMoveSequence(move, sequence);
       if (blots !== null) {
-        validSequences.push(sequence);                       // save sequence
-        if (Array.isArray(blots) && blots.length > 0) {      // save any blots produced
+        validSequences.push(sequence); // save sequence
+        if (Array.isArray(blots) && blots.length > 0) {
+          // save any blots produced
           board.blotsTaken = board.blotsTaken.concat(blots);
         }
       }
@@ -1181,23 +1190,31 @@ function canMakeSum(move, effectiveMoveValue, diceThrows) {
       blots2 = testMoveSequence(move, sequence2);
 
       // test for ambiguity
-      if (Array.isArray(blots1) && Array.isArray(blots2) && !hasSameElements(blots1, blots2)) {
+      if (
+        Array.isArray(blots1) &&
+        Array.isArray(blots2) &&
+        !hasSameElements(blots1, blots2)
+      ) {
         // this shows ambiguity, the 2 sequences have different side-effects
-        showDisplayBox('Move depends on the dice order. Please move piece one dice at a time');
+        showDisplayBox(
+          'Move depends on the dice order. Please move piece one dice at a time'
+        );
 
-        return [];  // no sequences are valid
+        return []; // no sequences are valid
       }
 
       if (blots1 !== null) {
-        validSequences.push(sequence1);                         // save sequence
-        if (Array.isArray(blots1) && blots1.length > 0) {       // save any blots produced
+        validSequences.push(sequence1); // save sequence
+        if (Array.isArray(blots1) && blots1.length > 0) {
+          // save any blots produced
           board.blotsTaken = board.blotsTaken.concat(blots1);
         }
       }
 
       if (blots2 !== null) {
-        validSequences.push(sequence2);                         // save sequence
-        if (Array.isArray(blots2) && blots2.length > 0) {       // save any blots produced
+        validSequences.push(sequence2); // save sequence
+        if (Array.isArray(blots2) && blots2.length > 0) {
+          // save any blots produced
           board.blotsTaken = board.blotsTaken.concat(blots2);
         }
       }
@@ -1213,17 +1230,15 @@ function hasSameElements(arr1, arr2) {
   if (arr1.length !== arr2.length) {
     return false;
   }
-  
+
   // Sort both arrays and convert to strings for comparison
   const sortAndStringify = (arr) => {
     // Create a copy to avoid modifying the original array
     return JSON.stringify([...arr].sort());
   };
-  
+
   return sortAndStringify(arr1) === sortAndStringify(arr2);
 }
-
-
 
 /* This function has complex return values:
  *  null - the sequence is not possible
@@ -1239,7 +1254,7 @@ function testMoveSequence(move, sequence) {
   if (move.from === 25) {
     testPoint = 0;
   } else if (move.from === 26) {
-    testPoint = 25;  // was 25 - move.to
+    testPoint = 25; // was 25 - move.to
   } else {
     testPoint = move.from;
   }
@@ -1366,7 +1381,7 @@ function consumeDiceMove(move) {
     consumeDiceBearOff(move, effectiveMoveValue, board.diceThrows);
   } else {
     consumeDiceComposite(effectiveMoveValue, board.diceThrows);
-  }  
+  }
 
   console.log(
     'consumeDiceMove - consumed dice move ' +
@@ -1381,8 +1396,6 @@ function consumeDiceMove(move) {
     game.eventTurnFinished();
   }
 }
-
-
 
 async function applyMove(move) {
   // either snap or return depending on move legality
@@ -1449,11 +1462,15 @@ async function applyMove(move) {
   }
 
   // Step 2: work out coordinates to animate snap of the active player - depends on whether taking blot or not
-  posToOccupy = (toColor != game.myPlayer && toOccupied == 1) ? 1 : board.contents[destinationPoint].occupied.length + 1;
+  posToOccupy =
+    toColor != game.myPlayer && toOccupied == 1
+      ? 1
+      : board.contents[destinationPoint].occupied.length + 1;
   [x, y] = getPieceCoords(game.myPlayer, destinationPoint, posToOccupy); // ACTIVE
 
-  if (move.to == 0) { // bearing off
-    movePiece(move.pieceId, x, y);  // no animation for this move
+  if (move.to == 0) {
+    // bearing off
+    movePiece(move.pieceId, x, y); // no animation for this move
   } else {
     await animateMovePiece(move.pieceId, x, y, 0.5);
   }
@@ -1463,9 +1480,9 @@ async function applyMove(move) {
   if (game.myPlayer === 'r') {
     uniqueSortedBlots.sort((a, b) => a - b);
   } else {
-    uniqueSortedBlots.sort((a, b) => b - a);  // take blots in reverse order for white
+    uniqueSortedBlots.sort((a, b) => b - a); // take blots in reverse order for white
   }
-  
+
   for (let i = 0; i < uniqueSortedBlots.length; i++) {
     await takeBlot(uniqueSortedBlots[i]);
   }
@@ -1507,7 +1524,6 @@ async function takeBlot(blotPoint) {
   board.contents[barPoint].occupied.push(blotPieceId);
   board.updatePointOccupation(barPoint);
 }
-
 
 function applyHighlight(point, state) {
   // translate point coordinates when playing as red
@@ -1552,9 +1568,9 @@ function drawBoardNoAnimation(player) {
     for (let pos = 1; pos <= occupiedList.length; pos++) {
       const id = occupiedList[pos - 1];
       const piece = document.getElementById(id);
-      
+
       let [x, y] = getPieceCoords(player, pt, pos);
-      
+
       // Set the new position based on progress
       piece.style.left = x - PIECE_RADIUS + 'px';
       piece.style.top = y - PIECE_RADIUS + 'px';
@@ -1705,8 +1721,8 @@ function identifyPoint(x, y, boardRect) {
 }
 
 function getPieceCoords(player, reqPoint, reqPosition) {
-
-  let x = 0, y = 0;
+  let x = 0,
+    y = 0;
 
   if (reqPoint == 0 || reqPosition == 0) return [x, y];
 
@@ -1944,7 +1960,7 @@ function displayDiceThrows() {
   const end_turn = document.getElementById('end_turn');
 
   // is move finished? populate with empty string
-  if (board.diceThrows.every(element => element === 0)) {
+  if (board.diceThrows.every((element) => element === 0)) {
     container.innerHTML = '';
 
     // hide the end_turn button
@@ -1972,8 +1988,28 @@ function displayDiceThrows() {
   container.innerHTML = parts.join(' ');
   end_turn.style.visibility = 'visible';
 
-  console.log('>>>>>>>>>>> At the end of displayDiceThrows, container.innerHTML = ' + container.innerHTML);
+  console.log(
+    '>>>>>>>>>>> At the end of displayDiceThrows, container.innerHTML = ' +
+      container.innerHTML
+  );
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// AUTORUNNING LOGIC
 
+const firebaseVariables = await getFirebaseVariables();
 
+if (firebaseVariables) {
+  firebaseApp = firebaseVariables[0];
+  analytics = firebaseVariables[1];
+  database = firebaseVariables[2];
+}
+
+if (DEBUGMODE) {
+  console.log('Using Firebase in app.js:', firebaseApp);
+  console.log(analytics);
+  console.log(database);
+}
+
+// CODE END
+/////////////////////////////////////////////////////////////////////////////////////////

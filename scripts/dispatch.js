@@ -12,7 +12,7 @@
 import { playbackDiceRoll, playbackMove, playbackEndTurn } from './app.js';
 import { closeConn } from './chat.js';
 import { DEBUGMODE } from './config.js';
-import { database } from './firebaseConfig.js';
+// import { database } from './firebaseConfig.js';
 import {
   forfeitMessage,
   getOpponentName,
@@ -23,6 +23,8 @@ import { challengerName } from './welcome.js';
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // VARIABLES
+
+let database;
 
 // Holds the opponent's player object
 let activeOpponent = '';
@@ -308,9 +310,16 @@ async function fetchPlayerByKey(playerKey) {
 /////////////////////////////////////////////////////////////////////////////////////////
 // AUTORUNNING LOGIC
 
+const firebaseVariables = await getFirebaseVariables();
+
+if (firebaseVariables) {
+  database = firebaseVariables[2];
+}
+
 // Debug mode checks
 if (DEBUGMODE) {
   console.log(`dispatch.js running`);
+  console.log('disatch.js database:', database);
 }
 
 // CODE END

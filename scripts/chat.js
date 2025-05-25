@@ -11,7 +11,7 @@
 
 import { DEBUGMODE } from './config.js';
 import { dispatchMessage } from './dispatch.js';
-import { analytics, database, firebaseApp } from './firebaseConfig.js';
+// import { analytics, database, firebaseApp } from './firebaseConfig.js';
 import { changeModalContent } from './modals.js';
 import { populatePlayers } from './welcome.js';
 
@@ -19,7 +19,9 @@ import { populatePlayers } from './welcome.js';
 // VARIABLES
 
 // Firebase database
-const db = database;
+let firebaseApp;
+let database;
+let analytics;
 
 // Player connection objects
 export let peer;
@@ -602,12 +604,20 @@ export async function sendRPC(method, params) {
 /////////////////////////////////////////////////////////////////////////////////////////
 // AUTORUNNING LOGIC
 
+const firebaseVariables = await getFirebaseVariables();
+
+if (firebaseVariables) {
+  firebaseApp = firebaseVariables[0];
+  analytics = firebaseVariables[1];
+  database = firebaseVariables[2];
+}
+
 // Debug mode checks
 if (DEBUGMODE) {
   console.log(`chat.js running`);
   console.log('Using Firebase in chat.js:', firebaseApp);
   console.log('chat.js analytics:', analytics);
-  console.log('chat.js db:', db);
+  console.log('chat.js database:', database);
 }
 
 // CODE END

@@ -9,51 +9,99 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 // EVENT LISTENERS
 
+let APIKEY;
+
+let firebaseApp;
+let analytics;
+let database;
+
+let setUpResult = false;
+
 exports.handler = async (event, context) => {
   try {
-    const secretApiKey = process.env.API_KEY; // Access the environment variable securely!
+    APIKEY = process.env.API_KEY;
 
-    // IMPORTANT: Do NOT return `secretApiKey` directly in the body.
-    // That would expose it to the client.
-
-    if (!secretApiKey) {
-      return {
-        statusCode: 500,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          error: 'API key (APIKEY) not configured on Netlify.',
-        }),
-      };
+    if (!APIKEY) {
+      console.log(
+        `Problem retrieving APIKEY from the netlify environmental variable, check deployment settings or contact the site administrator`
+      );
+      // window.alert(`Problem retrieving APIKEY from the netlify environmental variable, check deployment settings or contact the site administrator`);
+      return;
+    } else {
+      console.log(
+        `APIKEY sucessfully retrieved from the netlify environmental variable`
+      );
+      setUpFirebase();
+      confirmFirebaseInitialization();
+      return;
     }
-
-    const confirmationMessage =
-      'API key was successfully accessed by the serverless function.';
-
-    const clientSafeToken = secretApiKey;
-
-    return {
-      statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        message: confirmationMessage,
-        clientToken: clientSafeToken,
-      }),
-    };
   } catch (error) {
-    console.error('Error in secure information function:', error);
-    return {
-      statusCode: 500,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ error: 'An internal server error occurred.' }),
-    };
+    console.error(
+      'Error retrieving the netlify environmental variable:',
+      error
+    );
+    // window.alert('Error retrieving the netlify environmental variable:', error);
+    return;
   }
 };
+
+function setUpFirebase() {
+  const firebaseConfig = {
+    apiKey: APIKEY,
+    appId: '1:933438650220:web:7cfd8f56a2aef998e46549',
+    authDomain: 'backgammon-b1e25.firebaseapp.com',
+    measurementId: 'G-ST0Z166K8V',
+    messagingSenderId: '933438650220',
+    projectId: 'backgammon-b1e25',
+    storageBucket: 'backgammon-b1e25.firebasestorage.app',
+  };
+
+  firebaseApp = window.firebase.initializeApp(firebaseConfig);
+
+  analytics = window.firebase.analytics;
+  database = window.firebase.database;
+}
+
+// Checks if a firebase record has been successfully initialized or not - only runs in debug mode
+function confirmFirebaseInitialization() {
+  if (
+    firebaseApp !== undefined &&
+    analytics !== undefined &&
+    database !== undefined
+  ) {
+    // Success
+    console.log(
+      'confirmFirebaseInitialization(): Firebase initialization successful.'
+    );
+    setUpResult = true;
+  } else {
+    // Failure
+    console.log(
+      `confirmFirebaseInitialization(): Firebase initialization failed, check for connection issues`
+    );
+    setUpResult = false;
+  }
+
+  return;
+}
+
+export async function getFirebaseVariables() {
+  if (setUpResult === true) {
+    const firebaseVariables = {
+      FIREBASEAPP: firebaseApp,
+      ANALYTICS: analytics,
+      DATABASE: database,
+    };
+
+    return firebaseVariables;
+  } else {
+    return;
+  }
+}
+
+// Used to initialize firebase connection
+
+// Allow processing of data to and from the firebase database
 
 // CODE END
 /////////////////////////////////////////////////////////////////////////////////////////

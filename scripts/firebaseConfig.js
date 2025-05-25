@@ -1,98 +1,98 @@
-/////////////////////////////////////////////////////////////////////////////////////////
-// CODE START
+// /////////////////////////////////////////////////////////////////////////////////////////
+// // CODE START
 
-// NOTES
-// Sets up and exports the variables needed to connect to the firebase database
+// // NOTES
+// // Sets up and exports the variables needed to connect to the firebase database
 
-'use strict';
+// 'use strict';
 
-/////////////////////////////////////////////////////////////////////////////////////////
-// IMPORTS
+// /////////////////////////////////////////////////////////////////////////////////////////
+// // IMPORTS
 
-import { DEBUGMODE } from './config.js';
+// import { DEBUGMODE } from './config.js';
 
-/////////////////////////////////////////////////////////////////////////////////////////
-// VARIABLES
+// /////////////////////////////////////////////////////////////////////////////////////////
+// // VARIABLES
 
-// Temporary variables that will be assigned to in setUpVariables()
-let clientSafeToken;
+// // Temporary variables that will be assigned to in setUpVariables()
+// let clientSafeToken;
 
-export const firebaseConfig = {
-  apiKey: await Promise.resolve(getSecureMessage()),
-  appId: '1:933438650220:web:7cfd8f56a2aef998e46549',
-  authDomain: 'backgammon-b1e25.firebaseapp.com',
-  measurementId: 'G-ST0Z166K8V',
-  messagingSenderId: '933438650220',
-  projectId: 'backgammon-b1e25',
-  storageBucket: 'backgammon-b1e25.firebasestorage.app',
-};
+// export const firebaseConfig = {
+//   apiKey: await Promise.resolve(getSecureMessage()),
+//   appId: '1:933438650220:web:7cfd8f56a2aef998e46549',
+//   authDomain: 'backgammon-b1e25.firebaseapp.com',
+//   measurementId: 'G-ST0Z166K8V',
+//   messagingSenderId: '933438650220',
+//   projectId: 'backgammon-b1e25',
+//   storageBucket: 'backgammon-b1e25.firebasestorage.app',
+// };
 
-// Used to initialize firebase connection
-export const firebaseApp = window.firebase.initializeApp(
-  await Promise.resolve(firebaseConfig)
-);
+// // Used to initialize firebase connection
+// export const firebaseApp = window.firebase.initializeApp(
+//   await Promise.resolve(firebaseConfig)
+// );
 
-// Allow processing of data to and from the firebase database
-export const analytics = await Promise.resolve(window.firebase.analytics());
-export const database = await Promise.resolve(window.firebase.database());
+// // Allow processing of data to and from the firebase database
+// export const analytics = await Promise.resolve(window.firebase.analytics());
+// export const database = await Promise.resolve(window.firebase.database());
 
-/////////////////////////////////////////////////////////////////////////////////////////
-// FUNCTIONS
+// /////////////////////////////////////////////////////////////////////////////////////////
+// // FUNCTIONS
 
-// Checks if a firebase record has been successfully initialized or not - only runs in debug mode
-function confirmFirebaseInitialization() {
-  if (
-    analytics !== undefined &&
-    database !== undefined &&
-    firebaseApp !== undefined
-  ) {
-    // Success
-    console.log(
-      'confirmFirebaseInitialization(): Firebase initialization successful.'
-    );
-  } else {
-    // Failure
-    console.log(
-      `confirmFirebaseInitialization(): Firebase initialization failed, check for connection issues`
-    );
-  }
+// // Checks if a firebase record has been successfully initialized or not - only runs in debug mode
+// function confirmFirebaseInitialization() {
+//   if (
+//     analytics !== undefined &&
+//     database !== undefined &&
+//     firebaseApp !== undefined
+//   ) {
+//     // Success
+//     console.log(
+//       'confirmFirebaseInitialization(): Firebase initialization successful.'
+//     );
+//   } else {
+//     // Failure
+//     console.log(
+//       `confirmFirebaseInitialization(): Firebase initialization failed, check for connection issues`
+//     );
+//   }
 
-  return;
-}
+//   return;
+// }
 
-// In your HTML script or separate JS file
-async function getSecureMessage() {
-  try {
-    const response = await fetch('/.netlify/functions/getSecureInfo'); // Call your new function name
-    const data = await response.json();
-    if (response.ok) {
-      document.getElementById('secure-message').textContent = data.message;
-      console.log('data:', data);
-      console.log('Client Token:', data.clientToken);
-      const safeToken = data.clientToken;
-      return safeToken;
-      // If you returned other data, like clientToken, you'd access it here:
-    } else {
-      document.getElementById(
-        'secure-message'
-      ).textContent = `Error: ${data.error}`;
-      console.log(data.error);
-    }
-  } catch (error) {
-    console.error('Error fetching secure info:', error);
-    document.getElementById('secure-message').textContent =
-      'Failed to get secure info.';
-    console.log('Failed to get secure info');
-  }
-}
+// // In your HTML script or separate JS file
+// async function getSecureMessage() {
+//   try {
+//     const response = await fetch('/.netlify/functions/getSecureInfo'); // Call your new function name
+//     const data = await response.json();
+//     if (response.ok) {
+//       document.getElementById('secure-message').textContent = data.message;
+//       console.log('data:', data);
+//       console.log('Client Token:', data.clientToken);
+//       const safeToken = data.clientToken;
+//       return safeToken;
+//       // If you returned other data, like clientToken, you'd access it here:
+//     } else {
+//       document.getElementById(
+//         'secure-message'
+//       ).textContent = `Error: ${data.error}`;
+//       console.log(data.error);
+//     }
+//   } catch (error) {
+//     console.error('Error fetching secure info:', error);
+//     document.getElementById('secure-message').textContent =
+//       'Failed to get secure info.';
+//     console.log('Failed to get secure info');
+//   }
+// }
 
-/////////////////////////////////////////////////////////////////////////////////////////
-// AUTORUNNING LOGIC
+// /////////////////////////////////////////////////////////////////////////////////////////
+// // AUTORUNNING LOGIC
 
-if (DEBUGMODE) {
-  console.log(`firebaseConfig.js running`);
-  confirmFirebaseInitialization();
-}
+// if (DEBUGMODE) {
+//   console.log(`firebaseConfig.js running`);
+//   confirmFirebaseInitialization();
+// }
 
-/////////////////////////////////////////////////////////////////////////////////////////
-// CODE END
+// /////////////////////////////////////////////////////////////////////////////////////////
+// // CODE END
