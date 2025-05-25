@@ -24,8 +24,6 @@ import { challengerName } from "./welcome.js";
 /////////////////////////////////////////////////////////////////////////////////////////
 // VARIABLES
 
-let database;
-
 // Holds the opponent's player object
 let activeOpponent = "";
 
@@ -40,10 +38,11 @@ async function initializeFirebaseInDispatch() {
   const firebaseVariables = await getFirebaseVariables(); // Await the variables
 
   if (firebaseVariables) {
-    database = firebaseVariables.DATABASE; // Assign database once it's ready
+    const database = firebaseVariables.DATABASE; // Assign database once it's ready
     if (DEBUGMODE) {
       console.log("dispatch.js: Firebase database initialized:", database);
     }
+    return database;
   } else {
     console.error(
       "dispatch.js: Failed to get Firebase variables. Database will not be available."
@@ -334,13 +333,13 @@ async function fetchPlayerByKey(playerKey) {
 // }
 
 setTimeout(() => {
-  initializeFirebaseInDispatch();
-  // Debug mode checks
+  const database = initializeFirebaseInDispatch();
+
   if (DEBUGMODE) {
     console.log(`dispatch.js running`);
     console.log("dispatch.js database:", database);
   }
-}, 1000);
+}, 2000);
 
 // CODE END
 /////////////////////////////////////////////////////////////////////////////////////////
