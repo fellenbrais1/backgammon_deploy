@@ -335,7 +335,7 @@ async function fetchPlayerByKey(playerKey) {
 
 setTimeout(() => {
   initializeFirebaseInDispatch();
-}, 2000);
+}, 5000);
 
 // Debug mode checks
 if (DEBUGMODE) {
