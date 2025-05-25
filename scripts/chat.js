@@ -18,6 +18,10 @@ import { populatePlayers } from "./welcome.js";
 /////////////////////////////////////////////////////////////////////////////////////////
 // VARIABLES
 
+let firebaseApp;
+let analytics;
+let database;
+
 // Player connection objects
 export let peer;
 

@@ -24,7 +24,7 @@ import { challengerName } from "./welcome.js";
 /////////////////////////////////////////////////////////////////////////////////////////
 // VARIABLES
 
-// let database;
+let database;
 
 // Holds the opponent's player object
 let activeOpponent = "";

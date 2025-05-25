@@ -4,6 +4,10 @@ import { showDisplayBox } from "./displayBox.js";
 import { changeModalContent, BUTTON_RESPONSE } from "./modals.js";
 import { DEBUGMODE } from "./config.js";
 
+let firebaseApp;
+let analytics;
+let database;
+
 const PIECE_RADIUS = 18;
 const PIECE_DIAMETER = PIECE_RADIUS + PIECE_RADIUS;
 const VERTICAL_TOLERANCE = 4;
