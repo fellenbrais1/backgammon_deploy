@@ -38,11 +38,13 @@ async function initializeFirebaseInDispatch() {
     const firebaseApp = firebaseVariables.FIREBASEAPP;
     const analytics = firebaseVariables.ANALYTICS;
     const database = firebaseVariables.DATABASE;
+
     if (DEBUGMODE) {
-      console.log("dispatch.js: Firebase database initialized:", firebaseApp);
-      console.log("dispatch.js: Firebase database initialized:", analytics);
-      console.log("dispatch.js: Firebase database initialized:", database);
+      console.log("app.js: Firebase firebaseApp initialized:", firebaseApp);
+      console.log("app.js: Firebase analytics initialized:", analytics);
+      console.log("app.js: Firebase database initialized:", database);
     }
+
     return { firebaseApp, analytics, database };
   } else {
     console.error(
@@ -2021,16 +2023,16 @@ function displayDiceThrows() {
 setTimeout(() => {
   (async () => {
     if (DEBUGMODE) {
-      console.log(`dispatch.js: Autorunning logic started.`);
+      console.log(`app.js: Autorunning logic started.`);
     }
 
-    firebaseApp, analytics, database = await initializeFirebaseInDispatch();
+    firebaseApp, analytics, (database = await initializeFirebaseInDispatch());
 
     if (DEBUGMODE) {
-      console.log(`dispatch.js running`);
-      console.log("dispatch.js firebaseApp (after async init):", firebaseApp);
-      console.log("dispatch.js analytics (after async init):", analytics);
-      console.log("dispatch.js database (after async init):", database);
+      console.log(`app.js running`);
+      console.log("app.js: firebaseApp:", firebaseApp);
+      console.log("app.js: analytics:", analytics);
+      console.log("app.js: database:", database);
     }
   })();
 }, 2000);

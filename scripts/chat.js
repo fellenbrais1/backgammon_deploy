@@ -636,10 +636,10 @@ setTimeout(() => {
     firebaseApp, analytics, (database = await initializeFirebaseInDispatch());
 
     if (DEBUGMODE) {
-      console.log(`dispatch.js running`);
-      console.log("dispatch.js firebaseApp (after async init):", firebaseApp);
-      console.log("dispatch.js analytics (after async init):", analytics);
-      console.log("dispatch.js database (after async init):", database);
+      console.log(`chat.js running`);
+      console.log("chat.js: firebaseApp:", firebaseApp);
+      console.log("chat.js: analytics:", analytics);
+      console.log("chat.js: database:", database);
     }
   })();
 }, 2000);
