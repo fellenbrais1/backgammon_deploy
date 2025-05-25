@@ -5,18 +5,18 @@
 // Logic to set up consts for use in other files at build
 // Included in the .gitignore file as it contains an API key
 
-'use strict';
+"use strict";
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // VARIABLES
 
 // Debug console.log messages are shown when true
-export const DEBUGMODE = false;
+export const DEBUGMODE = true;
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // AUTORUNNING LOGIC
 
-console.log('Status of DEBUGMODE:', DEBUGMODE);
+console.log("Status of DEBUGMODE:", DEBUGMODE);
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // CODE END
