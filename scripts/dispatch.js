@@ -333,7 +333,7 @@ async function fetchPlayerByKey(playerKey) {
 // }
 
 setTimeout(() => {
-  const database = initializeFirebaseInDispatch();
+  const database = Promise.resolve(initializeFirebaseInDispatch());
 
   if (DEBUGMODE) {
     console.log(`dispatch.js running`);
