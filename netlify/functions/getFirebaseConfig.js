@@ -13,6 +13,8 @@ module.exports.handler = async (event, context) => {
   try {
     const APIKEY = process.env.API_KEY;
 
+    console.log(`DEBUG: Raw APIKEY value: ${APIKEY}`);
+
     if (!APIKEY) {
       console.log(
         `ERROR: Firebase API_KEY is missing from the Netlify environmental variables`
