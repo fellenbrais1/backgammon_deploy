@@ -28,6 +28,8 @@ module.exports.handler = async (event, context) => {
 
     console.log(`Firebase API_KEY sucessfully retrieved by Netlify function`);
 
+    console.log(APIKEY);
+
     const firebaseConfig = {
       apiKey: APIKEY,
       appId: '1:933438650220:web:7cfd8f56a2aef998e46549',
