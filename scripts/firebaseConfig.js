@@ -12,9 +12,9 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 // VARIABLES
 
-let firebaseApp;
-let analytics;
-let database;
+export let firebaseApp;
+export let analytics;
+export let database;
 
 let setUpResult = false;
 
