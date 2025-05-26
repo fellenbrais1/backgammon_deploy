@@ -10,7 +10,7 @@
 // IMPORTS
 
 // TODO - Copy this code to the working branch (1 import)
-import { getFirebaseVariables } from "./firebaseConfig.js";
+import { firebaseApp, analytics, database } from "./firebaseConfig.js";
 
 import { DEBUGMODE } from "./config.js";
 import { dispatchMessage } from "./dispatch.js";
@@ -19,11 +19,6 @@ import { populatePlayers } from "./welcome.js";
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // VARIABLES
-
-// TODO - Copy this code to the working branch (3 variables)
-let firebaseApp;
-let analytics;
-let database;
 
 // Player connection objects
 export let peer;
@@ -633,24 +628,12 @@ export async function sendRPC(method, params) {
 // AUTORUNNING LOGIC
 
 setTimeout(() => {
-  (async () => {
-    if (DEBUGMODE) {
-      console.log(`dispatch.js: Autorunning logic started.`);
-    }
-
-    const initializedVars = await initializeFirebaseInDispatch();
-
-    if (initializedVars) {
-      ({ firebaseApp, analytics, database } = initializedVars);
-    }
-
-    if (DEBUGMODE) {
-      console.log(`chat.js running`);
-      console.log("chat.js: firebaseApp:", firebaseApp);
-      console.log("chat.js: analytics:", analytics);
-      console.log("chat.js: database:", database);
-    }
-  })();
+  if (DEBUGMODE) {
+    console.log(`chat.js running`);
+    console.log("chat.js: firebaseApp:", firebaseApp);
+    console.log("chat.js: analytics:", analytics);
+    console.log("chat.js: database:", database);
+  }
 }, 2000);
 
 // CODE END

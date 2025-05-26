@@ -10,7 +10,7 @@
 // IMPORTS
 
 // TODO - Copy this code to the working branch (1 import)
-import { getFirebaseVariables } from "./firebaseConfig.js";
+import { database } from "./firebaseConfig.js";
 
 import { playbackDiceRoll, playbackMove, playbackEndTurn } from "./app.js";
 import { closeConn } from "./chat.js";
@@ -25,9 +25,6 @@ import { challengerName } from "./welcome.js";
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // VARIABLES
-
-// TODO - Copy this code to the working branch (1 variable)
-let database;
 
 // Holds the opponent's player object
 let activeOpponent = "";
@@ -333,18 +330,10 @@ async function fetchPlayerByKey(playerKey) {
 // AUTORUNNING LOGIC
 
 setTimeout(() => {
-  (async () => {
-    if (DEBUGMODE) {
-      console.log(`dispatch.js: Autorunning logic started.`);
-    }
-
-    database = await initializeFirebaseInDispatch();
-
-    if (DEBUGMODE) {
-      console.log(`dispatch.js running`);
-      console.log("dispatch.js database (after async init):", database); // This should now show the actual database object
-    }
-  })();
+  if (DEBUGMODE) {
+    console.log(`dispatch.js running`);
+    console.log("dispatch.js database (after async init):", database); // This should now show the actual database object
+  }
 }, 2000);
 
 // CODE END

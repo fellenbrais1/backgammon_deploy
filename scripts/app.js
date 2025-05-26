@@ -1,15 +1,10 @@
 // TODO - Copy this code to the working branch (1 import)
-import { getFirebaseVariables } from "../scripts/firebaseConfig.js";
+import { firebaseApp, analytics, database } from "../scripts/firebaseConfig.js";
 
 import { sendRPC } from "./chat.js";
 import { showDisplayBox } from "./displayBox.js";
 import { changeModalContent, BUTTON_RESPONSE } from "./modals.js";
 import { DEBUGMODE } from "./config.js";
-
-// TODO - Copy this code to the working branch (3 variables)
-let firebaseApp;
-let analytics;
-let database;
 
 const PIECE_RADIUS = 18;
 const PIECE_DIAMETER = PIECE_RADIUS + PIECE_RADIUS;
@@ -2026,24 +2021,12 @@ function displayDiceThrows() {
 // AUTORUNNING LOGIC
 
 setTimeout(() => {
-  (async () => {
-    if (DEBUGMODE) {
-      console.log(`app.js: Autorunning logic started.`);
-    }
-
-    const initializedVars = await initializeFirebaseInDispatch();
-
-    if (initializedVars) {
-      ({ firebaseApp, analytics, database } = initializedVars);
-    }
-
-    if (DEBUGMODE) {
-      console.log(`app.js running`);
-      console.log("app.js: firebaseApp:", firebaseApp);
-      console.log("app.js: analytics:", analytics);
-      console.log("app.js: database:", database);
-    }
-  })();
+  if (DEBUGMODE) {
+    console.log(`app.js running`);
+    console.log("app.js: firebaseApp:", firebaseApp);
+    console.log("app.js: analytics:", analytics);
+    console.log("app.js: database:", database);
+  }
 }, 2000);
 
 // CODE END
