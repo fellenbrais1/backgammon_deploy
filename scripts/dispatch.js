@@ -331,7 +331,7 @@ async function fetchPlayerByKey(playerKey) {
 
 setTimeout(() => {
   if (DEBUGMODE) {
-    console.log(`dispatch.js running`);
+    console.log(`dispatch.js running yo`);
     console.log("dispatch.js database (after async init):", database); // This should now show the actual database object
   }
 }, 2000);
