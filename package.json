@@ -4,9 +4,6 @@
   "description": "To load:\r In vscode, right click on index.html and 'Open with Live Server'",
   "main": "index.js",
   "scripts": {
-    "prebuild": "node scripts/generate-env.js",
-    "build": "npm run prebuild && cp -R src/ public/",
-    "start": "http-server public -p 8888",
     "test": "echo \"No test specified\" && exit 0"
   },
   "author": "",
@@ -14,8 +11,7 @@
   "devDependencies": {
     "@eslint/js": "9.26.0",
     "eslint": "^9.26.0",
-    "globals": "^16.0.0",
-    "http-server": "^14.1.1"
+    "globals": "^16.0.0"
   },
   "dependencies": {
     "dotenv": "^16.5.0"
