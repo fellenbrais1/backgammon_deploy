@@ -4,7 +4,7 @@
   "description": "To load:\r In vscode, right click on index.html and 'Open with Live Server'",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"No test specified\" && exit 0"
   },
   "author": "",
   "license": "ISC",
