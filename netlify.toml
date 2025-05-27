@@ -1,0 +1,9 @@
+[build]
+  publish = "public" # Specifies the directory Netlify should deploy
+  command = "npm run build" # Command to run during the Netlify build process
+
+# Optional: For local development with Netlify CLI
+[dev]
+  command = "npm start" # Command to run your local development server
+  publish = "public"
+  port = 8888
